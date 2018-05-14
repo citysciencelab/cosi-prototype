@@ -1,0 +1,16 @@
+#info {
+  font-size: 24px;
+  padding: 20px;
+}
+
+#logo {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: white;
+  border: 10px solid white;
+}
+
+#logo img {
+  height: 100px;
+}

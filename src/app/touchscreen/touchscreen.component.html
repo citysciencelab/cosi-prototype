@@ -1,3 +1,11 @@
 <div class="container" (addobject)="onUpdateObject($event)" (updateobject)="onUpdateObject($event)" (removeobject)="onRemoveObject($event)">
   <app-map></app-map>
+
+  <nav class="topic-slider">
+    <div *ngFor="let topic of topics" [attr.id]="topic" class="topic-field" [class.selected]="selectedTopic === topic" (click)="setTopic(topic)" (addobject)="onUpdateObject($event)" (updateobject)="onUpdateObject($event)">{{ topicLabels[topic] }}</div>
+  </nav>
+
+  <nav class="progress-slider">
+    <div *ngFor="let status of statuses" [attr.id]="status" class="progress-field" [class.selected]="selectedStatus === status" (click)="setStatus(status)" (addobject)="onUpdateObject($event)" (updateobject)="onUpdateObject($event)">{{ statusLabels[status] }}</div>
+  </nav>
 </div>
