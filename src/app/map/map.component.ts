@@ -27,4 +27,8 @@ export class MapComponent implements OnInit {
     this.mapService.showLayers(layerNames);
   }
 
+  clearSelectedFeatures() {
+    this.mapService.selectInteraction.getFeatures().clear();
+  }
+
 }

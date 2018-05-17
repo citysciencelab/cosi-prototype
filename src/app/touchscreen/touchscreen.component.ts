@@ -59,11 +59,18 @@ export class TouchscreenComponent implements OnInit {
 
   setStatus(status: string) {
     this.selectedStatus = status;
-    this.map.showLayers(this.layers[this.selectedTopic][this.selectedStatus]);
+    this.updateMapLayers();
   }
 
   setTopic(topic: string) {
     this.selectedTopic = topic;
-    this.map.showLayers(this.layers[this.selectedTopic][this.selectedStatus]);
+    this.updateMapLayers();
+  }
+
+  private updateMapLayers() {
+    if (this.layers.hasOwnProperty(this.selectedTopic)) {
+      this.map.showLayers(this.layers[this.selectedTopic][this.selectedStatus]);
+    }
+    this.map.clearSelectedFeatures();
   }
 }
