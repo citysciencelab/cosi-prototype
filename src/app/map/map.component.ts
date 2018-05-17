@@ -20,9 +20,7 @@ export class MapComponent implements OnInit {
       minZoom: 11,
       maxZoom: 18
     }));
-    this.mapService.selectInteractions.forEach(interaction => {
-      interaction.on('select', e => this.select.emit(e));
-    });
+    this.mapService.selectInteraction.on('select', e => this.select.emit(e));
   }
 
   showLayers(layerNames: string[]) {

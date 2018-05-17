@@ -5,7 +5,7 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class MapService {
   private instance: ol.Map;
-  selectInteractions: { [key: string]: ol.interaction.Select };
+  selectInteraction: ol.interaction.Select;
   baseLayers: { [key: string]: ol.layer.Layer };
   thematicLayers: { [key: string]: ol.layer.Layer };
 
@@ -34,10 +34,11 @@ export class MapService {
   }
 
   private addControls() {
-    ol.control.defaults().forEach(control => {
+    const controls = ol.control.defaults().extend([new ol.control.ScaleLine()]);
+
+    controls.forEach(control => {
       this.instance.addControl(control);
     });
-    this.instance.addControl(new ol.control.ScaleLine());
   }
 
   private addLayers() {
@@ -79,9 +80,28 @@ export class MapService {
         visible: false,
         zIndex: 1
       }),
+      'kitasNeu': new ol.layer.Vector({
+        source: new ol.source.Vector({
+          url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:kitas_neu' +
+            '&outputFormat=application/json&srsname=EPSG:4326',
+          format: new ol.format.GeoJSON()
+        }),
+        style: this.getStyle('kitas', false),
+        visible: false,
+        zIndex: 1
+      }),
       'einwohner': new ol.layer.Vector({
         source: new ol.source.Vector({
           url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:einwohner_0bis6' +
+            '&outputFormat=application/json&srsname=EPSG:4326',
+          format: new ol.format.GeoJSON()
+        }),
+        style: this.getStyle('einwohner', false),
+        visible: false
+      }),
+      'einwohnerNeu': new ol.layer.Vector({
+        source: new ol.source.Vector({
+          url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:einwohner_0bis6_neu' +
             '&outputFormat=application/json&srsname=EPSG:4326',
           format: new ol.format.GeoJSON()
         }),
@@ -100,10 +120,9 @@ export class MapService {
       })
     };
 
-    Object.values(this.baseLayers).forEach(layer => {
-      this.instance.addLayer(layer);
-    });
-    Object.values(this.thematicLayers).forEach(layer => {
+    const layers = Object.values(this.baseLayers).concat(Object.values(this.thematicLayers));
+
+    layers.forEach(layer => {
       this.instance.addLayer(layer);
     });
   }
@@ -114,26 +133,26 @@ export class MapService {
       pinchRotate: false
     });
 
-    this.selectInteractions = [
-      new ol.interaction.Select({
-        // Because multiple select interactions for different layers don't work,
-        // the layer needs to be determined within the style function. This way we can
-        // use the styling associated with the layer the selected feature belongs to.
-        style: (feature: ol.Feature) => {
-          let selectedLayer;
-          for (const [identifier, layer] of Object.entries(this.thematicLayers)) {
-            layer.getSource().forEachFeature(f => {
-              if (feature.getId() === f.getId()) {
-                selectedLayer = identifier;
-              }
-            });
-          }
-          return this.getStyle(selectedLayer, true)(feature);
+    this.selectInteraction = new ol.interaction.Select({
+      // Because multiple select interactions for different layers don't work,
+      // the layer needs to be determined within the style function. This way we can
+      // use the styling associated with the layer the selected feature belongs to.
+      style: (feature: ol.Feature) => {
+        let selectedLayer;
+        for (const [identifier, layer] of Object.entries(this.thematicLayers)) {
+          layer.getSource().forEachFeature(f => {
+            if (feature.getId() === f.getId()) {
+              selectedLayer = identifier;
+            }
+          });
         }
-      })
-    ];
+        return this.getStyle(selectedLayer, true)(feature);
+      }
+    });
 
-    defaultInteractions.extend(this.selectInteractions).forEach(interaction => {
+    const interactions = defaultInteractions.extend([this.selectInteraction]);
+
+    interactions.forEach(interaction => {
       this.instance.addInteraction(interaction);
     });
   }
@@ -208,6 +227,10 @@ export class MapService {
         })
       }
     };
+
+    // Common styles
+    styles['kitasNeu'] = styles['kitas'];
+    styles['einwohnerNeu'] = styles['einwohner'];
 
     return styles[layer][selected ? 'selected' : 'default'];
   }

@@ -24,18 +24,28 @@ export class TouchscreenComponent implements OnInit {
     'nahversorgung': 'Nah- versorgung',
     'kitas': 'Kitas'
   };
-  topicLayers = {
-    'gruenflaechen': ['gruenflaechen'],
-    'nahversorgung': [],
-    'kitas': ['kitas', 'einwohner']
-  };
   selectedTopic: string;
+  layers = {
+    'gruenflaechen': {
+      'before': ['gruenflaechen'],
+      'after': []
+    },
+    'nahversorgung': {
+      'before': [],
+      'after': []
+    },
+    'kitas': {
+      'before': ['kitas', 'einwohner'],
+      'after': ['kitasNeu', 'einwohnerNeu']
+    }
+  };
 
   constructor(private config: ConfigurationService, private localStorageService: LocalStorageService, private tuioClient: TuioClient) {
   }
 
   ngOnInit() {
     this.tuioClient.connect(environment.socketUrl);
+    this.selectedStatus = 'before';
   }
 
   onSelect(e: ol.interaction.Select.Event) {
@@ -49,10 +59,11 @@ export class TouchscreenComponent implements OnInit {
 
   setStatus(status: string) {
     this.selectedStatus = status;
+    this.map.showLayers(this.layers[this.selectedTopic][this.selectedStatus]);
   }
 
   setTopic(topic: string) {
     this.selectedTopic = topic;
-    this.map.showLayers(this.topicLayers[topic]);
+    this.map.showLayers(this.layers[this.selectedTopic][this.selectedStatus]);
   }
 }
