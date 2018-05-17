@@ -8,13 +8,6 @@ export class MapService {
   selectInteractions: { [key: string]: ol.interaction.Select };
   baseLayers: { [key: string]: ol.layer.Layer };
   thematicLayers: { [key: string]: ol.layer.Layer };
-  defaultFill = new ol.style.Fill({
-    color: [255, 255, 255, 0.4]
-  });
-  defaultStroke = new ol.style.Stroke({
-    color: [51, 153, 204, 1],
-    width: 1.25
-  });
 
   constructor() {
     this.instance = new ol.Map();
@@ -82,15 +75,7 @@ export class MapService {
             '&outputFormat=application/json&srsname=EPSG:4326',
           format: new ol.format.GeoJSON()
         }),
-        style: new ol.style.Style({
-          image: new ol.style.Circle({
-            fill: new ol.style.Fill({
-              color: [255, 255, 255, 1]
-            }),
-            stroke: this.defaultStroke,
-            radius: 5
-          })
-        }),
+        style: this.getStyle('kitas', false),
         visible: false,
         zIndex: 1
       }),
@@ -100,17 +85,7 @@ export class MapService {
             '&outputFormat=application/json&srsname=EPSG:4326',
           format: new ol.format.GeoJSON()
         }),
-        style: (feature) => {
-          return new ol.style.Style({
-            fill: new ol.style.Fill({
-              color: this.getFill(feature, 'einwohner')
-            }),
-            stroke: new ol.style.Stroke({
-              color: [135, 206, 252],
-              width: 1
-            })
-          });
-        },
+        style: this.getStyle('einwohner', false),
         visible: false
       }),
       // 'nahversorgung'
@@ -120,15 +95,7 @@ export class MapService {
             '&outputFormat=application/json&srsname=EPSG:4326',
           format: new ol.format.GeoJSON()
         }),
-        style: new ol.style.Style({
-          fill: new ol.style.Fill({
-            color: [0, 128, 0, 0.5]
-          }),
-          stroke: new ol.style.Stroke({
-            color: [0, 128, 0, 1],
-            width: 2
-          })
-        }),
+        style: this.getStyle('gruenflaechen', false),
         visible: false
       })
     };
@@ -149,17 +116,19 @@ export class MapService {
 
     this.selectInteractions = [
       new ol.interaction.Select({
-        layers: [this.thematicLayers['einwohner']],
-        style: (feature) => {
-          return new ol.style.Style({
-            stroke: new ol.style.Stroke({
-              color: [0, 153, 255, 1],
-              width: 3
-            }),
-            fill: new ol.style.Fill({
-              color: this.getFill(feature, 'einwohner')
-            })
-          });
+        // Because multiple select interactions for different layers don't work,
+        // the layer needs to be determined within the style function. This way we can
+        // use the styling associated with the layer the selected feature belongs to.
+        style: (feature: ol.Feature) => {
+          let selectedLayer;
+          for (const [identifier, layer] of Object.entries(this.thematicLayers)) {
+            layer.getSource().forEachFeature(f => {
+              if (feature.getId() === f.getId()) {
+                selectedLayer = identifier;
+              }
+            });
+          }
+          return this.getStyle(selectedLayer, true)(feature);
         }
       })
     ];
@@ -167,6 +136,80 @@ export class MapService {
     defaultInteractions.extend(this.selectInteractions).forEach(interaction => {
       this.instance.addInteraction(interaction);
     });
+  }
+
+  private getStyle(layer: string, selected: boolean) {
+    // This map contains style definitions for all layers (deselected/selected)
+    const styles = {
+      'kitas': {
+        default: (feature: ol.Feature) => new ol.style.Style({
+          image: new ol.style.Circle({
+            fill: new ol.style.Fill({
+              color: [255, 255, 255, 1]
+            }),
+            stroke: new ol.style.Stroke({
+              color: [51, 153, 204, 1],
+              width: 1.25
+            }),
+            radius: 5
+          })
+        }),
+        selected: (feature: ol.Feature) => new ol.style.Style({
+          image: new ol.style.Circle({
+            radius: 6,
+            fill: new ol.style.Fill({
+              color: [0, 153, 255, 1]
+            }),
+            stroke: new ol.style.Stroke({
+              color: [255, 255, 255, 1],
+              width: 1.5
+            })
+          })
+        })
+      },
+      'einwohner': {
+        default: (feature: ol.Feature) => new ol.style.Style({
+          fill: new ol.style.Fill({
+            color: this.getFill(feature, 'einwohner')
+          }),
+          stroke: new ol.style.Stroke({
+            color: [135, 206, 252],
+            width: 1
+          })
+        }),
+        selected: (feature: ol.Feature) => new ol.style.Style({
+          fill: new ol.style.Fill({
+            color: this.getFill(feature, 'einwohner')
+          }),
+          stroke: new ol.style.Stroke({
+            color: [0, 153, 255, 1],
+            width: 3
+          })
+        })
+      },
+      'gruenflaechen': {
+        default: (feature: ol.Feature) => new ol.style.Style({
+          fill: new ol.style.Fill({
+            color: [0, 128, 0, 0.5]
+          }),
+          stroke: new ol.style.Stroke({
+            color: [0, 128, 0, 1],
+            width: 2
+          })
+        }),
+        selected: (feature: ol.Feature) => new ol.style.Style({
+          fill: new ol.style.Fill({
+            color: [0, 128, 0, 0.5]
+          }),
+          stroke: new ol.style.Stroke({
+            color: [0, 153, 255, 1],
+            width: 3
+          })
+        })
+      }
+    };
+
+    return styles[layer][selected ? 'selected' : 'default'];
   }
 
   private getFill(feature: ol.Feature, layer: string) {
@@ -186,6 +229,9 @@ export class MapService {
       }
     };
 
+    if (!fillFunctions.hasOwnProperty(layer)) {
+      return;
+    }
     return fillFunctions[layer](feature);
   }
 
