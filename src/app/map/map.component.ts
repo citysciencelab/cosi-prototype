@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import * as ol from 'openlayers/dist/ol-debug.js';
+// import * as ol from 'openlayers/dist/ol-debug.js';
+import * as ol from 'openlayers';
 import { MapService } from './map.service';
 
 @Component({
@@ -20,7 +21,7 @@ export class MapComponent implements OnInit {
       minZoom: 11,
       maxZoom: 18
     }));
-    this.mapService.selectInteraction.on('select', e => this.select.emit(e));
+    this.mapService.selectInteraction.on('select', e => this.select.emit(<ol.interaction.Select.Event>e));
   }
 
   showLayers(layerNames: string[]) {

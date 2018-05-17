@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import * as ol from 'openlayers/dist/ol-debug.js';
+// import * as ol from 'openlayers/dist/ol-debug.js';
+import * as ol from 'openlayers';
 import { environment } from '../../environments/environment';
 
 @Injectable()
@@ -10,7 +11,7 @@ export class MapService {
   thematicLayers: { [key: string]: ol.layer.Layer };
 
   constructor() {
-    this.instance = new ol.Map();
+    this.instance = new ol.Map({});
     this.addControls();
     this.addLayers();
     this.addInteractions();
@@ -63,7 +64,8 @@ export class MapService {
             LAYERS: 'stadtteile',
             FORMAT: 'image/png',
             SRS: 'EPSG:4326'
-          }
+          },
+          projection: 'EPSG:25832'
         }),
         zIndex: 10
       })
@@ -140,7 +142,8 @@ export class MapService {
       style: (feature: ol.Feature) => {
         let selectedLayer;
         for (const [identifier, layer] of Object.entries(this.thematicLayers)) {
-          layer.getSource().forEachFeature(f => {
+          const source = <ol.source.Vector>layer.getSource();
+          source.forEachFeature(f => {
             if (feature.getId() === f.getId()) {
               selectedLayer = identifier;
             }
@@ -157,7 +160,7 @@ export class MapService {
     });
   }
 
-  private getStyle(layer: string, selected: boolean) {
+  private getStyle(layer: string, selected: boolean): (feature: ol.Feature) => ol.style.Style {
     // This map contains style definitions for all layers (deselected/selected)
     const styles = {
       'kitas': {
@@ -192,7 +195,7 @@ export class MapService {
             color: this.getFill(feature, 'einwohner')
           }),
           stroke: new ol.style.Stroke({
-            color: [135, 206, 252],
+            color: [135, 206, 252, 1],
             width: 1
           })
         }),
@@ -235,8 +238,8 @@ export class MapService {
     return styles[layer][selected ? 'selected' : 'default'];
   }
 
-  private getFill(feature: ol.Feature, layer: string) {
-    const scales = {
+  private getFill(feature: ol.Feature, layer: string): ol.Color {
+    const scales: { [key: string]: { [key: string]: ol.Color } } = {
       'einwohner': {
         0: [255, 0, 0, 0],
         50: [255, 0, 0, 0.2],
@@ -248,7 +251,8 @@ export class MapService {
 
     const fillFunctions = {
       'einwohner': (f: ol.Feature) => {
-        return this.getColorFromScale(scales['einwohner'], f.get('1bis6') / f.getGeometry().getArea() * 1000000);
+        const geom = <ol.geom.Polygon>f.getGeometry();
+        return this.getColorFromScale(scales['einwohner'], f.get('1bis6') / geom.getArea() * 1000000);
       }
     };
 
@@ -258,7 +262,7 @@ export class MapService {
     return fillFunctions[layer](feature);
   }
 
-  private getColorFromScale(scale: { [key: string]: ol.Color | ol.ColorLike }, value: number) {
+  private getColorFromScale(scale: { [key: string]: ol.Color }, value: number): ol.Color {
     if (value === null) {
       value = 0;
     }
@@ -268,7 +272,7 @@ export class MapService {
         return previous;
       }
       return current[1];
-    }, [0, 0, 0]);
+    }, <ol.Color>[0, 0, 0, 1]);
   }
 
 }
