@@ -1,5 +1,5 @@
 <div class="container" (addobject)="onUpdateObject($event)" (updateobject)="onUpdateObject($event)" (removeobject)="onRemoveObject($event)">
-  <app-map></app-map>
+  <app-map (select)="onSelect($event)"></app-map>
 
   <nav class="topic-slider">
     <div *ngFor="let topic of topics" [attr.id]="topic" class="topic-field" [class.selected]="selectedTopic === topic" (click)="setTopic(topic)" (addobject)="onUpdateObject($event)" (updateobject)="onUpdateObject($event)">{{ topicLabels[topic] }}</div>

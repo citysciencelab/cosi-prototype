@@ -42,8 +42,8 @@
 .progress-field {
   background-color: rgba(128, 128, 128, 0.5);
   margin: 15px;
-  width: 140px;
-  font-size: 175%;
+  width: 100px;
+  font-size: 125%;
   text-align: center;
   cursor: pointer;
   padding: 50% 0;
@@ -68,8 +68,8 @@
 .topic-field {
   background-color: rgba(128, 128, 128, 0.5);
   margin: 15px;
-  width: 140px;
-  font-size: 175%;
+  width: 100px;
+  font-size: 125%;
   text-align: center;
   cursor: pointer;
   padding: 50% 0;
