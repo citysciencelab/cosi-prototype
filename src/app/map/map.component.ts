@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 // import * as ol from 'openlayers/dist/ol-debug.js';
 import * as ol from 'openlayers';
+import { MapLayer } from './map-layer.model';
 import { MapService } from './map.service';
 
 @Component({
@@ -24,8 +25,12 @@ export class MapComponent implements OnInit {
     this.mapService.selectInteraction.on('select', e => this.select.emit(<ol.interaction.Select.Event>e));
   }
 
-  showLayers(layerNames: string[]) {
-    this.mapService.showLayers(layerNames);
+  showLayers(layers: MapLayer[]) {
+    this.mapService.showLayers(layers.map(layer => layer.name));
+  }
+
+  showBaseLayers(layers: MapLayer[]) {
+    this.mapService.showBaseLayers(layers.map(layer => layer.name));
   }
 
   clearSelectedFeatures() {

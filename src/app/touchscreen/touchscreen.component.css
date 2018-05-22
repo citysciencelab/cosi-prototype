@@ -28,6 +28,10 @@
   background-color: white;
 }
 
+.nowrap {
+  white-space: nowrap;
+}
+
 .progress-slider {
   position: absolute;
   top: 0;
@@ -78,4 +82,28 @@
 
 .topic-field.selected {
   background-color: rgba(0, 152, 152, 0.75);
+}
+
+.layer-control {
+  position: absolute;
+  bottom: 0;
+  left: 130px;
+  padding: 10px;
+  margin: 15px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid gray;
+  border-radius: 10px;
+  line-height: 150%;
+}
+
+.layer-control .heading {
+  font-size: 130%;
+  font-weight: bold;
+}
+
+.layer-control li {
+  font-size: 120%;
+  list-style: none;
+  line-height: 150%;
+  user-select: none;
 }

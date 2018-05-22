@@ -30,7 +30,20 @@ export class MapService {
       layer.setVisible(false);
     });
     layerNames.forEach(layerName => {
-      this.thematicLayers[layerName].setVisible(true);
+      if (this.thematicLayers.hasOwnProperty(layerName)) {
+        this.thematicLayers[layerName].setVisible(true);
+      }
+    });
+  }
+
+  showBaseLayers(layerNames: string[]) {
+    Object.values(this.baseLayers).forEach(layer => {
+      layer.setVisible(false);
+    });
+    layerNames.forEach(layerName => {
+      if (this.baseLayers.hasOwnProperty(layerName)) {
+        this.baseLayers[layerName].setVisible(true);
+      }
     });
   }
 
@@ -44,6 +57,9 @@ export class MapService {
 
   private addLayers() {
     this.baseLayers = {
+      'osm': new ol.layer.Tile({
+        source: new ol.source.OSM()
+      }),
       'geobasis': new ol.layer.Tile({
         source: new ol.source.TileWMS({
           url: 'https://geodienste.hamburg.de/HH_WMS_Kombi_DISK_GB',
@@ -82,6 +98,18 @@ export class MapService {
         visible: false,
         zIndex: 1
       }),
+      'kitasHeatmap': new ol.layer.Heatmap({
+        source: new ol.source.Vector({
+          url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:kitas' +
+            '&outputFormat=application/json&srsname=EPSG:4326',
+          format: new ol.format.GeoJSON()
+        }),
+        weight: feature => 1,
+        radius: 12,
+        blur: 25,
+        visible: false,
+        zIndex: 1
+      }),
       'kitasNeu': new ol.layer.Vector({
         source: new ol.source.Vector({
           url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:kitas_neu' +
@@ -91,6 +119,32 @@ export class MapService {
         style: this.getStyle('kitas', false),
         visible: false,
         zIndex: 1
+      }),
+      'kitasNeuHeatmap': new ol.layer.Heatmap({
+        source: new ol.source.Vector({
+          url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:kitas_neu' +
+            '&outputFormat=application/json&srsname=EPSG:4326',
+          format: new ol.format.GeoJSON()
+        }),
+        weight: feature => 1,
+        radius: 12,
+        blur: 25,
+        visible: false,
+        zIndex: 1
+      }),
+      'kitasGehzeit': new ol.layer.Tile({
+        source: new ol.source.TileWMS({
+          url: 'https://geodienste.hamburg.de/MRH_WMS_REA_Soziales',
+          params: {
+            LAYERS: '6',
+            TILED: true,
+            FORMAT: 'image/png',
+            WIDTH: 256,
+            HEIGHT: 256,
+            SRS: 'EPSG:4326'
+          }
+        }),
+        visible: false
       }),
       'einwohner': new ol.layer.Vector({
         source: new ol.source.Vector({
@@ -143,6 +197,11 @@ export class MapService {
         let selectedLayer;
         for (const [identifier, layer] of Object.entries(this.thematicLayers)) {
           const source = <ol.source.Vector>layer.getSource();
+
+          // Skip non-vector sources
+          if (typeof source.forEachFeature !== 'function') {
+            continue;
+          }
           source.forEachFeature(f => {
             if (feature.getId() === f.getId()) {
               selectedLayer = identifier;
@@ -235,6 +294,9 @@ export class MapService {
     styles['kitasNeu'] = styles['kitas'];
     styles['einwohnerNeu'] = styles['einwohner'];
 
+    if (!styles.hasOwnProperty(layer)) {
+      return;
+    }
     return styles[layer][selected ? 'selected' : 'default'];
   }
 
