@@ -23,6 +23,8 @@ export class TouchscreenComponent implements OnInit {
   topics: [{ name: string, displayName: string, layers: MapLayer[] }];
   selectedTopic: { name: string, displayName: string, layers: MapLayer[] };
   baseLayers: [MapLayer];
+  mapKeyLayer: MapLayer;
+  mapKeyVisible: boolean;
 
   constructor(private config: ConfigurationService, private localStorageService: LocalStorageService, private tuioClient: TuioClient) {
     this.statuses = [
@@ -81,7 +83,9 @@ export class TouchscreenComponent implements OnInit {
           {
             name: 'kitasGehzeit',
             displayName: 'Gehzeit zur nächsten Kita',
-            visible: false
+            visible: false,
+            legendUrl: 'https://geodienste.hamburg.de/MRH_WMS_REA_Soziales' +
+              '?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=6'
           },
           {
             name: 'einwohner',
@@ -193,6 +197,11 @@ export class TouchscreenComponent implements OnInit {
   toggleLayer(layer: MapLayer) {
     layer.visible = !layer.visible;
     this.updateMapLayers();
+  }
+
+  showMapKey(layer: MapLayer) {
+    this.mapKeyLayer = layer;
+    this.mapKeyVisible = true;
   }
 
   private updateMapLayers() {
