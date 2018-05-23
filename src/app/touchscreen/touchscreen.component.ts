@@ -46,7 +46,13 @@ export class TouchscreenComponent implements OnInit {
       {
         name: 'nahversorgung',
         displayName: 'Nahversorgung',
-        layers: [],
+        layers: [
+          {
+            name: 'geschaefte',
+            displayName: 'Geschäfte',
+            visible: true
+          }
+        ],
       },
       {
         name: 'kitas',

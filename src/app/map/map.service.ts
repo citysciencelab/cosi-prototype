@@ -228,7 +228,15 @@ export class MapService {
           style: this.getStyle('einwohner', false)
         })
       },
-      // 'nahversorgung'
+      'geschaefte': {
+        'before': new ol.layer.Vector({
+          source: new ol.source.Vector({
+            url: 'https://overpass-api.de/api/interpreter' +
+              '?data=node["shop"](53.590620,9.943056,53.630745,10.025539);out;',
+            format: new ol.format.OSMXML()
+          })
+        })
+      },
       'gruenflaechen': {
         'before': new ol.layer.Vector({
           source: new ol.source.Vector({
