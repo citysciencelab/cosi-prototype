@@ -36,62 +36,43 @@ export class TouchscreenComponent implements OnInit {
         name: 'gruenflaechen',
         displayName: 'Grünflächen',
         layers:  [
-            {
-              name: 'gruenflaechen',
-              displayName: 'Grünflächen',
-              visible: true
-            }
-          ],
-          // after: []
+          {
+            name: 'gruenflaechen',
+            displayName: 'Grünflächen',
+            visible: true
+          }
+        ],
       },
       {
         name: 'nahversorgung',
         displayName: 'Nahversorgung',
         layers: [],
-          // after: []
       },
       {
         name: 'kitas',
         displayName: 'Kitas',
         layers: [
-            {
-              name: 'kitas',
-              displayName: 'Kitas',
-              visible: true
-            },
-            {
-              name: 'kitasHeatmap',
-              displayName: 'Kitas (Heatmap)',
-              visible: false
-            },
-            {
-              name: 'einwohner',
-              displayName: 'Einwohner im Alter 0 bis 6 Jahre',
-              visible: true
-            },
-            {
-              name: 'kitasGehzeit',
-              displayName: 'Gehzeit zur nächsten Kita',
-              visible: false
-            }
-          ],
-          // after: [
-          //   {
-          //     name: 'kitasNeu',
-          //     displayName: 'Kitas',
-          //     visible: true
-          //   },
-          //   {
-          //     name: 'kitasNeuHeatmap',
-          //     displayName: 'Kitas (Heatmap)',
-          //     visible: false
-          //   },
-          //   {
-          //     name: 'einwohnerNeu',
-          //     displayName: 'Einwohner im Alter 0 bis 6 Jahre',
-          //     visible: true
-          //   }
-          // ]
+          {
+            name: 'kitas',
+            displayName: 'Kitas',
+            visible: true
+          },
+          {
+            name: 'kitasHeatmap',
+            displayName: 'Kitas (Heatmap)',
+            visible: false
+          },
+          {
+            name: 'kitasGehzeit',
+            displayName: 'Gehzeit zur nächsten Kita',
+            visible: false
+          },
+          {
+            name: 'einwohner',
+            displayName: 'Einwohner im Alter 0 bis 6 Jahre',
+            visible: true
+          }
+        ],
       }
     ];
     this.baseLayers = [

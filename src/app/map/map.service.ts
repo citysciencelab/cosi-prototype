@@ -2,14 +2,76 @@ import { Injectable } from '@angular/core';
 import * as ol from 'openlayers';
 import { environment } from '../../environments/environment';
 
+const fill = new ol.style.Fill({ color: [255, 255, 255, 0.4] });
+const stroke = new ol.style.Stroke({ color: [51, 153, 204, 1], width: 1.25 });
+const white = <ol.Color>[255, 255, 255, 1];
+const blue = <ol.Color>[0, 153, 255, 1];
+const width = 3;
+
 @Injectable()
 export class MapService {
   private instance: ol.Map;
+  private defaultStyles: ol.style.Style[];
+  private defaultEditingStyles: { [key: string]: ol.style.Style[] };
   selectInteraction: ol.interaction.Select;
   baseLayers: { [key: string]: ol.layer.Layer };
   thematicLayers: { [key: string]: { [key: string]: ol.layer.Layer } };
 
   constructor() {
+    // Default styles are taken from https://openlayers.org/en/latest/apidoc/ol.style.html
+    this.defaultStyles = [
+      new ol.style.Style({
+        image: new ol.style.Circle({
+          fill: fill,
+          stroke: stroke,
+          radius: 5
+        }),
+        fill: fill,
+        stroke: stroke
+      })
+    ];
+    this.defaultEditingStyles = {};
+    this.defaultEditingStyles['Polygon'] = [
+      new ol.style.Style({
+        fill: new ol.style.Fill({
+          color: [255, 255, 255, 0.5]
+        })
+      })
+    ];
+    this.defaultEditingStyles['MultiPolygon'] = this.defaultEditingStyles['Polygon'];
+    this.defaultEditingStyles['LineString'] = [
+      new ol.style.Style({
+        stroke: new ol.style.Stroke({
+          color: white,
+          width: width + 2
+        })
+      }),
+      new ol.style.Style({
+        stroke: new ol.style.Stroke({
+          color: blue,
+          width: width
+        })
+      })
+    ];
+    this.defaultEditingStyles['MultiLineString'] = this.defaultEditingStyles['LineString'];
+    this.defaultEditingStyles['Point'] = [
+      new ol.style.Style({
+        image: new ol.style.Circle({
+          radius: width * 2,
+          fill: new ol.style.Fill({
+            color: blue
+          }),
+          stroke: new ol.style.Stroke({
+            color: white,
+            width: width / 2
+          })
+        }),
+        zIndex: Infinity
+      })
+    ];
+    this.defaultEditingStyles['MultiPoint'] = this.defaultEditingStyles['Point'];
+    this.defaultEditingStyles['GeometryCollection'] = this.defaultEditingStyles['Polygon'].concat(this.defaultEditingStyles['Point']);
+
     this.instance = new ol.Map({});
     this.addControls();
     this.addLayers();
@@ -218,7 +280,11 @@ export class MapService {
             });
           }
         }
-        return this.getStyle(selectedLayer, true)(feature);
+        const styleFunction = this.getStyle(selectedLayer, true);
+        if (typeof styleFunction !== 'function') {
+          return this.defaultEditingStyles[feature.getGeometry().getType()];
+        }
+        return styleFunction(feature);
       }
     });
 
@@ -245,18 +311,7 @@ export class MapService {
             radius: 5
           })
         }),
-        selected: (feature: ol.Feature) => new ol.style.Style({
-          image: new ol.style.Circle({
-            radius: 6,
-            fill: new ol.style.Fill({
-              color: [0, 153, 255, 1]
-            }),
-            stroke: new ol.style.Stroke({
-              color: [255, 255, 255, 1],
-              width: 1.5
-            })
-          })
-        })
+        selected: (feature: ol.Feature) => this.defaultEditingStyles['Point']
       },
       'einwohner': {
         default: (feature: ol.Feature) => new ol.style.Style({
@@ -273,7 +328,7 @@ export class MapService {
             color: this.getFill(feature, 'einwohner')
           }),
           stroke: new ol.style.Stroke({
-            color: [0, 153, 255, 1],
+            color: blue,
             width: 3
           })
         })
@@ -293,16 +348,12 @@ export class MapService {
             color: [0, 128, 0, 0.5]
           }),
           stroke: new ol.style.Stroke({
-            color: [0, 153, 255, 1],
+            color: blue,
             width: 3
           })
         })
       }
     };
-
-    // Common styles
-    styles['kitasNeu'] = styles['kitas'];
-    styles['einwohnerNeu'] = styles['einwohner'];
 
     if (!styles.hasOwnProperty(layer)) {
       return;
