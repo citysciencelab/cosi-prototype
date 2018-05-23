@@ -5,6 +5,7 @@ import { ConfigurationService } from '../configuration.service';
 import { LocalStorageService } from '../local-storage/local-storage.service';
 import { MapComponent } from '../map/map.component';
 import { MapLayer } from '../map/map-layer.model';
+import {Kita} from '../local-storage/kita';
 
 @Component({
   selector: 'app-touchscreen',
@@ -106,6 +107,31 @@ export class TouchscreenComponent implements OnInit {
   }
 
   onSelect(e: ol.interaction.Select.Event) {
+    let message = {type: 'deselect', data: null};
+    if (e.selected.length > 0) {
+      const feature = e.selected[0];
+      const id = feature.getId();
+      if (id.toString().startsWith('kita')) {
+        const kita = this.createKita(feature.getProperties());
+        message = {type: 'kita', data: kita };
+      }
+    }
+    this.localStorageService.sendMessage(message);
+  }
+
+  private createKita(properties: { [k:string] : any}) : Kita {
+    return {
+      address: properties.Hausnr,
+      street: properties.Strasse,
+      name: properties.Name,
+      contact: properties.Ansprechpa,
+      zipCode: properties.PLZ,
+      eMail: properties['E-Mail'],
+      neighborhood: properties.Stadtteil,
+      organisation: properties.Traeger,
+      association: properties.Spitzenver,
+      website: properties.Informatio,
+    };
   }
 
   onUpdateObject(e: CustomEvent) {
