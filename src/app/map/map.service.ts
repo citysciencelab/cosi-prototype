@@ -158,7 +158,6 @@ export class MapService {
               '&outputFormat=application/json&srsname=EPSG:4326',
             format: new ol.format.GeoJSON()
           }),
-          style: this.getStyle('kitas', false),
           zIndex: 1
         }),
         'after': new ol.layer.Vector({
@@ -167,7 +166,6 @@ export class MapService {
               '&outputFormat=application/json&srsname=EPSG:4326',
             format: new ol.format.GeoJSON()
           }),
-          style: this.getStyle('kitas', false),
           zIndex: 1
         })
       },
@@ -216,16 +214,24 @@ export class MapService {
             url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:einwohner_0bis6' +
               '&outputFormat=application/json&srsname=EPSG:4326',
             format: new ol.format.GeoJSON()
-          }),
-          style: this.getStyle('einwohner', false)
+          })
         }),
         'after': new ol.layer.Vector({
           source: new ol.source.Vector({
             url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:einwohner_0bis6_neu' +
               '&outputFormat=application/json&srsname=EPSG:4326',
             format: new ol.format.GeoJSON()
+          })
+        })
+      },
+      'apotheken': {
+        'before': new ol.layer.Vector({
+          source: new ol.source.Vector({
+            url: 'https://overpass-api.de/api/interpreter' +
+              '?data=node["amenity"="pharmacy"](53.590620,9.943056,53.630745,10.025539);out;',
+            format: new ol.format.OSMXML()
           }),
-          style: this.getStyle('einwohner', false)
+          zIndex: 1
         })
       },
       'geschaefte': {
@@ -243,8 +249,7 @@ export class MapService {
             url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:gruenflaechen' +
               '&outputFormat=application/json&srsname=EPSG:4326',
             format: new ol.format.GeoJSON()
-          }),
-          style: this.getStyle('gruenflaechen', false)
+          })
         })
       }
     };
@@ -253,9 +258,13 @@ export class MapService {
       this.instance.addLayer(layer);
     });
 
-    Object.values(this.thematicLayers).forEach(layerGroup => {
+    Object.entries(this.thematicLayers).forEach(([layerGroupName, layerGroup]) => {
       Object.values(layerGroup).forEach(layer => {
         this.instance.addLayer(layer);
+        // Set the default style for each vector layer
+        if (layer.constructor === ol.layer.Vector) {
+          (<ol.layer.Vector>layer).setStyle(this.getStyle(layerGroupName, false));
+        }
         layer.setVisible(false);
       });
     });
@@ -338,6 +347,32 @@ export class MapService {
           stroke: new ol.style.Stroke({
             color: blue,
             width: 3
+          })
+        })
+      },
+      'apotheken': {
+        default: (feature: ol.Feature) => new ol.style.Style({
+          image: new ol.style.Circle({
+            fill: new ol.style.Fill({
+              color: [255, 255, 255, 0.4]
+            }),
+            stroke: new ol.style.Stroke({
+              color: [220, 20, 60, 1],
+              width: 1.25
+            }),
+            radius: 5
+          })
+        }),
+        selected: (feature: ol.Feature) => new ol.style.Style({
+          image: new ol.style.Circle({
+            radius: width * 2,
+            fill: new ol.style.Fill({
+              color: [220, 20, 60, 1]
+            }),
+            stroke: new ol.style.Stroke({
+              color: white,
+              width: width / 2
+            })
           })
         })
       },

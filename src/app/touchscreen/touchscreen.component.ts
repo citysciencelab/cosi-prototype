@@ -49,6 +49,11 @@ export class TouchscreenComponent implements OnInit {
         displayName: 'Nahversorgung',
         layers: [
           {
+            name: 'apotheken',
+            displayName: 'Apotheken',
+            visible: true
+          },
+          {
             name: 'geschaefte',
             displayName: 'Geschäfte',
             visible: true
@@ -119,7 +124,7 @@ export class TouchscreenComponent implements OnInit {
     this.localStorageService.sendMessage(message);
   }
 
-  private createKita(properties: { [k:string] : any}) : Kita {
+  private createKita(properties: { [k: string]: any }): Kita {
     return {
       address: properties.Hausnr,
       street: properties.Strasse,
