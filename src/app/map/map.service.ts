@@ -110,6 +110,27 @@ export class MapService {
     });
   }
 
+  getLayerByFeature(feature: ol.Feature) {
+    let matchingLayer;
+    for (const [identifier, layerGroup] of Object.entries(this.thematicLayers)) {
+      for (const layer of Object.values(layerGroup)) {
+        const source = <ol.source.Vector>layer.getSource();
+
+        // Skip non-vector sources
+        if (typeof source.forEachFeature !== 'function') {
+          continue;
+        }
+        source.forEachFeature(f => {
+          if (feature.getId() === f.getId()) {
+            matchingLayer = identifier;
+            return;
+          }
+        });
+      }
+    }
+    return matchingLayer;
+  }
+
   private addControls() {
     const controls = ol.control.defaults().extend([new ol.control.ScaleLine()]);
 
@@ -281,22 +302,7 @@ export class MapService {
       // the layer needs to be determined within the style function. This way we can
       // use the styling associated with the layer the selected feature belongs to.
       style: (feature: ol.Feature) => {
-        let selectedLayer;
-        for (const [identifier, layerGroup] of Object.entries(this.thematicLayers)) {
-          for (const layer of Object.values(layerGroup)) {
-            const source = <ol.source.Vector>layer.getSource();
-
-            // Skip non-vector sources
-            if (typeof source.forEachFeature !== 'function') {
-              continue;
-            }
-            source.forEachFeature(f => {
-              if (feature.getId() === f.getId()) {
-                selectedLayer = identifier;
-              }
-            });
-          }
-        }
+        const selectedLayer = this.getLayerByFeature(feature);
         const styleFunction = this.getStyle(selectedLayer, true);
         if (typeof styleFunction !== 'function') {
           return this.defaultEditingStyles[feature.getGeometry().getType()];
