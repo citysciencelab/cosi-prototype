@@ -15,8 +15,8 @@ export class TouchscreenComponent implements OnInit {
   @ViewChild(MapComponent) map: MapComponent;
   statuses: [{ name: string, displayName: string }];
   selectedStatus: { name: string, displayName: string };
-  topics: [{ name: string, displayName: string, layers: { before: MapLayer[], after: MapLayer[] } }];
-  selectedTopic: { name: string, displayName: string, layers: { before: MapLayer[], after: MapLayer[] } };
+  topics: [{ name: string, displayName: string, layers: MapLayer[] }];
+  selectedTopic: { name: string, displayName: string, layers: MapLayer[] };
   baseLayers: [MapLayer];
 
   constructor(private config: ConfigurationService, private localStorageService: LocalStorageService, private tuioClient: TuioClient) {
@@ -35,30 +35,25 @@ export class TouchscreenComponent implements OnInit {
       {
         name: 'gruenflaechen',
         displayName: 'Grünflächen',
-        layers: {
-          before: [
+        layers:  [
             {
               name: 'gruenflaechen',
               displayName: 'Grünflächen',
               visible: true
             }
           ],
-          after: []
-        }
+          // after: []
       },
       {
         name: 'nahversorgung',
         displayName: 'Nahversorgung',
-        layers: {
-          before: [],
-          after: []
-        }
+        layers: [],
+          // after: []
       },
       {
         name: 'kitas',
         displayName: 'Kitas',
-        layers: {
-          before: [
+        layers: [
             {
               name: 'kitas',
               displayName: 'Kitas',
@@ -80,24 +75,23 @@ export class TouchscreenComponent implements OnInit {
               visible: false
             }
           ],
-          after: [
-            {
-              name: 'kitasNeu',
-              displayName: 'Kitas',
-              visible: true
-            },
-            {
-              name: 'kitasNeuHeatmap',
-              displayName: 'Kitas (Heatmap)',
-              visible: false
-            },
-            {
-              name: 'einwohnerNeu',
-              displayName: 'Einwohner im Alter 0 bis 6 Jahre',
-              visible: true
-            }
-          ]
-        }
+          // after: [
+          //   {
+          //     name: 'kitasNeu',
+          //     displayName: 'Kitas',
+          //     visible: true
+          //   },
+          //   {
+          //     name: 'kitasNeuHeatmap',
+          //     displayName: 'Kitas (Heatmap)',
+          //     visible: false
+          //   },
+          //   {
+          //     name: 'einwohnerNeu',
+          //     displayName: 'Einwohner im Alter 0 bis 6 Jahre',
+          //     visible: true
+          //   }
+          // ]
       }
     ];
     this.baseLayers = [
@@ -138,7 +132,7 @@ export class TouchscreenComponent implements OnInit {
     this.updateMapLayers();
   }
 
-  setTopic(topic: { name: string, displayName: string, layers: { before: MapLayer[], after: MapLayer[] } }) {
+  setTopic(topic: { name: string, displayName: string, layers: MapLayer[] }) {
     this.selectedTopic = topic;
     this.updateMapLayers();
   }
@@ -158,7 +152,7 @@ export class TouchscreenComponent implements OnInit {
 
   private updateMapLayers() {
     if (this.selectedTopic && this.selectedStatus) {
-      this.map.showLayers(this.selectedTopic.layers[this.selectedStatus.name].filter(layer => layer.visible));
+      this.map.showLayers(this.selectedTopic.layers.filter(layer => layer.visible), this.selectedStatus.name);
     }
     this.map.showBaseLayers(this.baseLayers.filter(layer => layer.visible));
     this.map.clearSelectedFeatures();

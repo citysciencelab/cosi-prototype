@@ -12,7 +12,7 @@
   <div #layerControl class="layer-control">
     <span class="nowrap"><span class="heading">Layer ein-/ausblenden</span> <a href="#" (click)="layerControl.collapsed = !layerControl.collapsed">{{ layerControl.collapsed ? 'ausklappen' : 'einklappen' }}</a></span>
     <ul *ngIf="selectedTopic && !layerControl.collapsed">
-      <li *ngFor="let layer of selectedTopic.layers[selectedStatus.name]"><label><input type="checkbox" [checked]="layer.visible" (change)="toggleLayer(layer)"/> {{ layer.displayName }}</label></li>
+      <li *ngFor="let layer of selectedTopic.layers"><label><input type="checkbox" [checked]="layer.visible" (change)="toggleLayer(layer)"/> {{ layer.displayName }}</label></li>
     </ul>
     <ul *ngIf="!layerControl.collapsed">
       <li *ngFor="let layer of baseLayers"><label><input type="checkbox" [checked]="layer.visible" (change)="toggleLayer(layer)"/> {{ layer.displayName }}</label></li>

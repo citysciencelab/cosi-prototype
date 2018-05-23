@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-// import * as ol from 'openlayers/dist/ol-debug.js';
 import * as ol from 'openlayers';
 import { environment } from '../../environments/environment';
 
@@ -8,7 +7,7 @@ export class MapService {
   private instance: ol.Map;
   selectInteraction: ol.interaction.Select;
   baseLayers: { [key: string]: ol.layer.Layer };
-  thematicLayers: { [key: string]: ol.layer.Layer };
+  thematicLayers: { [key: string]: { [key: string]: ol.layer.Layer } };
 
   constructor() {
     this.instance = new ol.Map({});
@@ -25,17 +24,6 @@ export class MapService {
     this.instance.setView(view);
   }
 
-  showLayers(layerNames: string[]) {
-    Object.values(this.thematicLayers).forEach(layer => {
-      layer.setVisible(false);
-    });
-    layerNames.forEach(layerName => {
-      if (this.thematicLayers.hasOwnProperty(layerName)) {
-        this.thematicLayers[layerName].setVisible(true);
-      }
-    });
-  }
-
   showBaseLayers(layerNames: string[]) {
     Object.values(this.baseLayers).forEach(layer => {
       layer.setVisible(false);
@@ -43,6 +31,19 @@ export class MapService {
     layerNames.forEach(layerName => {
       if (this.baseLayers.hasOwnProperty(layerName)) {
         this.baseLayers[layerName].setVisible(true);
+      }
+    });
+  }
+
+  showLayers(layerGroupNames: string[], layerName: string) {
+    Object.entries(this.thematicLayers).forEach(([layerGroupName, layerGroup]) => {
+      // Hide all layers
+      Object.values(layerGroup).forEach(layer => {
+        layer.setVisible(false);
+      });
+      // Show requested layers
+      if (layerGroupNames.indexOf(layerGroupName) > -1 && layerGroup.hasOwnProperty(layerName)) {
+        layerGroup[layerName].setVisible(true);
       }
     });
   }
@@ -88,98 +89,105 @@ export class MapService {
     };
 
     this.thematicLayers = {
-      'kitas': new ol.layer.Vector({
-        source: new ol.source.Vector({
-          url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:kitas' +
-            '&outputFormat=application/json&srsname=EPSG:4326',
-          format: new ol.format.GeoJSON()
+      'kitas': {
+        'before': new ol.layer.Vector({
+          source: new ol.source.Vector({
+            url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:kitas' +
+              '&outputFormat=application/json&srsname=EPSG:4326',
+            format: new ol.format.GeoJSON()
+          }),
+          style: this.getStyle('kitas', false),
+          zIndex: 1
         }),
-        style: this.getStyle('kitas', false),
-        visible: false,
-        zIndex: 1
-      }),
-      'kitasHeatmap': new ol.layer.Heatmap({
-        source: new ol.source.Vector({
-          url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:kitas' +
-            '&outputFormat=application/json&srsname=EPSG:4326',
-          format: new ol.format.GeoJSON()
+        'after': new ol.layer.Vector({
+          source: new ol.source.Vector({
+            url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:kitas_neu' +
+              '&outputFormat=application/json&srsname=EPSG:4326',
+            format: new ol.format.GeoJSON()
+          }),
+          style: this.getStyle('kitas', false),
+          zIndex: 1
+        })
+      },
+      'kitasHeatmap': {
+        'before': new ol.layer.Heatmap({
+          source: new ol.source.Vector({
+            url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:kitas' +
+              '&outputFormat=application/json&srsname=EPSG:4326',
+            format: new ol.format.GeoJSON()
+          }),
+          weight: feature => 1,
+          radius: 12,
+          blur: 25,
+          zIndex: 1
         }),
-        weight: feature => 1,
-        radius: 12,
-        blur: 25,
-        visible: false,
-        zIndex: 1
-      }),
-      'kitasNeu': new ol.layer.Vector({
-        source: new ol.source.Vector({
-          url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:kitas_neu' +
-            '&outputFormat=application/json&srsname=EPSG:4326',
-          format: new ol.format.GeoJSON()
+        'after': new ol.layer.Heatmap({
+          source: new ol.source.Vector({
+            url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:kitas_neu' +
+              '&outputFormat=application/json&srsname=EPSG:4326',
+            format: new ol.format.GeoJSON()
+          }),
+          weight: feature => 1,
+          radius: 12,
+          blur: 25,
+          zIndex: 1
+        })
+      },
+      'kitasGehzeit': {
+        'before': new ol.layer.Tile({
+          source: new ol.source.TileWMS({
+            url: 'https://geodienste.hamburg.de/MRH_WMS_REA_Soziales',
+            params: {
+              LAYERS: '6',
+              TILED: true,
+              FORMAT: 'image/png',
+              WIDTH: 256,
+              HEIGHT: 256,
+              SRS: 'EPSG:4326'
+            }
+          })
+        })
+      },
+      'einwohner': {
+        'before': new ol.layer.Vector({
+          source: new ol.source.Vector({
+            url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:einwohner_0bis6' +
+              '&outputFormat=application/json&srsname=EPSG:4326',
+            format: new ol.format.GeoJSON()
+          }),
+          style: this.getStyle('einwohner', false)
         }),
-        style: this.getStyle('kitas', false),
-        visible: false,
-        zIndex: 1
-      }),
-      'kitasNeuHeatmap': new ol.layer.Heatmap({
-        source: new ol.source.Vector({
-          url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:kitas_neu' +
-            '&outputFormat=application/json&srsname=EPSG:4326',
-          format: new ol.format.GeoJSON()
-        }),
-        weight: feature => 1,
-        radius: 12,
-        blur: 25,
-        visible: false,
-        zIndex: 1
-      }),
-      'kitasGehzeit': new ol.layer.Tile({
-        source: new ol.source.TileWMS({
-          url: 'https://geodienste.hamburg.de/MRH_WMS_REA_Soziales',
-          params: {
-            LAYERS: '6',
-            TILED: true,
-            FORMAT: 'image/png',
-            WIDTH: 256,
-            HEIGHT: 256,
-            SRS: 'EPSG:4326'
-          }
-        }),
-        visible: false
-      }),
-      'einwohner': new ol.layer.Vector({
-        source: new ol.source.Vector({
-          url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:einwohner_0bis6' +
-            '&outputFormat=application/json&srsname=EPSG:4326',
-          format: new ol.format.GeoJSON()
-        }),
-        style: this.getStyle('einwohner', false),
-        visible: false
-      }),
-      'einwohnerNeu': new ol.layer.Vector({
-        source: new ol.source.Vector({
-          url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:einwohner_0bis6_neu' +
-            '&outputFormat=application/json&srsname=EPSG:4326',
-          format: new ol.format.GeoJSON()
-        }),
-        style: this.getStyle('einwohner', false),
-        visible: false
-      }),
+        'after': new ol.layer.Vector({
+          source: new ol.source.Vector({
+            url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:einwohner_0bis6_neu' +
+              '&outputFormat=application/json&srsname=EPSG:4326',
+            format: new ol.format.GeoJSON()
+          }),
+          style: this.getStyle('einwohner', false)
+        })
+      },
       // 'nahversorgung'
-      'gruenflaechen': new ol.layer.Vector({
-        source: new ol.source.Vector({
-          url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:gruenflaechen' +
-            '&outputFormat=application/json&srsname=EPSG:4326',
-          format: new ol.format.GeoJSON()
-        }),
-        style: this.getStyle('gruenflaechen', false),
-        visible: false
-      })
+      'gruenflaechen': {
+        'before': new ol.layer.Vector({
+          source: new ol.source.Vector({
+            url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:gruenflaechen' +
+              '&outputFormat=application/json&srsname=EPSG:4326',
+            format: new ol.format.GeoJSON()
+          }),
+          style: this.getStyle('gruenflaechen', false)
+        })
+      }
     };
 
-    const layers = Object.values(this.baseLayers).concat(Object.values(this.thematicLayers));
-
-    layers.forEach(layer => {
+    Object.values(this.baseLayers).forEach(layer => {
       this.instance.addLayer(layer);
+    });
+
+    Object.values(this.thematicLayers).forEach(layerGroup => {
+      Object.values(layerGroup).forEach(layer => {
+        this.instance.addLayer(layer);
+        layer.setVisible(false);
+      });
     });
   }
 
@@ -195,18 +203,20 @@ export class MapService {
       // use the styling associated with the layer the selected feature belongs to.
       style: (feature: ol.Feature) => {
         let selectedLayer;
-        for (const [identifier, layer] of Object.entries(this.thematicLayers)) {
-          const source = <ol.source.Vector>layer.getSource();
+        for (const [identifier, layerGroup] of Object.entries(this.thematicLayers)) {
+          for (const layer of Object.values(layerGroup)) {
+            const source = <ol.source.Vector>layer.getSource();
 
-          // Skip non-vector sources
-          if (typeof source.forEachFeature !== 'function') {
-            continue;
-          }
-          source.forEachFeature(f => {
-            if (feature.getId() === f.getId()) {
-              selectedLayer = identifier;
+            // Skip non-vector sources
+            if (typeof source.forEachFeature !== 'function') {
+              continue;
             }
-          });
+            source.forEachFeature(f => {
+              if (feature.getId() === f.getId()) {
+                selectedLayer = identifier;
+              }
+            });
+          }
         }
         return this.getStyle(selectedLayer, true)(feature);
       }
