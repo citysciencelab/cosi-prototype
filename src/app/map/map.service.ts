@@ -110,7 +110,7 @@ export class MapService {
     });
   }
 
-  getLayerByFeature(feature: ol.Feature) {
+  getLayerByFeature(feature: ol.Feature): string {
     let matchingLayer;
     for (const [identifier, layerGroup] of Object.entries(this.thematicLayers)) {
       for (const layer of Object.values(layerGroup)) {

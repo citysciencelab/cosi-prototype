@@ -1,6 +1,7 @@
 <div id="info">
   <div *ngIf="kita">
-    <p>Name: {{kita.name}}</p>
+    <h1>{{kita.name}}</h1>
+    <h3>Kindertagesst&auml;tte</h3>
     <p>Adresse: {{kita.street}} {{kita.address}}</p>
     <p>Postleitzahl: {{kita.zipCode}}</p>
     <p>Stadtteil: {{kita.neighborhood}}</p>
@@ -9,6 +10,14 @@
     <p>AnsprechpartnerIn: {{kita.contact}}</p>
     <p>E-Mail: {{kita.eMail}}</p>
     <p *ngIf="kita.website"><a href="{{kita.website}}">Weitere Informationen</a></p>
+  </div>
+  <div *ngIf="statisticalArea">
+    <h1>{{statisticalArea.name}}</h1>
+    <h3>Statistisches Gebiet</h3>
+    <p>Fläche: {{statisticalArea.area}}</p>
+    <p>Einwohner: {{statisticalArea.population}}</p>
+    <p>Einwohner (0-6 Jahre): {{statisticalArea.population1to6}}</p>
+    <p>Kitas in 500m: {{statisticalArea.kitasIn500m}}</p>
   </div>
 </div>
 <div id="logo">

@@ -36,4 +36,8 @@ export class MapComponent implements OnInit {
     this.mapService.selectInteraction.getFeatures().clear();
   }
 
+  getLayerByFeature(feature: ol.Feature) {
+    return this.mapService.getLayerByFeature(feature);
+  }
+
 }

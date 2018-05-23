@@ -5,7 +5,11 @@ import { ConfigurationService } from '../configuration.service';
 import { LocalStorageService } from '../local-storage/local-storage.service';
 import { MapComponent } from '../map/map.component';
 import { MapLayer } from '../map/map-layer.model';
-import {Kita} from '../local-storage/kita';
+import { Kita } from '../local-storage/kita';
+import { MapService } from '../map/map.service';
+import {LocalStorageMessage} from '../local-storage/local-storage-message.model';
+import {StatisticalArea} from '../local-storage/statistical-area';
+import * as ol from 'openlayers';
 
 @Component({
   selector: 'app-touchscreen',
@@ -115,17 +119,25 @@ export class TouchscreenComponent implements OnInit {
     let message = {type: 'deselect', data: null};
     if (e.selected.length > 0) {
       const feature = e.selected[0];
-      const id = feature.getId();
-      if (id.toString().startsWith('kita')) {
-        const kita = this.createKita(feature.getProperties());
-        message = {type: 'kita', data: kita };
+      const properties = feature.getProperties();
+      const layer = this.map.getLayerByFeature(feature);
+      switch (layer) {
+        case 'kitas':
+          message = this.createKitaMessage(properties);
+          break;
+        case 'einwohner':
+          message = this.createStatisticalAreaMessage(feature);
+          break;
+        default:
+          // treat unknown layers as deselect
+          break;
       }
     }
     this.localStorageService.sendMessage(message);
   }
 
-  private createKita(properties: { [k: string]: any }): Kita {
-    return {
+  private createKitaMessage(properties: { [k: string]: any }): LocalStorageMessage {
+    const kita: Kita = {
       address: properties.Hausnr,
       street: properties.Strasse,
       name: properties.Name,
@@ -137,6 +149,21 @@ export class TouchscreenComponent implements OnInit {
       association: properties.Spitzenver,
       website: properties.Informatio,
     };
+    return { type: 'kita', data: kita };
+  }
+
+
+  private createStatisticalAreaMessage(feature: ol.Feature) {
+    const properties = feature.getProperties();
+    const geom = <ol.geom.Polygon>feature.getGeometry();
+    const statisticalArea: StatisticalArea = {
+      name: properties.STGEBNEU,
+      population: properties.Gesamt,
+      population1to6: properties['1bis6'],
+      kitasIn500m: properties.Kita500m,
+      area: geom.getArea()
+    };
+    return { type: 'statisticalArea', data: statisticalArea };
   }
 
   onUpdateObject(e: CustomEvent) {
@@ -175,4 +202,5 @@ export class TouchscreenComponent implements OnInit {
     this.map.showBaseLayers(this.baseLayers.filter(layer => layer.visible));
     this.map.clearSelectedFeatures();
   }
+
 }
