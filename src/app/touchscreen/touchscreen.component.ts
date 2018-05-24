@@ -7,8 +7,8 @@ import { MapComponent } from '../map/map.component';
 import { MapLayer } from '../map/map-layer.model';
 import { Kita } from '../local-storage/kita';
 import { MapService } from '../map/map.service';
-import {LocalStorageMessage} from '../local-storage/local-storage-message.model';
-import {StatisticalArea} from '../local-storage/statistical-area';
+import { LocalStorageMessage } from '../local-storage/local-storage-message.model';
+import { StatisticalArea } from '../local-storage/statistical-area';
 import * as ol from 'openlayers';
 
 @Component({
@@ -42,11 +42,12 @@ export class TouchscreenComponent implements OnInit {
       {
         name: 'gruenflaechen',
         displayName: 'Grünflächen',
-        layers:  [
+        layers: [
           {
             name: 'gruenflaechen',
             displayName: 'Grünflächen',
-            visible: true
+            visible: true,
+            meta: 'Quelle: LGV'
           }
         ],
       },
@@ -57,12 +58,14 @@ export class TouchscreenComponent implements OnInit {
           {
             name: 'apotheken',
             displayName: 'Apotheken',
-            visible: true
+            visible: true,
+            meta: 'Quelle: OpenStreetMap'
           },
           {
             name: 'geschaefte',
             displayName: 'Geschäfte',
-            visible: true
+            visible: true,
+            meta: 'Quelle: OpenStreetMap'
           }
         ],
       },
@@ -73,24 +76,34 @@ export class TouchscreenComponent implements OnInit {
           {
             name: 'kitas',
             displayName: 'Kitas',
-            visible: true
+            visible: true,
+            meta: 'Quelle: Behörde für Arbeit, Soziales, Familie und Integration'
           },
           {
             name: 'kitasHeatmap',
             displayName: 'Kitas (Heatmap)',
-            visible: false
+            visible: false,
+            meta: 'Quelle: Behörde für Arbeit, Soziales, Familie und Integration'
           },
           {
             name: 'kitasGehzeit',
             displayName: 'Gehzeit zur nächsten Kita',
             visible: false,
             legendUrl: 'https://geodienste.hamburg.de/MRH_WMS_REA_Soziales' +
-              '?request=GetLegendGraphic%26version=1.3.0%26format=image/png%26layer=6'
+              '?request=GetLegendGraphic&version=1.3.0&format=image/png&layer=6',
+            meta: 'Quelle: MRH'
           },
           {
             name: 'einwohner',
             displayName: 'Einwohner im Alter 0 bis 6 Jahre',
-            visible: true
+            visible: true,
+            legendHtml:
+              '<div class="legend-row"><span class="legend-box" style="background-color: rgba(255, 0, 0, 0);"></span>&nbsp;0-9</div>' +
+              '<div class="legend-row"><span class="legend-box" style="background-color: rgba(255, 0, 0, 0.2);"></span>&nbsp;10-24</div>' +
+              '<div class="legend-row"><span class="legend-box" style="background-color: rgba(255, 0, 0, 0.4);"></span>&nbsp;25-49</div>' +
+              '<div class="legend-row"><span class="legend-box" style="background-color: rgba(255, 0, 0, 0.6);"></span>&nbsp;50-89</div>' +
+              '<div class="legend-row"><span class="legend-box" style="background-color: rgba(255, 0, 0, 0.8);"></span>&nbsp;90-</div>',
+            meta: 'Quelle: Statistikamt Nord'
           }
         ],
       }
@@ -99,17 +112,22 @@ export class TouchscreenComponent implements OnInit {
       {
         name: 'stadtteile',
         displayName: 'Stadtteile',
-        visible: true
+        visible: true,
+        legendUrl: 'https://geodienste.hamburg.de/HH_WMS_Verwaltungsgrenzen' +
+          '?request=GetLegendGraphic&version=1.3.0&service=WMS&layer=stadtteile&style=style_verwaltungsgrenzen_stadtteile&format=image/png',
+        meta: 'Quelle: LGV'
       },
       {
         name: 'geobasis',
         displayName: 'Geobasiskarte Hamburg',
-        visible: true
+        visible: true,
+        meta: 'Quelle: LGV'
       },
       {
         name: 'osm',
         displayName: 'OpenStreetMap',
-        visible: false
+        visible: false,
+        meta: '© OpenStreetMap-Mitwirkende'
       }
     ];
   }
@@ -120,7 +138,7 @@ export class TouchscreenComponent implements OnInit {
   }
 
   onSelect(e: ol.interaction.Select.Event) {
-    let message = {type: 'deselect', data: null};
+    let message = { type: 'deselect', data: null };
     if (e.selected.length > 0) {
       const feature = e.selected[0];
       const properties = feature.getProperties();
@@ -194,17 +212,12 @@ export class TouchscreenComponent implements OnInit {
     return this.topics.find(topic => topic.name === name);
   }
 
-  toggleLayer(layer: MapLayer) {
-    layer.visible = !layer.visible;
-    this.updateMapLayers();
-  }
-
   showMapKey(layer: MapLayer) {
     this.mapKeyLayer = layer;
     this.mapKeyVisible = true;
   }
 
-  private updateMapLayers() {
+  updateMapLayers() {
     if (this.selectedTopic && this.selectedStatus) {
       this.map.showLayers(this.selectedTopic.layers.filter(layer => layer.visible), this.selectedStatus.name);
     }

@@ -10,21 +10,7 @@
   </nav>
 
   <div class="modal-container">
-    <div *ngIf="mapKeyVisible" class="modal map-key">
-      <span class="nowrap"><span class="heading">Legende</span> <a href="#" (click)="mapKeyVisible = false">{{ 'schließen' }}</a></span>
-      <div>{{ mapKeyLayer.displayName }}:</div>
-      <div *ngIf="mapKeyLayer.legendUrl"><img src="{{ mapKeyLayer.legendUrl }}" /></div>
-      <div *ngIf="!mapKeyLayer.legendUrl">Keine Legende verfügbar</div>
-    </div>
-
-    <div #layerControl class="modal layer-control">
-      <span class="nowrap"><span class="heading">Layer ein-/ausblenden</span> <a href="#" (click)="layerControl.collapsed = !layerControl.collapsed">{{ layerControl.collapsed ? 'ausklappen' : 'einklappen' }}</a></span>
-      <ul *ngIf="selectedTopic && !layerControl.collapsed">
-        <li *ngFor="let layer of selectedTopic.layers"><label><input type="checkbox" [checked]="layer.visible" (change)="toggleLayer(layer)"/> {{ layer.displayName }}</label> <img class="icon-info" src="assets/icon-info.png" (click)="showMapKey(layer)" /></li>
-      </ul>
-      <ul *ngIf="!layerControl.collapsed">
-        <li *ngFor="let layer of baseLayers"><label><input type="checkbox" [checked]="layer.visible" (change)="toggleLayer(layer)"/> {{ layer.displayName }}</label> <img class="icon-info" src="assets/icon-info.png" (click)="showMapKey(layer)" /></li>
-      </ul>
-    </div>
+    <app-legend [layer]="mapKeyLayer" [visible]="mapKeyVisible" (close)="mapKeyVisible = false"></app-legend>
+    <app-layer-control [layers]="(selectedTopic ? selectedTopic.layers : []).concat(baseLayers)" (toggleLayer)="updateMapLayers()" (showInfo)="showMapKey($event)"></app-layer-control>
   </div>
 </div>

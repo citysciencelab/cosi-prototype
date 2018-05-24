@@ -1,0 +1,6 @@
+<div class="layer-control">
+  <span class="nowrap"><span class="heading">Layer ein-/ausblenden</span> <a href="#" (click)="collapsed = !collapsed">{{ collapsed ? 'ausklappen' : 'einklappen' }}</a></span>
+  <ul *ngIf="!collapsed">
+    <li *ngFor="let layer of layers"><label><input type="checkbox" [checked]="layer.visible" (change)="onToggleLayer(layer)"/> {{ layer.displayName }}</label> <img class="icon-info" src="assets/icon-info.png" (click)="onShowInfo(layer)" /></li>
+  </ul>
+</div>

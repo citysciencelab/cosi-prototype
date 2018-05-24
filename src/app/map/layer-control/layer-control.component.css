@@ -1,0 +1,29 @@
+.layer-control {
+  padding: 10px;
+  margin: 15px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid gray;
+  border-radius: 10px;
+  line-height: 150%;
+}
+
+.layer-control .heading {
+  font-size: 130%;
+  font-weight: bold;
+}
+
+.layer-control .nowrap {
+  white-space: nowrap;
+}
+
+.layer-control li {
+  font-size: 120%;
+  list-style: none;
+  line-height: 150%;
+  user-select: none;
+}
+
+.layer-control .icon-info {
+  height: 16px;
+  vertical-align: text-bottom;
+}

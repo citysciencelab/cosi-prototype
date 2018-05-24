@@ -342,7 +342,7 @@ export class MapService {
             color: this.getFill(feature, 'einwohner')
           }),
           stroke: new ol.style.Stroke({
-            color: [135, 206, 252, 1],
+            color: [135, 206, 250, 1],
             width: 1
           })
         }),
@@ -413,18 +413,18 @@ export class MapService {
   private getFill(feature: ol.Feature, layer: string): ol.Color {
     const scales: { [key: string]: { [key: string]: ol.Color } } = {
       'einwohner': {
-        0: [255, 0, 0, 0],
-        50: [255, 0, 0, 0.2],
-        100: [255, 0, 0, 0.4],
-        150: [255, 0, 0, 0.6],
-        200: [255, 0, 0, 0.8]
+        0: [255, 0, 0, 0],    // 0-9
+        10: [255, 0, 0, 0.2], // 10-24
+        25: [255, 0, 0, 0.4], // 25-49
+        50: [255, 0, 0, 0.6], // 50-89
+        90: [255, 0, 0, 0.8]  // 90-
       }
     };
 
     const fillFunctions = {
       'einwohner': (f: ol.Feature) => {
         const geom = <ol.geom.Polygon>f.getGeometry();
-        return this.getColorFromScale(scales['einwohner'], f.get('1bis6') / geom.getArea() * 1000000);
+        return this.getColorFromScale(scales['einwohner'], f.get('1bis6'));
       }
     };
 
