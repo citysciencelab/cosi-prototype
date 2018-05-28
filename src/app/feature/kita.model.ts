@@ -1,27 +1,21 @@
 export class Kita {
   type: string; // used for type checking
   name: string;
-  street: string;
   address: string;
-  zipCode: string;
-  neighborhood: string;
   organisation: string;
   association: string;
-  website: string;
-  contact: string;
-  eMail: string;
+  services: string;
+  paedagogicalArea: number;
+  capacity: number;
 
   constructor(properties: { [k: string]: any }) {
     this.type = 'Kita';
-    this.address = properties['Hausnr'];
-    this.street = properties['Strasse2'];
     this.name = properties['Name'];
-    this.contact = properties['Ansprechpa'];
-    this.zipCode = properties['PLZ2'];
-    this.eMail = properties['E-Mail'];
-    this.neighborhood = properties['Stadtteil'];
+    this.address = properties['Strasse'] + ' ' + properties['Hausnr'] + ', ' + properties['PLZ'] + ' ' + properties['Ort'];
     this.organisation = properties['Traeger'];
     this.association = properties['Spitzenver'];
-    this.website = properties['Informatio'];
+    this.services = properties['Leistungsn'];
+    this.paedagogicalArea = properties['paed QM'];
+    this.capacity = properties['KapKindneu'];
   }
 }

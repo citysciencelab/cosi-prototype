@@ -1,23 +1,22 @@
 <div id="info">
   <div *ngIf="kita">
     <h1>{{kita.name}}</h1>
-    <h3>Kindertagesst&auml;tte</h3>
-    <p>Adresse: {{kita.street}} {{kita.address}}</p>
-    <p>Postleitzahl: {{kita.zipCode}}</p>
-    <p>Stadtteil: {{kita.neighborhood}}</p>
-    <p>Tr&auml;ger: {{kita.organisation}}</p>
-    <p>Spitzenverband: {{kita.association}}</p>
-    <p>AnsprechpartnerIn: {{kita.contact}}</p>
-    <p>E-Mail: {{kita.eMail}}</p>
-    <p *ngIf="kita.website"><a href="{{kita.website}}">Weitere Informationen</a></p>
+    <table>
+      <tr><td>Adresse:</td><td>{{kita.address}}</td></tr>
+      <tr><td>Träger:</td><td>{{kita.organisation}}</td></tr>
+      <tr><td>Spitzenverband:</td><td>{{kita.association}}</td></tr>
+      <tr><td>Leistungen:</td><td>{{kita.services}}</td></tr>
+      <tr><td>Pädagogische Fläche:</td><td>{{kita.paedagogicalArea}} m²</td></tr>
+      <tr><td>Kapazität (Näherungswert):</td><td><strong>{{kita.capacity}} Plätze</strong></td></tr>
+    </table>
   </div>
   <div *ngIf="statisticalArea">
-    <h1>{{statisticalArea.name}}</h1>
-    <h3>Statistisches Gebiet</h3>
-    <p>Fläche: {{statisticalArea.area}}</p>
-    <p>Einwohner: {{statisticalArea.population}}</p>
-    <p>Einwohner (0-6 Jahre): {{statisticalArea.population1to6}}</p>
-    <p>Kitas in 500m: {{statisticalArea.kitasIn500m}}</p>
+    <h1>Baublock {{statisticalArea.name}}</h1>
+    <table>
+      <tr><td>Einwohner:</td><td>{{statisticalArea.population}}</td></tr>
+      <tr><td>Einwohner (0-6 Jahre):</td><td>{{statisticalArea.population1to6}}</td></tr>
+      <tr><td>Kitas im Radius 500 m:</td><td>{{statisticalArea.kitasIn500m}}</td></tr>
+    </table>
   </div>
 </div>
 <div id="logo">
