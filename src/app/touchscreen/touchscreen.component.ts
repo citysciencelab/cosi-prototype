@@ -1,15 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import * as ol from 'openlayers';
 import { TuioClient } from 'tuio-client';
 import { environment } from '../../environments/environment';
 import { ConfigurationService } from '../configuration.service';
 import { LocalStorageService } from '../local-storage/local-storage.service';
+import { LocalStorageMessage } from '../local-storage/local-storage-message.model';
+import { MapService } from '../map/map.service';
 import { MapComponent } from '../map/map.component';
 import { MapLayer } from '../map/map-layer.model';
-import { Kita } from '../local-storage/kita';
-import { MapService } from '../map/map.service';
-import { LocalStorageMessage } from '../local-storage/local-storage-message.model';
-import { StatisticalArea } from '../local-storage/statistical-area';
-import * as ol from 'openlayers';
+import { Kita } from '../feature/kita.model';
+import { StatisticalArea } from '../feature/statistical-area.model';
 
 @Component({
   selector: 'app-touchscreen',
@@ -138,54 +138,34 @@ export class TouchscreenComponent implements OnInit {
   }
 
   onSelect(e: ol.interaction.Select.Event) {
-    let message = { type: 'deselect', data: null };
+    let message: LocalStorageMessage<{}> = { type: 'deselect', data: null };
     if (e.selected.length > 0) {
       const feature = e.selected[0];
-      const properties = feature.getProperties();
       const layer = this.map.getLayerByFeature(feature);
       switch (layer) {
         case 'kitas':
-          message = this.createKitaMessage(properties);
+          message = this.createKitaMessage(feature);
           break;
         case 'einwohner':
           message = this.createStatisticalAreaMessage(feature);
-          break;
-        default:
-          // treat unknown layers as deselect
           break;
       }
     }
     this.localStorageService.sendMessage(message);
   }
 
-  private createKitaMessage(properties: { [k: string]: any }): LocalStorageMessage {
-    const kita: Kita = {
-      address: properties.Hausnr,
-      street: properties.Strasse,
-      name: properties.Name,
-      contact: properties.Ansprechpa,
-      zipCode: properties.PLZ,
-      eMail: properties['E-Mail'],
-      neighborhood: properties.Stadtteil,
-      organisation: properties.Traeger,
-      association: properties.Spitzenver,
-      website: properties.Informatio,
-    };
-    return { type: 'kita', data: kita };
+  private createKitaMessage(feature: ol.Feature): LocalStorageMessage<Kita> {
+    const properties = feature.getProperties();
+    const kita = new Kita(properties);
+    return { type: 'select', data: kita };
   }
 
-
-  private createStatisticalAreaMessage(feature: ol.Feature) {
+  private createStatisticalAreaMessage(feature: ol.Feature): LocalStorageMessage<StatisticalArea> {
     const properties = feature.getProperties();
-    const geom = <ol.geom.Polygon>feature.getGeometry();
-    const statisticalArea: StatisticalArea = {
-      name: properties.STGEBNEU,
-      population: properties.Gesamt,
-      population1to6: properties['1bis6'],
-      kitasIn500m: properties.Kita500m,
-      area: geom.getArea()
-    };
-    return { type: 'statisticalArea', data: statisticalArea };
+    const geometry = <ol.geom.Polygon>feature.getGeometry();
+    properties.area = geometry.getArea();
+    const statisticalArea = new StatisticalArea(properties);
+    return { type: 'select', data: statisticalArea };
   }
 
   onUpdateObject(e: CustomEvent) {

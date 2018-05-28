@@ -6,7 +6,7 @@ export class LocalStorageService {
 
   constructor() { }
 
-  sendMessage(message: LocalStorageMessage) {
+  sendMessage(message: LocalStorageMessage<{}>) {
     localStorage.setItem('message', JSON.stringify(message));
     localStorage.removeItem('message');
   }
@@ -16,13 +16,11 @@ export class LocalStorageService {
       if (event.key !== 'message') {
         return;
       }
-      console.log('new event');
-      const message = <LocalStorageMessage>JSON.parse(event.newValue);
+      const message = <LocalStorageMessage<{}>>JSON.parse(event.newValue);
       if (!message) {
         return;
-      } else {
-        callback(message);
       }
+      callback(message);
     });
   }
 }

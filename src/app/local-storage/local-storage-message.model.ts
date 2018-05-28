@@ -1,4 +1,4 @@
-export interface LocalStorageMessage {
-  type: string;
-  data: any;
+export interface LocalStorageMessage<T> {
+  type: 'select' | 'deselect';
+  data: T;
 }
