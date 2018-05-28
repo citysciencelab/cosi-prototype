@@ -209,9 +209,10 @@ export class MapService {
               '&outputFormat=application/json&srsname=EPSG:4326',
             format: new ol.format.GeoJSON()
           }),
+          gradient: ['#0ff', '#0f0', '#ff0', '#f00'],
           weight: feature => feature.get('KapKindneu') / 350,
-          radius: 12,
-          blur: 25,
+          radius: 16,
+          blur: 30,
           zIndex: 1
         })
       },
