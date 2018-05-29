@@ -203,6 +203,7 @@ export class TouchscreenComponent implements OnInit {
 
   setTopic(topic: { name: string, displayName: string, layers: MapLayer[] }) {
     this.selectedTopic = topic;
+    this.localStorageService.sendMessage({ type: 'topic-select', data: topic });
     this.updateMapLayers();
   }
 

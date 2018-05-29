@@ -43,10 +43,11 @@
   <div class="col-md-6 col-sm-12">
     <div class="shadow-element holder-element">
       <div *ngIf="columnData">
-        <dash-line chartTitle="Anteil der Bevölkerung < 18 Jahren"
+        <dash-line chartTitle="Anteil der Bevölkerung < 18 Jahren (2016)"
                    [legendEnabled]="false"
                    [series]="columnData"
                    [chartType]="'column'"
+                   [plotLineValue]="16.2"
                    [xCategories]="columnCategories"></dash-line>
       </div>
     </div>
@@ -55,7 +56,8 @@
   <div class="col-md-3 col-sm-6">
     <div class="shadow-element holder-element">
       <div *ngIf="pieData">
-        <dash-pie chartTitle="Zu- und Fortzüge 2016 Groß Borstel"
+        <dash-pie chartTitle="Zu- und Fortzüge Groß Borstel (2016)"
+                  [dataLabelDistance]="-50"
                   [isPercentageLabel]="false"
                   [series]="pieData"></dash-pie>
       </div>
@@ -65,8 +67,16 @@
   <div class="col-md-3 col-sm-6">
     <div class="shadow-element holder-element">
       <div *ngIf="pieData2">
-        <dash-pie chartTitle="Migrationshintergrund in % der Stadtteile"
-                  [series]="pieData2"></dash-pie>
+        <dash-line chartTitle="Migrationshintergrund in % der Stadtteile (2016)"
+                   [legendEnabled]="false"
+                   [series]="pieData2"
+                   [chartType]="'bar'"
+                   [isNoGridLines]="true"
+                   [plotLineValue]="34.1"
+                   [xCategories]="columnCategories"></dash-line>
+        <!--<dash-pie chartTitle="Migrationshintergrund in % der Stadtteile (2016)"-->
+                  <!--[isPercentageLabel]="false"-->
+                  <!--[series]="pieData2"></dash-pie>-->
       </div>
     </div>
   </div>

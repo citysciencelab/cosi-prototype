@@ -57,6 +57,16 @@ export class InfoscreenComponent implements OnInit {
           this.statisticalArea = <StatisticalArea>message.data;
           break;
       }
+    } else if (message.type === 'topic-select') {
+      // TODO: hier die Neuerstellung der Charts anstossen
+      switch (message.data.name) {
+        case 'nahversorgung':
+          break;
+        case 'kitas':
+          break;
+        case 'grünflächen':
+          break;
+      }
     }
   }
 
@@ -77,12 +87,13 @@ export class InfoscreenComponent implements OnInit {
 
       // // Always render categories first!
       this.lineCategories = this.chartUtils.getUniqueSeriesNames(this.rawData, ['jahr']);
-      this.lineData = this.chartUtils.getSeriesData(this.rawData, 'Stadtgebiet', 'Geburten', 'jahr', this.lineCategories);
+      this.lineData = this.chartUtils.getSeriesData(this.rawData, 'Stadtgebiet',
+        'Geburten', 'jahr', this.lineCategories, 'Groß Borstel');
 
       // // Always render categories first!
       this.columnCategories = this.chartUtils.getUniqueSeriesNames(this.rawData, ['Stadtgebiet']);
       this.columnData = this.chartUtils.getSeriesData(this.rawData, 'Stadtgebiet',
-        'Anteil_der_unter_18_J_hrigen_in', 'jahr', ['2016']);
+        'Anteil_der_unter_18_J_hrigen_in', 'jahr', ['2016'], 'Groß Borstel');
 
       this.pieData = {};
       this.pieData['data'] = [{
@@ -96,8 +107,11 @@ export class InfoscreenComponent implements OnInit {
         y: 1770
       }];
 
-      this.pieData2 = this.chartUtils.getSeriesData(this.rawData, 'Stadtgebiet'
-        , 'Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in', 'jahr', ['2016']);
+      this.pieData2 = this.chartUtils.getSeriesData(this.rawData, 'Stadtgebiet',
+        'Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in', 'jahr', ['2016'], 'Groß Borstel');
+      //
+
+
       // this.lineCategories = this.chartUtils.getUniqueSeriesNames(this.rawData, ['jahr']);
       // this.lineData = this.chartUtils.getSumData(this.rawData,['jahr'], ['Geburten']);
     });

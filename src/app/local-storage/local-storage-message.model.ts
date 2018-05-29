@@ -1,4 +1,4 @@
 export interface LocalStorageMessage<T> {
-  type: 'select' | 'deselect';
+  type: 'select' | 'deselect' | 'topic-select';
   data: T;
 }
