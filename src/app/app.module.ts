@@ -12,6 +12,13 @@ import { MapService } from './map/map.service';
 import { LocalStorageService } from './local-storage/local-storage.service';
 import { LegendComponent } from './map/legend/legend.component';
 import { LayerControlComponent } from './map/layer-control/layer-control.component';
+import { HttpClientModule } from '@angular/common/http';
+import { ChartModule} from 'angular-highcharts';
+import { PieComponent} from 'angular-dashboard-components/components/charts/pie/pie.component';
+import { LineComponent} from 'angular-dashboard-components/components/charts/line/line.component';
+import { WordCloudComponent} from 'angular-dashboard-components/components/charts/word-cloud/word-cloud.component';
+import { ChartUtils} from 'angular-dashboard-components/components/utils/chart.utils';
+
 
 @NgModule({
   declarations: [
@@ -21,17 +28,23 @@ import { LayerControlComponent } from './map/layer-control/layer-control.compone
     MapComponent,
     SafeHtmlPipe,
     LegendComponent,
-    LayerControlComponent
+    LayerControlComponent,
+    LineComponent,
+    PieComponent,
+    WordCloudComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ChartModule,
+    HttpClientModule
   ],
   providers: [
     ConfigurationService,
     LocalStorageService,
     MapService,
-    TuioClient
+    TuioClient,
+    ChartUtils
   ],
   bootstrap: [AppComponent]
 })
