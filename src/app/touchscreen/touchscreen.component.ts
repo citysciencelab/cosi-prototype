@@ -41,7 +41,7 @@ export class TouchscreenComponent implements OnInit {
     this.topics = [
       {
         name: 'gruenflaechen',
-        displayName: 'Grünflächen',
+        displayName: 'Grün­flä­chen',
         layers: [
           {
             name: 'gruenflaechen',
@@ -53,7 +53,7 @@ export class TouchscreenComponent implements OnInit {
       },
       {
         name: 'nahversorgung',
-        displayName: 'Nahversorgung',
+        displayName: 'Nah­ver­sor­gung',
         layers: [
           {
             name: 'apotheken',
@@ -87,7 +87,7 @@ export class TouchscreenComponent implements OnInit {
       },
       {
         name: 'kitas',
-        displayName: 'Kitas',
+        displayName: 'Ki­tas',
         layers: [
           {
             name: 'kitas',
