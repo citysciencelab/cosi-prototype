@@ -62,8 +62,8 @@ export class TouchscreenComponent implements OnInit {
             meta: 'Quelle: OpenStreetMap'
           },
           {
-            name: 'geschaefte',
-            displayName: 'Geschäfte',
+            name: 'supermaerkte',
+            displayName: 'Supermärkte',
             visible: true,
             meta: 'Quelle: OpenStreetMap'
           },
@@ -76,7 +76,7 @@ export class TouchscreenComponent implements OnInit {
             meta: 'Quelle: MRH'
           },
           {
-            name: 'supermarktGehzeit',
+            name: 'supermaerkteGehzeit',
             displayName: 'Gehzeit zum nächsten Supermarkt',
             visible: false,
             legendUrl: 'https://geodienste.hamburg.de/MRH_WMS_REA_Einzelhandel' +
@@ -135,7 +135,7 @@ export class TouchscreenComponent implements OnInit {
       },
       {
         name: 'geobasis',
-        displayName: 'Geobasiskarte Hamburg',
+        displayName: 'Stadtkarte Hamburg',
         visible: true,
         meta: 'Quelle: LGV'
       },

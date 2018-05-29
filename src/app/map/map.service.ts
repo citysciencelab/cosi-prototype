@@ -215,11 +215,11 @@ export class MapService {
         })
       },
       // Vector layers (OpenStreetMap)
-      'geschaefte': {
+      'supermaerkte': {
         '*': new ol.layer.Vector({
           source: new ol.source.Vector({
             url: 'https://overpass-api.de/api/interpreter' +
-              '?data=node["shop"](53.590620,9.943056,53.630745,10.025539);out;',
+              '?data=(area[name="Hamburg"];)->.a;node["shop"="supermarket"](area.a);out;',
             format: new ol.format.OSMXML()
           })
         })
@@ -228,7 +228,7 @@ export class MapService {
         '*': new ol.layer.Vector({
           source: new ol.source.Vector({
             url: 'https://overpass-api.de/api/interpreter' +
-              '?data=node["amenity"="pharmacy"](53.590620,9.943056,53.630745,10.025539);out;',
+              '?data=(area[name="Hamburg"];)->.a;node["amenity"="pharmacy"](area.a);out;',
             format: new ol.format.OSMXML()
           }),
           zIndex: 1
@@ -251,7 +251,7 @@ export class MapService {
           opacity: 0.6
         })
       },
-      'supermarktGehzeit': {
+      'supermaerkteGehzeit': {
         '*': new ol.layer.Tile({
           source: new ol.source.TileWMS({
             url: 'https://geodienste.hamburg.de/MRH_WMS_REA_Einzelhandel',
@@ -370,25 +370,51 @@ export class MapService {
       'apotheken': {
         default: (feature: ol.Feature) => new ol.style.Style({
           image: new ol.style.Circle({
+            radius: 7,
             fill: new ol.style.Fill({
-              color: [255, 255, 255, 0.4]
+              color: [255, 255, 255, 0.8]
             }),
             stroke: new ol.style.Stroke({
               color: [220, 20, 60, 1],
               width: 1.25
-            }),
-            radius: 5
+            })
           })
         }),
         selected: (feature: ol.Feature) => new ol.style.Style({
           image: new ol.style.Circle({
-            radius: width * 2,
+            radius: 8,
             fill: new ol.style.Fill({
               color: [220, 20, 60, 1]
             }),
             stroke: new ol.style.Stroke({
               color: white,
-              width: width / 2
+              width: 1.5
+            })
+          })
+        })
+      },
+      'supermaerkte': {
+        default: (feature: ol.Feature) => new ol.style.Style({
+          image: new ol.style.Circle({
+            radius: 7,
+            fill: new ol.style.Fill({
+              color: [255, 255, 255, 0.8]
+            }),
+            stroke: new ol.style.Stroke({
+              color: blue,
+              width: 1.25
+            })
+          })
+        }),
+        selected: (feature: ol.Feature) => new ol.style.Style({
+          image: new ol.style.Circle({
+            radius: 8,
+            fill: new ol.style.Fill({
+              color: blue
+            }),
+            stroke: new ol.style.Stroke({
+              color: white,
+              width: 1.5
             })
           })
         })
