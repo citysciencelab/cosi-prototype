@@ -35,8 +35,8 @@ export class InfoscreenComponent implements OnInit {
 
     this.getParticipationData().subscribe(
       data => {
-        let testData = <Object []> data;
-        this.processChartData(testData)
+        const testData = <Object []> data;
+        this.processChartData(testData);
       },
       error => {
         console.log(error);
@@ -77,12 +77,12 @@ export class InfoscreenComponent implements OnInit {
 
       // // Always render categories first!
       this.lineCategories = this.chartUtils.getUniqueSeriesNames(this.rawData, ['jahr']);
-      this.lineData = this.chartUtils.getSeriesData(this.rawData,'Stadtgebiet', 'Geburten', 'jahr', this.lineCategories);
+      this.lineData = this.chartUtils.getSeriesData(this.rawData, 'Stadtgebiet', 'Geburten', 'jahr', this.lineCategories);
 
       // // Always render categories first!
       this.columnCategories = this.chartUtils.getUniqueSeriesNames(this.rawData, ['Stadtgebiet']);
-      this.columnData = this.chartUtils.getSeriesData(this.rawData,'Stadtgebiet'
-        , 'Anteil_der_unter_18_J_hrigen_in', 'jahr', ['2016']);
+      this.columnData = this.chartUtils.getSeriesData(this.rawData, 'Stadtgebiet',
+        'Anteil_der_unter_18_J_hrigen_in', 'jahr', ['2016']);
 
       this.pieData = this.columnData;
 
