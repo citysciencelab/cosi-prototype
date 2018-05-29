@@ -55,7 +55,8 @@
   <div class="col-md-3 col-sm-6">
     <div class="shadow-element holder-element">
       <div *ngIf="pieData">
-        <dash-pie chartTitle="Work in progress"
+        <dash-pie chartTitle="Zu- und Fortzüge 2016 Groß Borstel"
+                  [isPercentageLabel]="false"
                   [series]="pieData"></dash-pie>
       </div>
     </div>
@@ -63,9 +64,9 @@
 
   <div class="col-md-3 col-sm-6">
     <div class="shadow-element holder-element">
-      <div *ngIf="pieData">
-        <dash-pie chartTitle="Work in progress"
-                  [series]="pieData"></dash-pie>
+      <div *ngIf="pieData2">
+        <dash-pie chartTitle="Migrationshintergrund in % der Stadtteile"
+                  [series]="pieData2"></dash-pie>
       </div>
     </div>
   </div>

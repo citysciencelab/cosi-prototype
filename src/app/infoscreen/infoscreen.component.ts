@@ -1,10 +1,10 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import {Component, OnInit, NgZone} from '@angular/core';
 import {ChartUtils} from 'angular-dashboard-components/components/utils/chart.utils';
 import {HttpClient} from '@angular/common/http';
-import { LocalStorageMessage } from '../local-storage/local-storage-message.model';
-import { LocalStorageService } from '../local-storage/local-storage.service';
-import { Kita } from '../feature/kita.model';
-import { StatisticalArea } from '../feature/statistical-area.model';
+import {LocalStorageMessage} from '../local-storage/local-storage-message.model';
+import {LocalStorageService} from '../local-storage/local-storage.service';
+import {Kita} from '../feature/kita.model';
+import {StatisticalArea} from '../feature/statistical-area.model';
 
 @Component({
   selector: 'app-infoscreen',
@@ -19,6 +19,7 @@ export class InfoscreenComponent implements OnInit {
   private rawData;
   // Charts
   public pieData;
+  public pieData2;
   public lineData;
   public lineCategories;
   public columnData;
@@ -28,7 +29,8 @@ export class InfoscreenComponent implements OnInit {
   constructor(private localStorageService: LocalStorageService,
               public chartUtils: ChartUtils,
               private zone: NgZone,
-              private _http: HttpClient) { }
+              private _http: HttpClient) {
+  }
 
   ngOnInit(): void {
     this.localStorageService.registerMessageCallback(this.receiveMessage.bind(this));
@@ -72,8 +74,6 @@ export class InfoscreenComponent implements OnInit {
     this.rawData = data;
 
     this.zone.run(() => {
-      // Charts
-      // this.pieData = this.chartUtils.getCountData(this.rawData, ['Stadtgebiet']);
 
       // // Always render categories first!
       this.lineCategories = this.chartUtils.getUniqueSeriesNames(this.rawData, ['jahr']);
@@ -84,8 +84,20 @@ export class InfoscreenComponent implements OnInit {
       this.columnData = this.chartUtils.getSeriesData(this.rawData, 'Stadtgebiet',
         'Anteil_der_unter_18_J_hrigen_in', 'jahr', ['2016']);
 
-      this.pieData = this.columnData;
+      this.pieData = {};
+      this.pieData["data"] = [{
+        name: 'Bevölkerung',
+        y:  8459
+      }, {
+        name: 'Zuzüge',
+        y: 1458
+      }, {
+        name: 'Fortzüge',
+        y: 1770
+      }];
 
+      this.pieData2 = this.chartUtils.getSeriesData(this.rawData, 'Stadtgebiet'
+        , 'Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in', 'jahr', ['2016']);
       // this.lineCategories = this.chartUtils.getUniqueSeriesNames(this.rawData, ['jahr']);
       // this.lineData = this.chartUtils.getSumData(this.rawData,['jahr'], ['Geburten']);
     });
