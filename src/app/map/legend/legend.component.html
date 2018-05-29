@@ -1,5 +1,5 @@
 <div *ngIf="layer" [hidden]="!visible" class="legend">
-  <span class="nowrap"><span class="heading">Legende</span> <a href="#" (click)="onClose()">{{ 'schließen' }}</a></span>
+  <span class="nowrap"><span class="heading">Legende</span> <a href="#" (click)="onClose()">schließen</a></span>
   <div>{{ layer.displayName }}:</div>
   <div *ngIf="layer.legendUrl"><img src="{{ layer.legendUrl }}" /></div>
   <div *ngIf="layer.legendHtml" [innerHTML]="layer.legendHtml | safeHtml"></div>

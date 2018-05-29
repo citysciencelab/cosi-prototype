@@ -33,6 +33,10 @@ export class MapService {
     this.instance.setView(view);
   }
 
+  getView() {
+    return this.instance.getView();
+  }
+
   showBaseLayers(layerNames: string[]) {
     Object.values(this.baseLayers).forEach(layer => {
       layer.setVisible(false);

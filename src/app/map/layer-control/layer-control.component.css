@@ -4,7 +4,6 @@
   background-color: rgba(255, 255, 255, 0.9);
   border: 1px solid gray;
   border-radius: 10px;
-  line-height: 150%;
 }
 
 .layer-control .heading {
@@ -16,15 +15,18 @@
   white-space: nowrap;
 }
 
+.layer-control a {
+  font-size: 90%;
+}
+
 .layer-control ul,
 .layer-control label {
   margin: 0;
 }
 
 .layer-control li {
-  font-size: 120%;
   list-style: none;
-  line-height: 150%;
+  line-height: 175%;
   user-select: none;
 }
 

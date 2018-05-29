@@ -78,8 +78,26 @@
   background-color: rgba(0, 152, 152, 0.75);
 }
 
-.modal-container {
+.modal-container-left {
   position: absolute;
   bottom: 0;
   left: 130px;
+}
+
+.modal-container-right {
+  position: absolute;
+  bottom: 0;
+  right: 130px;
+}
+
+.reset-button {
+  padding: 10px;
+  margin: 15px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid gray;
+  border-radius: 10px;
+}
+
+.reset-button a {
+  font-size: 90%;
 }

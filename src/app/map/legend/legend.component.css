@@ -4,7 +4,6 @@
   background-color: rgba(255, 255, 255, 0.9);
   border: 1px solid gray;
   border-radius: 10px;
-  line-height: 150%;
 }
 
 .legend .heading {
@@ -14,6 +13,10 @@
 
 .legend .nowrap {
   white-space: nowrap;
+}
+
+.legend a {
+  font-size: 90%;
 }
 
 .legend-row {
