@@ -3,10 +3,14 @@
   padding: 20px;
 }
 
+.info-text {
+  padding-left: 10px;
+}
+
 #logo {
-  position: absolute;
-  bottom: 0;
-  left: 0;
+  /*position: absolute;*/
+  /*bottom: 0;*/
+  /*left: 0;*/
   background-color: white;
   border: 10px solid white;
 }
@@ -14,3 +18,16 @@
 #logo img {
   height: 100px;
 }
+
+.holder-element {
+  padding: 10px;
+}
+
+.shadow-element {
+  background-color: white;
+  -webkit-box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.7);
+  -moz-box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.7);
+  box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.7);
+  margin: 5px;
+}
+

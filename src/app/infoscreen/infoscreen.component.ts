@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
+import {ChartUtils} from 'angular-dashboard-components/components/utils/chart.utils';
+import {HttpClient} from '@angular/common/http';
 import { LocalStorageMessage } from '../local-storage/local-storage-message.model';
 import { LocalStorageService } from '../local-storage/local-storage.service';
 import { Kita } from '../feature/kita.model';
@@ -13,10 +15,33 @@ export class InfoscreenComponent implements OnInit {
   kita: Kita;
   statisticalArea: StatisticalArea;
 
-  constructor(private localStorageService: LocalStorageService) { }
+  private _url = 'assets/data/grobo-data.json';
+  private rawData;
+  // Charts
+  public pieData;
+  public lineData;
+  public lineCategories;
+  public columnData;
+  public columnCategories;
+
+
+  constructor(private localStorageService: LocalStorageService,
+              public chartUtils: ChartUtils,
+              private zone: NgZone,
+              private _http: HttpClient) { }
 
   ngOnInit(): void {
     this.localStorageService.registerMessageCallback(this.receiveMessage.bind(this));
+
+    this.getParticipationData().subscribe(
+      data => {
+        let testData = <Object []> data;
+        this.processChartData(testData)
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 
   receiveMessage(message: LocalStorageMessage<Kita | StatisticalArea>) {
@@ -36,6 +61,38 @@ export class InfoscreenComponent implements OnInit {
   private removeAll() {
     delete this.kita;
     delete this.statisticalArea;
+  }
+
+
+  /*
+*   Recalculates the dataproviders (charts, tables etc.) with the changed data
+*/
+
+  private processChartData(data: Object[]) {
+    this.rawData = data;
+
+    this.zone.run(() => {
+      // Charts
+      // this.pieData = this.chartUtils.getCountData(this.rawData, ['Stadtgebiet']);
+
+      // // Always render categories first!
+      this.lineCategories = this.chartUtils.getUniqueSeriesNames(this.rawData, ['jahr']);
+      this.lineData = this.chartUtils.getSeriesData(this.rawData,'Stadtgebiet', 'Geburten', 'jahr', this.lineCategories);
+
+      // // Always render categories first!
+      this.columnCategories = this.chartUtils.getUniqueSeriesNames(this.rawData, ['Stadtgebiet']);
+      this.columnData = this.chartUtils.getSeriesData(this.rawData,'Stadtgebiet'
+        , 'Anteil_der_unter_18_J_hrigen_in', 'jahr', ['2016']);
+
+      this.pieData = this.columnData;
+
+      // this.lineCategories = this.chartUtils.getUniqueSeriesNames(this.rawData, ['jahr']);
+      // this.lineData = this.chartUtils.getSumData(this.rawData,['jahr'], ['Geburten']);
+    });
+  }
+
+  getParticipationData() {
+    return this._http.get(this._url);
   }
 
 }
