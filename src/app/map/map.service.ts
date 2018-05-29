@@ -18,60 +18,7 @@ export class MapService {
   thematicLayers: { [key: string]: { [key: string]: ol.layer.Layer } };
 
   constructor() {
-    // Default styles are taken from https://openlayers.org/en/latest/apidoc/ol.style.html
-    this.defaultStyles = [
-      new ol.style.Style({
-        image: new ol.style.Circle({
-          fill: fill,
-          stroke: stroke,
-          radius: 5
-        }),
-        fill: fill,
-        stroke: stroke
-      })
-    ];
-    this.defaultEditingStyles = {};
-    this.defaultEditingStyles['Polygon'] = [
-      new ol.style.Style({
-        fill: new ol.style.Fill({
-          color: [255, 255, 255, 0.5]
-        })
-      })
-    ];
-    this.defaultEditingStyles['MultiPolygon'] = this.defaultEditingStyles['Polygon'];
-    this.defaultEditingStyles['LineString'] = [
-      new ol.style.Style({
-        stroke: new ol.style.Stroke({
-          color: white,
-          width: width + 2
-        })
-      }),
-      new ol.style.Style({
-        stroke: new ol.style.Stroke({
-          color: blue,
-          width: width
-        })
-      })
-    ];
-    this.defaultEditingStyles['MultiLineString'] = this.defaultEditingStyles['LineString'];
-    this.defaultEditingStyles['Point'] = [
-      new ol.style.Style({
-        image: new ol.style.Circle({
-          radius: width * 2,
-          fill: new ol.style.Fill({
-            color: blue
-          }),
-          stroke: new ol.style.Stroke({
-            color: white,
-            width: width / 2
-          })
-        }),
-        zIndex: Infinity
-      })
-    ];
-    this.defaultEditingStyles['MultiPoint'] = this.defaultEditingStyles['Point'];
-    this.defaultEditingStyles['GeometryCollection'] = this.defaultEditingStyles['Polygon'].concat(this.defaultEditingStyles['Point']);
-
+    this.loadDefaultStyles();
     this.instance = new ol.Map({});
     this.addControls();
     this.addLayers();
@@ -103,9 +50,15 @@ export class MapService {
       Object.values(layerGroup).forEach(layer => {
         layer.setVisible(false);
       });
-      // Show requested layers
-      if (layerGroupNames.indexOf(layerGroupName) > -1 && layerGroup.hasOwnProperty(layerName)) {
-        layerGroup[layerName].setVisible(true);
+      if (layerGroupNames.indexOf(layerGroupName) > -1) {
+        // Show requested layers
+        if (layerGroup.hasOwnProperty(layerName)) {
+          layerGroup[layerName].setVisible(true);
+        }
+        // Show static ('*') layers
+        if (layerGroup.hasOwnProperty('*')) {
+          layerGroup['*'].setVisible(true);
+        }
       }
     });
   }
@@ -140,6 +93,7 @@ export class MapService {
   }
 
   private addLayers() {
+    /* The ordering of the layers is important. The first layer is at the bottom, the last is at the top. */
     this.baseLayers = {
       'osm': new ol.layer.Tile({
         source: new ol.source.OSM()
@@ -184,7 +138,9 @@ export class MapService {
       })
     };
 
+    /* The ordering of the layers is important. The first layer is at the bottom, the last is at the top. */
     this.thematicLayers = {
+      // Vector layers (self-hosted)
       'kitas': {
         'before': new ol.layer.Vector({
           source: new ol.source.Vector({
@@ -229,21 +185,6 @@ export class MapService {
           zIndex: 1
         })
       },
-      'kitasGehzeit': {
-        'before': new ol.layer.Tile({
-          source: new ol.source.TileWMS({
-            url: 'https://geodienste.hamburg.de/MRH_WMS_REA_Soziales',
-            params: {
-              LAYERS: '6',
-              TILED: true,
-              FORMAT: 'image/png',
-              WIDTH: 256,
-              HEIGHT: 256,
-              SRS: 'EPSG:4326'
-            }
-          })
-        })
-      },
       'einwohner': {
         'before': new ol.layer.Vector({
           source: new ol.source.Vector({
@@ -260,8 +201,27 @@ export class MapService {
           })
         })
       },
+      'gruenflaechen': {
+        '*': new ol.layer.Vector({
+          source: new ol.source.Vector({
+            url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:gruenflaechen' +
+              '&outputFormat=application/json&srsname=EPSG:4326',
+            format: new ol.format.GeoJSON()
+          })
+        })
+      },
+      // Vector layers (OpenStreetMap)
+      'geschaefte': {
+        '*': new ol.layer.Vector({
+          source: new ol.source.Vector({
+            url: 'https://overpass-api.de/api/interpreter' +
+              '?data=node["shop"](53.590620,9.943056,53.630745,10.025539);out;',
+            format: new ol.format.OSMXML()
+          })
+        })
+      },
       'apotheken': {
-        'before': new ol.layer.Vector({
+        '*': new ol.layer.Vector({
           source: new ol.source.Vector({
             url: 'https://overpass-api.de/api/interpreter' +
               '?data=node["amenity"="pharmacy"](53.590620,9.943056,53.630745,10.025539);out;',
@@ -270,21 +230,49 @@ export class MapService {
           zIndex: 1
         })
       },
-      'geschaefte': {
-        'before': new ol.layer.Vector({
-          source: new ol.source.Vector({
-            url: 'https://overpass-api.de/api/interpreter' +
-              '?data=node["shop"](53.590620,9.943056,53.630745,10.025539);out;',
-            format: new ol.format.OSMXML()
+      // WMS layers
+      'kitasGehzeit': {
+        '*': new ol.layer.Tile({
+          source: new ol.source.TileWMS({
+            url: 'https://geodienste.hamburg.de/MRH_WMS_REA_Soziales',
+            params: {
+              LAYERS: '6',
+              TILED: true,
+              FORMAT: 'image/png',
+              WIDTH: 256,
+              HEIGHT: 256,
+              SRS: 'EPSG:4326'
+            }
           })
         })
       },
-      'gruenflaechen': {
-        'before': new ol.layer.Vector({
-          source: new ol.source.Vector({
-            url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:gruenflaechen' +
-              '&outputFormat=application/json&srsname=EPSG:4326',
-            format: new ol.format.GeoJSON()
+      'supermarktGehzeit': {
+        '*': new ol.layer.Tile({
+          source: new ol.source.TileWMS({
+            url: 'https://geodienste.hamburg.de/MRH_WMS_REA_Einzelhandel',
+            params: {
+              LAYERS: '2',
+              TILED: true,
+              FORMAT: 'image/png',
+              WIDTH: 256,
+              HEIGHT: 256,
+              SRS: 'EPSG:4326'
+            }
+          })
+        })
+      },
+      'apothekenGehzeit': {
+        '*': new ol.layer.Tile({
+          source: new ol.source.TileWMS({
+            url: 'https://geodienste.hamburg.de/MRH_WMS_REA_Gesundheit',
+            params: {
+              LAYERS: '2',
+              TILED: true,
+              FORMAT: 'image/png',
+              WIDTH: 256,
+              HEIGHT: 256,
+              SRS: 'EPSG:4326'
+            }
           })
         })
       }
@@ -462,4 +450,59 @@ export class MapService {
     }, <ol.Color>[0, 0, 0, 1]);
   }
 
+  private loadDefaultStyles() {
+    // Default styles are taken from https://openlayers.org/en/latest/apidoc/ol.style.html
+    this.defaultStyles = [
+      new ol.style.Style({
+        image: new ol.style.Circle({
+          fill: fill,
+          stroke: stroke,
+          radius: 5
+        }),
+        fill: fill,
+        stroke: stroke
+      })
+    ];
+    this.defaultEditingStyles = {};
+    this.defaultEditingStyles['Polygon'] = [
+      new ol.style.Style({
+        fill: new ol.style.Fill({
+          color: [255, 255, 255, 0.5]
+        })
+      })
+    ];
+    this.defaultEditingStyles['MultiPolygon'] = this.defaultEditingStyles['Polygon'];
+    this.defaultEditingStyles['LineString'] = [
+      new ol.style.Style({
+        stroke: new ol.style.Stroke({
+          color: white,
+          width: width + 2
+        })
+      }),
+      new ol.style.Style({
+        stroke: new ol.style.Stroke({
+          color: blue,
+          width: width
+        })
+      })
+    ];
+    this.defaultEditingStyles['MultiLineString'] = this.defaultEditingStyles['LineString'];
+    this.defaultEditingStyles['Point'] = [
+      new ol.style.Style({
+        image: new ol.style.Circle({
+          radius: width * 2,
+          fill: new ol.style.Fill({
+            color: blue
+          }),
+          stroke: new ol.style.Stroke({
+            color: white,
+            width: width / 2
+          })
+        }),
+        zIndex: Infinity
+      })
+    ];
+    this.defaultEditingStyles['MultiPoint'] = this.defaultEditingStyles['Point'];
+    this.defaultEditingStyles['GeometryCollection'] = this.defaultEditingStyles['Polygon'].concat(this.defaultEditingStyles['Point']);
+  }
 }

@@ -66,6 +66,22 @@ export class TouchscreenComponent implements OnInit {
             displayName: 'Geschäfte',
             visible: true,
             meta: 'Quelle: OpenStreetMap'
+          },
+          {
+            name: 'apothekenGehzeit',
+            displayName: 'Gehzeit zur nächsten Apotheke',
+            visible: false,
+            legendUrl: 'https://geodienste.hamburg.de/MRH_WMS_REA_Gesundheit' +
+              '?request=GetLegendGraphic&version=1.3.0&format=image/png&layer=2',
+            meta: 'Quelle: MRH'
+          },
+          {
+            name: 'supermarktGehzeit',
+            displayName: 'Gehzeit zum nächsten Supermarkt',
+            visible: false,
+            legendUrl: 'https://geodienste.hamburg.de/MRH_WMS_REA_Einzelhandel' +
+              '?request=GetLegendGraphic&version=1.3.0&format=image/png&layer=2',
+            meta: 'Quelle: MRH'
           }
         ],
       },
