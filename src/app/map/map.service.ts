@@ -330,6 +330,15 @@ export class MapService {
   }
 
   private getStyle(layer: string, selected: boolean): (feature: ol.Feature) => ol.style.Style {
+    const textFont = '18px sans-serif';
+    const whiteTextFill = new ol.style.Fill({
+      color: 'white'
+    });
+    const redTextStroke = new ol.style.Stroke({
+      color: 'red',
+      width: 2
+    });
+
     // This map contains style definitions for all layers (deselected/selected)
     const styles = {
       'kitas': {
@@ -355,6 +364,12 @@ export class MapService {
           stroke: new ol.style.Stroke({
             color: [135, 206, 250, 1],
             width: 1
+          }),
+          text: new ol.style.Text({
+            text: '' + (feature.get('1bis6') || 0),
+            font: textFont,
+            fill: whiteTextFill,
+            stroke: redTextStroke
           })
         }),
         selected: (feature: ol.Feature) => new ol.style.Style({
@@ -364,6 +379,12 @@ export class MapService {
           stroke: new ol.style.Stroke({
             color: blue,
             width: 3
+          }),
+          text: new ol.style.Text({
+            text: '' + (feature.get('1bis6') || 0),
+            font: textFont,
+            fill: whiteTextFill,
+            stroke: redTextStroke
           })
         })
       },
