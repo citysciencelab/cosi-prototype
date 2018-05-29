@@ -247,7 +247,8 @@ export class MapService {
               HEIGHT: 256,
               SRS: 'EPSG:4326'
             }
-          })
+          }),
+          opacity: 0.6
         })
       },
       'supermarktGehzeit': {
@@ -262,7 +263,8 @@ export class MapService {
               HEIGHT: 256,
               SRS: 'EPSG:4326'
             }
-          })
+          }),
+          opacity: 0.6
         })
       },
       'apothekenGehzeit': {
@@ -277,7 +279,8 @@ export class MapService {
               HEIGHT: 256,
               SRS: 'EPSG:4326'
             }
-          })
+          }),
+          opacity: 0.6
         })
       }
     };
