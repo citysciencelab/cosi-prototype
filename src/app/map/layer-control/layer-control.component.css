@@ -16,6 +16,11 @@
   white-space: nowrap;
 }
 
+.layer-control ul,
+.layer-control label {
+  margin: 0;
+}
+
 .layer-control li {
   font-size: 120%;
   list-style: none;
