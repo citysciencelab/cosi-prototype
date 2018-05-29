@@ -124,6 +124,12 @@ export class TouchscreenComponent implements OnInit {
         meta: 'Quelle: LGV'
       },
       {
+        name: 'dop20',
+        displayName: 'Luftbilder DOP 20',
+        visible: false,
+        meta: 'Quelle: LGV'
+      },
+      {
         name: 'osm',
         displayName: 'OpenStreetMap',
         visible: false,

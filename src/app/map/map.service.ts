@@ -144,6 +144,19 @@ export class MapService {
       'osm': new ol.layer.Tile({
         source: new ol.source.OSM()
       }),
+      'dop20': new ol.layer.Tile({
+        source: new ol.source.TileWMS({
+          url: 'https://geodienste.hamburg.de/HH_WMS_DOP20',
+          params: {
+            LAYERS: '1',
+            TILED: true,
+            FORMAT: 'image/png',
+            WIDTH: 256,
+            HEIGHT: 256,
+            SRS: 'EPSG:4326'
+          }
+        })
+      }),
       'geobasis': new ol.layer.Tile({
         source: new ol.source.TileWMS({
           url: 'https://geodienste.hamburg.de/HH_WMS_Kombi_DISK_GB',
