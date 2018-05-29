@@ -85,7 +85,7 @@ export class InfoscreenComponent implements OnInit {
         'Anteil_der_unter_18_J_hrigen_in', 'jahr', ['2016']);
 
       this.pieData = {};
-      this.pieData["data"] = [{
+      this.pieData['data'] = [{
         name: 'Bevölkerung',
         y:  8459
       }, {
