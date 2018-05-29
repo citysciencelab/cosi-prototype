@@ -9,6 +9,12 @@
       "openlayers"
     ]
   },
+  "include": [
+    "../src/*",
+    "../node_modules/angular-dashboard-components/components/charts/*/*",
+    "../node_modules/angular-dashboard-components/components/enum/*",
+    "../node_modules/angular-dashboard-components/components/utils/*"
+  ],
   "exclude": [
     "test.ts",
     "**/*.spec.ts"
