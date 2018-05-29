@@ -311,7 +311,8 @@ export class MapService {
           return this.defaultEditingStyles[feature.getGeometry().getType()];
         }
         return styleFunction(feature);
-      }
+      },
+      hitTolerance: 8
     });
 
     const interactions = defaultInteractions.extend([this.selectInteraction]);
