@@ -1,4 +1,3 @@
 {
-  "statusMarkerID": 0,
-  "topicMarkerID": 1
+  "enableTuio": false
 }

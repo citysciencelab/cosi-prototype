@@ -4,17 +4,9 @@ import config from './config.json';
 @Injectable()
 export class ConfigurationService {
   // Config fields are defined in typings.d.ts
-  progressMarkerID: number;
-  selectionMarkerID: number;
-  searchCriteria: SearchCriterion[];
+  enableTuio: boolean;
 
   constructor() {
-    this.progressMarkerID = config.progressMarkerID;
-    this.selectionMarkerID = config.selectionMarkerID;
-    this.searchCriteria = config.searchCriteria;
-  }
-
-  getSearchCriterionByKey(key: string) {
-    return this.searchCriteria.find(item => item.key === key);
+    this.enableTuio = config.enableTuio;
   }
 }

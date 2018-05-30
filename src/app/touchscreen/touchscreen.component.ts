@@ -155,7 +155,9 @@ export class TouchscreenComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.tuioClient.connect(environment.socketUrl);
+    if (this.config.enableTuio) {
+      this.tuioClient.connect(environment.socketUrl);
+    }
     this.updateMapLayers();
   }
 
