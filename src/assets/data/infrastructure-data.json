@@ -1,0 +1,50 @@
+[
+  {
+    "Stadtgebiet": "Lokstedt",
+    "jahr": "2016",
+    "supermaerkte": 1,
+    "apotheken": 8
+  },
+  {
+    "Stadtgebiet": "Niendorf",
+    "jahr": "2016",
+    "supermaerkte": 2,
+    "apotheken": 7
+  },
+  {
+    "Stadtgebiet": "Eppendorf",
+    "jahr": "2016",
+    "supermaerkte": 3,
+    "apotheken": 6
+  },
+  {
+    "Stadtgebiet": "Gro\u00df Borstel",
+    "jahr": "2016",
+    "supermaerkte": 4,
+    "apotheken": 5
+  },
+  {
+    "Stadtgebiet": "Alsterdorf",
+    "jahr": "2016",
+    "supermaerkte": 5,
+    "apotheken": 4
+  },
+  {
+    "Stadtgebiet": "Winterhude",
+    "jahr": "2016",
+    "supermaerkte": 6,
+    "apotheken": 3
+  },
+  {
+    "Stadtgebiet": "Ohlsdorf",
+    "jahr": "2016",
+    "supermaerkte": 7,
+    "apotheken": 2
+  },
+  {
+    "Stadtgebiet": "Fuhlsb\u00fcttel",
+    "jahr": "2016",
+    "supermaerkte": 8,
+    "apotheken": 1
+  }
+]
