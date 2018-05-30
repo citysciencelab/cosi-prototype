@@ -8,8 +8,9 @@ import { Kita } from '../feature/kita.model';
 import { StatisticalArea } from '../feature/statistical-area.model';
 import { Supermarket } from '../feature/supermarket.model';
 import { Pharmacy } from '../feature/pharmacy.model';
+import { GreenArea } from '../feature/green-area.model';
 
-type AnyFeature = Kita | StatisticalArea | Supermarket | Pharmacy;
+type AnyFeature = Kita | StatisticalArea | Supermarket | Pharmacy | GreenArea;
 
 @Component({
   selector: 'app-infoscreen',
@@ -22,6 +23,7 @@ export class InfoscreenComponent implements OnInit {
   statisticalArea: StatisticalArea;
   supermarket: Supermarket;
   pharmacy: Pharmacy;
+  greenArea: GreenArea;
 
   private _urlDistrictProfiles = 'assets/data/grobo-data.json';
   private _urlInfrastructure = 'assets/data/infrastructure-data.json';
@@ -70,6 +72,9 @@ export class InfoscreenComponent implements OnInit {
           case 'Pharmacy':
             this.pharmacy = <Pharmacy>feature;
             break;
+          case 'GreenArea':
+            this.greenArea = <GreenArea>feature;
+            break;
         }
         break;
       case 'deselect':
@@ -96,6 +101,7 @@ export class InfoscreenComponent implements OnInit {
     delete this.statisticalArea;
     delete this.supermarket;
     delete this.pharmacy;
+    delete this.greenArea;
   }
 
   /*

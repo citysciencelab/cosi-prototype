@@ -12,6 +12,7 @@ import { Kita } from '../feature/kita.model';
 import { StatisticalArea } from '../feature/statistical-area.model';
 import { Supermarket } from '../feature/supermarket.model';
 import { Pharmacy } from '../feature/pharmacy.model';
+import { GreenArea } from '../feature/green-area.model';
 
 @Component({
   selector: 'app-touchscreen',
@@ -179,6 +180,10 @@ export class TouchscreenComponent implements OnInit {
     return object.hasOwnProperty('amenity') && object['amenity'] === 'pharmacy';
   }
 
+  isGreenArea(object: {}): object is GreenArea {
+    return object.hasOwnProperty('gruenart');
+  }
+
   onSelect(e: ol.interaction.Select.Event) {
     let message: LocalStorageMessage<{}> = { type: 'deselect', data: null };
     if (e.selected.length > 0) {
@@ -189,6 +194,7 @@ export class TouchscreenComponent implements OnInit {
           this.isStatisticalArea(properties) ? new StatisticalArea(properties) :
           this.isSupermarket(properties) ? new Supermarket(properties) :
           this.isPharmacy(properties) ? new Pharmacy(properties) :
+          this.isGreenArea(properties) ? new GreenArea(properties) :
           null
       };
     }

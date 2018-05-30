@@ -40,6 +40,14 @@
             <tr><td>Barrierefrei:</td><td>{{pharmacy.wheelchair | yesNoUnknown}}</td></tr>
           </table>
         </div>
+        <div *ngIf="greenArea">
+          <h1>Grünfläche {{greenArea.name}}</h1>
+          <table>
+            <tr><td>Grünart:</td><td>{{greenArea.greenType}}</td></tr>
+            <tr><td>Eigentum:</td><td>{{greenArea.owner}}</td></tr>
+            <tr><td>Fläche:</td><td>{{greenArea.area}} m²</td></tr>
+          </table>
+        </div>
       </div>
     </div>
   </div>
