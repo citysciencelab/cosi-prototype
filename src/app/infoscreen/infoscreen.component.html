@@ -32,7 +32,7 @@
   <div class="col-md-6 col-sm-12">
     <div class="shadow-element holder-element">
       <div *ngIf="lineData">
-        <dash-line chartTitle="Geburten der umliegenden Stadtteile"
+        <dash-line [chartTitle]="lineTitle"
                    [series]="lineData"
                    [chartType]="'line'"
                    [xCategories]="lineCategories"></dash-line>
@@ -43,7 +43,7 @@
   <div class="col-md-6 col-sm-12">
     <div class="shadow-element holder-element">
       <div *ngIf="columnData">
-        <dash-line chartTitle="Anteil der Bevölkerung < 18 Jahren (2016)"
+        <dash-line [chartTitle]="columnTitle"
                    [legendEnabled]="false"
                    [series]="columnData"
                    [chartType]="'column'"
@@ -56,9 +56,9 @@
   <div class="col-md-3 col-sm-6">
     <div class="shadow-element holder-element">
       <div *ngIf="pieData">
-        <dash-pie chartTitle="Zu- und Fortzüge Groß Borstel (2016)"
-                  [dataLabelDistance]="-50"
-                  [isPercentageLabel]="false"
+        <dash-pie [chartTitle]="pieTitle"
+                  [dataLabelDistance]="0"
+                  [isPercentageLabel]="true"
                   [series]="pieData"></dash-pie>
       </div>
     </div>
@@ -66,17 +66,17 @@
 
   <div class="col-md-3 col-sm-6">
     <div class="shadow-element holder-element">
-      <div *ngIf="pieData2">
-        <dash-line chartTitle="Migrationshintergrund in % der Stadtteile (2016)"
+      <div *ngIf="columnData2">
+        <dash-line [chartTitle]="columm2Title"
                    [legendEnabled]="false"
-                   [series]="pieData2"
+                   [series]="columnData2"
                    [chartType]="'bar'"
                    [isNoGridLines]="true"
                    [plotLineValue]="34.1"
                    [xCategories]="columnCategories"></dash-line>
-        <!--<dash-pie chartTitle="Migrationshintergrund in % der Stadtteile (2016)"-->
+        <!--<dash-pie [chartTitle]="Migrationshintergrund in % der Stadtteile (2016)"-->
                   <!--[isPercentageLabel]="false"-->
-                  <!--[series]="pieData2"></dash-pie>-->
+                  <!--[series]="columnData2"></dash-pie>-->
       </div>
     </div>
   </div>
