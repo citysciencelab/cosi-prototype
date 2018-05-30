@@ -1,5 +1,77 @@
 [
   {
+    "id": "514",
+    "Stadtgebiet": "Niendorf",
+    "jahr": "2012",
+    "Anteil_der_unter_18_J_hrigen_in": "15.10000000000",
+    "Ausl_nderanteil_in": "6.40000000000",
+    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "16.60000000000",
+    "Bev_lkerungs_dichte": "3146.0000000000",
+    "Geburten": "291",
+    "Zuz_ge": "2828",
+    "Fortz_ge": "2558"
+  },
+  {
+    "id": "528",
+    "Stadtgebiet": "Ohlsdorf",
+    "jahr": "2012",
+    "Anteil_der_unter_18_J_hrigen_in": "15.20000000000",
+    "Ausl_nderanteil_in": "9.10000000000",
+    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "19.00000000000",
+    "Bev_lkerungs_dichte": "2115.0000000000",
+    "Geburten": "158",
+    "Zuz_ge": "2047",
+    "Fortz_ge": "1832"
+  },
+  {
+    "id": "522",
+    "Stadtgebiet": "Winterhude",
+    "jahr": "2012",
+    "Anteil_der_unter_18_J_hrigen_in": "11.40000000000",
+    "Ausl_nderanteil_in": "10.80000000000",
+    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "20.70000000000",
+    "Bev_lkerungs_dichte": "6690.0000000000",
+    "Geburten": "576",
+    "Zuz_ge": "6835",
+    "Fortz_ge": "6355"
+  },
+  {
+    "id": "521",
+    "Stadtgebiet": "Alsterdorf",
+    "jahr": "2012",
+    "Anteil_der_unter_18_J_hrigen_in": "16.20000000000",
+    "Ausl_nderanteil_in": "11.30000000000",
+    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "22.90000000000",
+    "Bev_lkerungs_dichte": "4462.0000000000",
+    "Geburten": "155",
+    "Zuz_ge": "1611",
+    "Fortz_ge": "1506"
+  },
+  {
+    "id": "520",
+    "Stadtgebiet": "Gro\u00df Borstel",
+    "jahr": "2012",
+    "Anteil_der_unter_18_J_hrigen_in": "15.20000000000",
+    "Ausl_nderanteil_in": "9.80000000000",
+    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "20.20000000000",
+    "Bev_lkerungs_dichte": "1758.0000000000",
+    "Geburten": "78",
+    "Zuz_ge": "1006",
+    "Fortz_ge": "966"
+  },
+  {
+    "id": "519",
+    "Stadtgebiet": "Eppendorf",
+    "jahr": "2012",
+    "Anteil_der_unter_18_J_hrigen_in": "13.30000000000",
+    "Ausl_nderanteil_in": "8.40000000000",
+    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "17.90000000000",
+    "Bev_lkerungs_dichte": "8636.0000000000",
+    "Geburten": "338",
+    "Zuz_ge": "3005",
+    "Fortz_ge": "2937"
+  },
+  {
     "id": "529",
     "Stadtgebiet": "Fuhlsb\u00fcttel",
     "jahr": "2012",
@@ -24,64 +96,16 @@
     "Fortz_ge": "2598"
   },
   {
-    "id": "514",
+    "id": "407",
     "Stadtgebiet": "Niendorf",
-    "jahr": "2012",
-    "Anteil_der_unter_18_J_hrigen_in": "15.10000000000",
-    "Ausl_nderanteil_in": "6.40000000000",
-    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "16.60000000000",
-    "Bev_lkerungs_dichte": "3146.0000000000",
-    "Geburten": "291",
-    "Zuz_ge": "2828",
-    "Fortz_ge": "2558"
-  },
-  {
-    "id": "519",
-    "Stadtgebiet": "Eppendorf",
-    "jahr": "2012",
-    "Anteil_der_unter_18_J_hrigen_in": "13.30000000000",
-    "Ausl_nderanteil_in": "8.40000000000",
-    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "17.90000000000",
-    "Bev_lkerungs_dichte": "8636.0000000000",
-    "Geburten": "338",
-    "Zuz_ge": "3005",
-    "Fortz_ge": "2937"
-  },
-  {
-    "id": "520",
-    "Stadtgebiet": "Gro\u00df Borstel",
-    "jahr": "2012",
-    "Anteil_der_unter_18_J_hrigen_in": "15.20000000000",
-    "Ausl_nderanteil_in": "9.80000000000",
-    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "20.20000000000",
-    "Bev_lkerungs_dichte": "1758.0000000000",
-    "Geburten": "78",
-    "Zuz_ge": "1006",
-    "Fortz_ge": "966"
-  },
-  {
-    "id": "521",
-    "Stadtgebiet": "Alsterdorf",
-    "jahr": "2012",
-    "Anteil_der_unter_18_J_hrigen_in": "16.20000000000",
-    "Ausl_nderanteil_in": "11.30000000000",
-    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "22.90000000000",
-    "Bev_lkerungs_dichte": "4462.0000000000",
-    "Geburten": "155",
-    "Zuz_ge": "1611",
-    "Fortz_ge": "1506"
-  },
-  {
-    "id": "522",
-    "Stadtgebiet": "Winterhude",
-    "jahr": "2012",
-    "Anteil_der_unter_18_J_hrigen_in": "11.40000000000",
-    "Ausl_nderanteil_in": "10.80000000000",
-    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "20.70000000000",
-    "Bev_lkerungs_dichte": "6690.0000000000",
-    "Geburten": "576",
-    "Zuz_ge": "6835",
-    "Fortz_ge": "6355"
+    "jahr": "2013",
+    "Anteil_der_unter_18_J_hrigen_in": "15.00000000000",
+    "Ausl_nderanteil_in": "6.80000000000",
+    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "17.50000000000",
+    "Bev_lkerungs_dichte": "3162.0000000000",
+    "Geburten": "307",
+    "Zuz_ge": "3084",
+    "Fortz_ge": "2682"
   },
   {
     "id": "406",
@@ -96,16 +120,16 @@
     "Fortz_ge": "2825"
   },
   {
-    "id": "407",
-    "Stadtgebiet": "Niendorf",
+    "id": "415",
+    "Stadtgebiet": "Winterhude",
     "jahr": "2013",
-    "Anteil_der_unter_18_J_hrigen_in": "15.00000000000",
-    "Ausl_nderanteil_in": "6.80000000000",
-    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "17.50000000000",
-    "Bev_lkerungs_dichte": "3162.0000000000",
-    "Geburten": "307",
-    "Zuz_ge": "3084",
-    "Fortz_ge": "2682"
+    "Anteil_der_unter_18_J_hrigen_in": "11.60000000000",
+    "Ausl_nderanteil_in": "11.20000000000",
+    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "21.40000000000",
+    "Bev_lkerungs_dichte": "6783.0000000000",
+    "Geburten": "669",
+    "Zuz_ge": "7327",
+    "Fortz_ge": "6813"
   },
   {
     "id": "412",
@@ -144,16 +168,16 @@
     "Fortz_ge": "1523"
   },
   {
-    "id": "415",
-    "Stadtgebiet": "Winterhude",
+    "id": "421",
+    "Stadtgebiet": "Ohlsdorf",
     "jahr": "2013",
-    "Anteil_der_unter_18_J_hrigen_in": "11.60000000000",
-    "Ausl_nderanteil_in": "11.20000000000",
-    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "21.40000000000",
-    "Bev_lkerungs_dichte": "6783.0000000000",
-    "Geburten": "669",
-    "Zuz_ge": "7327",
-    "Fortz_ge": "6813"
+    "Anteil_der_unter_18_J_hrigen_in": "15.10000000000",
+    "Ausl_nderanteil_in": "8.40000000000",
+    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "18.70000000000",
+    "Bev_lkerungs_dichte": "2105.0000000000",
+    "Geburten": "145",
+    "Zuz_ge": "1759",
+    "Fortz_ge": "1843"
   },
   {
     "id": "422",
@@ -168,40 +192,16 @@
     "Fortz_ge": "1356"
   },
   {
-    "id": "315",
-    "Stadtgebiet": "Fuhlsb\u00fcttel",
+    "id": "300",
+    "Stadtgebiet": "Niendorf",
     "jahr": "2014",
-    "Anteil_der_unter_18_J_hrigen_in": "15.08521796130",
-    "Ausl_nderanteil_in": "9.24287118977",
-    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "18.93951811180",
-    "Bev_lkerungs_dichte": "1854.1476754800",
-    "Geburten": "119",
-    "Zuz_ge": "1509",
-    "Fortz_ge": "1375"
-  },
-  {
-    "id": "307",
-    "Stadtgebiet": "Alsterdorf",
-    "jahr": "2014",
-    "Anteil_der_unter_18_J_hrigen_in": "16.61788850020",
-    "Ausl_nderanteil_in": "11.89235491470",
-    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "24.37124892830",
-    "Bev_lkerungs_dichte": "4576.6089513200",
-    "Geburten": "116",
-    "Zuz_ge": "2028",
-    "Fortz_ge": "1644"
-  },
-  {
-    "id": "306",
-    "Stadtgebiet": "Gro\u00df Borstel",
-    "jahr": "2014",
-    "Anteil_der_unter_18_J_hrigen_in": "15.91164357920",
-    "Ausl_nderanteil_in": "10.75751903160",
-    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "21.67727442910",
-    "Bev_lkerungs_dichte": "1767.7035076100",
-    "Geburten": "86",
-    "Zuz_ge": "1194",
-    "Fortz_ge": "1110"
+    "Anteil_der_unter_18_J_hrigen_in": "15.04567971920",
+    "Ausl_nderanteil_in": "7.00505339673",
+    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "18.06790723160",
+    "Bev_lkerungs_dichte": "3163.5690659900",
+    "Geburten": "328",
+    "Zuz_ge": "2967",
+    "Fortz_ge": "2726"
   },
   {
     "id": "305",
@@ -216,16 +216,52 @@
     "Fortz_ge": "3165"
   },
   {
-    "id": "300",
-    "Stadtgebiet": "Niendorf",
+    "id": "306",
+    "Stadtgebiet": "Gro\u00df Borstel",
     "jahr": "2014",
-    "Anteil_der_unter_18_J_hrigen_in": "15.04567971920",
-    "Ausl_nderanteil_in": "7.00505339673",
-    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "18.06790723160",
-    "Bev_lkerungs_dichte": "3163.5690659900",
-    "Geburten": "328",
-    "Zuz_ge": "2967",
-    "Fortz_ge": "2726"
+    "Anteil_der_unter_18_J_hrigen_in": "15.91164357920",
+    "Ausl_nderanteil_in": "10.75751903160",
+    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "21.67727442910",
+    "Bev_lkerungs_dichte": "1767.7035076100",
+    "Geburten": "86",
+    "Zuz_ge": "1194",
+    "Fortz_ge": "1110"
+  },
+  {
+    "id": "307",
+    "Stadtgebiet": "Alsterdorf",
+    "jahr": "2014",
+    "Anteil_der_unter_18_J_hrigen_in": "16.61788850020",
+    "Ausl_nderanteil_in": "11.89235491470",
+    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "24.37124892830",
+    "Bev_lkerungs_dichte": "4576.6089513200",
+    "Geburten": "116",
+    "Zuz_ge": "2028",
+    "Fortz_ge": "1644"
+  },
+  {
+    "id": "314",
+    "Stadtgebiet": "Ohlsdorf",
+    "jahr": "2014",
+    "Anteil_der_unter_18_J_hrigen_in": "15.22302732170",
+    "Ausl_nderanteil_in": "8.25633184870",
+    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "19.19393455710",
+    "Bev_lkerungs_dichte": "2099.2185319600",
+    "Geburten": "146",
+    "Zuz_ge": "1728",
+    "Fortz_ge": "1750"
+  },
+  {
+    "id": "315",
+    "Stadtgebiet": "Fuhlsb\u00fcttel",
+    "jahr": "2014",
+    "Anteil_der_unter_18_J_hrigen_in": "15.08521796130",
+    "Ausl_nderanteil_in": "9.24287118977",
+    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "18.93951811180",
+    "Bev_lkerungs_dichte": "1854.1476754800",
+    "Geburten": "119",
+    "Zuz_ge": "1509",
+    "Fortz_ge": "1375"
   },
   {
     "id": "299",
@@ -288,18 +324,6 @@
     "Fortz_ge": "3102"
   },
   {
-    "id": "148",
-    "Stadtgebiet": "Eppendorf",
-    "jahr": "2015",
-    "Anteil_der_unter_18_J_hrigen_in": "13.61471505990",
-    "Ausl_nderanteil_in": "9.29134504845",
-    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "19.71264367820",
-    "Bev_lkerungs_dichte": "8967.5994109000",
-    "Geburten": "327",
-    "Zuz_ge": "3337",
-    "Fortz_ge": "3136"
-  },
-  {
     "id": "149",
     "Stadtgebiet": "Gro\u00df Borstel",
     "jahr": "2015",
@@ -336,6 +360,18 @@
     "Fortz_ge": "7113"
   },
   {
+    "id": "157",
+    "Stadtgebiet": "Ohlsdorf",
+    "jahr": "2015",
+    "Anteil_der_unter_18_J_hrigen_in": "15.60985068840",
+    "Ausl_nderanteil_in": "8.91991467908",
+    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "20.46219575350",
+    "Bev_lkerungs_dichte": "2158.9450181400",
+    "Geburten": "154",
+    "Zuz_ge": "2102",
+    "Fortz_ge": "1613"
+  },
+  {
     "id": "192",
     "Stadtgebiet": "Lokstedt",
     "jahr": "2015",
@@ -360,7 +396,7 @@
     "Fortz_ge": "3102"
   },
   {
-    "id": "198",
+    "id": "148",
     "Stadtgebiet": "Eppendorf",
     "jahr": "2015",
     "Anteil_der_unter_18_J_hrigen_in": "13.61471505990",
@@ -372,16 +408,28 @@
     "Fortz_ge": "3136"
   },
   {
-    "id": "199",
-    "Stadtgebiet": "Gro\u00df Borstel",
+    "id": "207",
+    "Stadtgebiet": "Ohlsdorf",
     "jahr": "2015",
-    "Anteil_der_unter_18_J_hrigen_in": "17.63028851640",
-    "Ausl_nderanteil_in": "17.52765423650",
-    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "23.45529440270",
-    "Bev_lkerungs_dichte": "1934.4804765100",
-    "Geburten": "105",
-    "Zuz_ge": "2574",
-    "Fortz_ge": "1970"
+    "Anteil_der_unter_18_J_hrigen_in": "15.60985068840",
+    "Ausl_nderanteil_in": "8.91991467908",
+    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "20.46219575350",
+    "Bev_lkerungs_dichte": "2158.9450181400",
+    "Geburten": "154",
+    "Zuz_ge": "2102",
+    "Fortz_ge": "1613"
+  },
+  {
+    "id": "201",
+    "Stadtgebiet": "Winterhude",
+    "jahr": "2015",
+    "Anteil_der_unter_18_J_hrigen_in": "12.28684026370",
+    "Ausl_nderanteil_in": "11.87985709550",
+    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "23.01694102900",
+    "Bev_lkerungs_dichte": "7145.0000000000",
+    "Geburten": "735",
+    "Zuz_ge": "8912",
+    "Fortz_ge": "7113"
   },
   {
     "id": "200",
@@ -396,16 +444,40 @@
     "Fortz_ge": "1610"
   },
   {
-    "id": "201",
-    "Stadtgebiet": "Winterhude",
+    "id": "199",
+    "Stadtgebiet": "Gro\u00df Borstel",
     "jahr": "2015",
-    "Anteil_der_unter_18_J_hrigen_in": "12.28684026370",
-    "Ausl_nderanteil_in": "11.87985709550",
-    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "23.01694102900",
-    "Bev_lkerungs_dichte": "7145.0000000000",
-    "Geburten": "735",
-    "Zuz_ge": "8912",
-    "Fortz_ge": "7113"
+    "Anteil_der_unter_18_J_hrigen_in": "17.63028851640",
+    "Ausl_nderanteil_in": "17.52765423650",
+    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "23.45529440270",
+    "Bev_lkerungs_dichte": "1934.4804765100",
+    "Geburten": "105",
+    "Zuz_ge": "2574",
+    "Fortz_ge": "1970"
+  },
+  {
+    "id": "198",
+    "Stadtgebiet": "Eppendorf",
+    "jahr": "2015",
+    "Anteil_der_unter_18_J_hrigen_in": "13.61471505990",
+    "Ausl_nderanteil_in": "9.29134504845",
+    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "19.71264367820",
+    "Bev_lkerungs_dichte": "8967.5994109000",
+    "Geburten": "327",
+    "Zuz_ge": "3337",
+    "Fortz_ge": "3136"
+  },
+  {
+    "id": "35",
+    "Stadtgebiet": "Lokstedt",
+    "jahr": "2016",
+    "Anteil_der_unter_18_J_hrigen_in": "16.86484204600",
+    "Ausl_nderanteil_in": "13.80426370220",
+    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "29.30967719220",
+    "Bev_lkerungs_dichte": "5805.7270052400",
+    "Geburten": "322",
+    "Zuz_ge": "3203",
+    "Fortz_ge": "3115"
   },
   {
     "id": "36",
@@ -468,6 +540,18 @@
     "Fortz_ge": "7287"
   },
   {
+    "id": "50",
+    "Stadtgebiet": "Ohlsdorf",
+    "jahr": "2016",
+    "Anteil_der_unter_18_J_hrigen_in": "15.82246422690",
+    "Ausl_nderanteil_in": "9.82651639863",
+    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "21.75509687220",
+    "Bev_lkerungs_dichte": "2205.6234287100",
+    "Geburten": "175",
+    "Zuz_ge": "1987",
+    "Fortz_ge": "1678"
+  },
+  {
     "id": "51",
     "Stadtgebiet": "Fuhlsb\u00fcttel",
     "jahr": "2016",
@@ -478,17 +562,5 @@
     "Geburten": "157",
     "Zuz_ge": "1534",
     "Fortz_ge": "1451"
-  },
-  {
-    "id": "35",
-    "Stadtgebiet": "Lokstedt",
-    "jahr": "2016",
-    "Anteil_der_unter_18_J_hrigen_in": "16.86484204600",
-    "Ausl_nderanteil_in": "13.80426370220",
-    "Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in": "29.30967719220",
-    "Bev_lkerungs_dichte": "5805.7270052400",
-    "Geburten": "322",
-    "Zuz_ge": "3203",
-    "Fortz_ge": "3115"
   }
 ]
