@@ -1,10 +1,15 @@
-import {Component, OnInit, NgZone} from '@angular/core';
-import {ChartUtils} from 'angular-dashboard-components/components/utils/chart.utils';
-import {HttpClient} from '@angular/common/http';
-import {LocalStorageMessage} from '../local-storage/local-storage-message.model';
-import {LocalStorageService} from '../local-storage/local-storage.service';
-import {Kita} from '../feature/kita.model';
-import {StatisticalArea} from '../feature/statistical-area.model';
+import { Component, OnInit, NgZone } from '@angular/core';
+import { ChartUtils } from 'angular-dashboard-components/components/utils/chart.utils';
+import { HttpClient } from '@angular/common/http';
+import { LocalStorageMessage } from '../local-storage/local-storage-message.model';
+import { LocalStorageService } from '../local-storage/local-storage.service';
+import { Feature } from '../feature/feature.model';
+import { Kita } from '../feature/kita.model';
+import { StatisticalArea } from '../feature/statistical-area.model';
+import { Supermarket } from '../feature/supermarket.model';
+import { Pharmacy } from '../feature/pharmacy.model';
+
+type AnyFeature = Kita | StatisticalArea | Supermarket | Pharmacy;
 
 @Component({
   selector: 'app-infoscreen',
@@ -12,8 +17,11 @@ import {StatisticalArea} from '../feature/statistical-area.model';
   styleUrls: ['./infoscreen.component.css']
 })
 export class InfoscreenComponent implements OnInit {
+  hasSelectedFeature: boolean;
   kita: Kita;
   statisticalArea: StatisticalArea;
+  supermarket: Supermarket;
+  pharmacy: Pharmacy;
 
   private _urlDistrictProfiles = 'assets/data/grobo-data.json';
   private _urlInfrastructure = 'assets/data/infrastructure-data.json';
@@ -34,11 +42,8 @@ export class InfoscreenComponent implements OnInit {
   public columnCategories;
   public columnTitle: string;
 
-
-  constructor(private localStorageService: LocalStorageService,
-              public chartUtils: ChartUtils,
-              private zone: NgZone,
-              private _http: HttpClient) {
+  constructor(private localStorageService: LocalStorageService, public chartUtils: ChartUtils, private zone: NgZone,
+    private _http: HttpClient) {
   }
 
   ngOnInit(): void {
@@ -46,39 +51,52 @@ export class InfoscreenComponent implements OnInit {
     this.calculateInitialData();
   }
 
-  receiveMessage(message: LocalStorageMessage<Kita | StatisticalArea>) {
-    this.removeAll();
-    if (message.type === 'select') {
-      switch (message.data.type) {
-        case 'Kita':
-          this.kita = <Kita>message.data;
-          break;
-        case 'StatisticalArea':
-          this.statisticalArea = <StatisticalArea>message.data;
-          break;
-      }
-    } else if (message.type === 'deselect') {
-      console.log(message)
-    } else if (message.type === 'topic-select') {
-      switch (message.data.name) {
-        case 'nahversorgung':
-          this.calculateInfrastructureData();
-          break;
-        case 'kitas':
-          this.calculateInitialData();
-          break;
-        case 'grünflächen':
-          this.calculateInitialData();
-          break;
-      }
+  receiveMessage(message: LocalStorageMessage<AnyFeature>) {
+    switch (message.type) {
+      case 'select':
+        this.hasSelectedFeature = true;
+        this.removeAll();
+        const feature = message.data;
+        switch (feature.type) {
+          case 'Kita':
+            this.kita = <Kita>feature;
+            break;
+          case 'StatisticalArea':
+            this.statisticalArea = <StatisticalArea>feature;
+            break;
+          case 'Supermarket':
+            this.supermarket = <Supermarket>feature;
+            break;
+          case 'Pharmacy':
+            this.pharmacy = <Pharmacy>feature;
+            break;
+        }
+        break;
+      case 'deselect':
+        this.hasSelectedFeature = false;
+        this.removeAll();
+        break;
+      case 'topic-select':
+        switch (message.data.name) {
+          case 'nahversorgung':
+            this.calculateInfrastructureData();
+            break;
+          case 'kitas':
+            this.calculateInitialData();
+            break;
+          case 'grünflächen':
+            this.calculateInitialData();
+            break;
+        }
     }
   }
 
   private removeAll() {
     delete this.kita;
     delete this.statisticalArea;
+    delete this.supermarket;
+    delete this.pharmacy;
   }
-
 
   /*
    *   Recalculates the dataproviders (charts, tables etc.) with the changed data
@@ -151,7 +169,7 @@ export class InfoscreenComponent implements OnInit {
 
           this.columnData2 = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
             'supermaerkte', 'jahr', ['2016'], 'Groß Borstel');
-          this.column2Title = 'Supermärkte der Stadtteile'
+          this.column2Title = 'Supermärkte der Stadtteile';
 
           // this.lineCategories = this.chartUtils.getUniqueSeriesNames(this.jsonData, ['jahr']);
           // this.lineData = this.chartUtils.getSumData(this.jsonData,['jahr'], ['Geburten']);

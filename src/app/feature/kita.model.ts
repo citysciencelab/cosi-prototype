@@ -1,5 +1,6 @@
-export class Kita {
-  type: string; // used for type checking
+import { Feature } from './feature.model';
+
+export class Kita extends Feature {
   name: string;
   address: string;
   organisation: string;
@@ -9,7 +10,7 @@ export class Kita {
   capacity: number;
 
   constructor(properties: { [k: string]: any }) {
-    this.type = 'Kita';
+    super('Kita');
     this.name = properties['Name'];
     this.address = properties['Strasse'] + ' ' + properties['Hausnr'] + ', ' + properties['PLZ'] + ' ' + properties['Ort'];
     this.organisation = properties['Traeger'];

@@ -10,6 +10,8 @@ import { MapComponent } from '../map/map.component';
 import { MapLayer } from '../map/map-layer.model';
 import { Kita } from '../feature/kita.model';
 import { StatisticalArea } from '../feature/statistical-area.model';
+import { Supermarket } from '../feature/supermarket.model';
+import { Pharmacy } from '../feature/pharmacy.model';
 
 @Component({
   selector: 'app-touchscreen',
@@ -161,35 +163,36 @@ export class TouchscreenComponent implements OnInit {
     this.updateMapLayers();
   }
 
+  isKita(object: {}): object is Kita {
+    return object.hasOwnProperty('Traeger');
+  }
+
+  isStatisticalArea(object: {}): object is StatisticalArea {
+    return object.hasOwnProperty('STGEBNEU');
+  }
+
+  isSupermarket(object: {}): object is Supermarket {
+    return object.hasOwnProperty('shop') && object['shop'] === 'supermarket';
+  }
+
+  isPharmacy(object: {}): object is Pharmacy {
+    return object.hasOwnProperty('amenity') && object['amenity'] === 'pharmacy';
+  }
+
   onSelect(e: ol.interaction.Select.Event) {
     let message: LocalStorageMessage<{}> = { type: 'deselect', data: null };
     if (e.selected.length > 0) {
-      const feature = e.selected[0];
-      const layer = this.map.getLayerByFeature(feature);
-      switch (layer) {
-        case 'kitas':
-          message = this.createKitaMessage(feature);
-          break;
-        case 'einwohner':
-          message = this.createStatisticalAreaMessage(feature);
-          break;
-      }
+      const properties = e.selected[0].getProperties();
+      message = {
+        type: 'select',
+        data: this.isKita(properties) ? new Kita(properties) :
+          this.isStatisticalArea(properties) ? new StatisticalArea(properties) :
+          this.isSupermarket(properties) ? new Supermarket(properties) :
+          this.isPharmacy(properties) ? new Pharmacy(properties) :
+          null
+      };
     }
     this.localStorageService.sendMessage(message);
-  }
-
-  private createKitaMessage(feature: ol.Feature): LocalStorageMessage<Kita> {
-    const properties = feature.getProperties();
-    const kita = new Kita(properties);
-    return { type: 'select', data: kita };
-  }
-
-  private createStatisticalAreaMessage(feature: ol.Feature): LocalStorageMessage<StatisticalArea> {
-    const properties = feature.getProperties();
-    const geometry = <ol.geom.Polygon>feature.getGeometry();
-    properties.area = geometry.getArea();
-    const statisticalArea = new StatisticalArea(properties);
-    return { type: 'select', data: statisticalArea };
   }
 
   onUpdateObject(e: CustomEvent) {

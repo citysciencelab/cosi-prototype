@@ -1,5 +1,6 @@
-export class StatisticalArea {
-  type: string; // used for type checking
+import { Feature } from './feature.model';
+
+export class StatisticalArea extends Feature {
   name: string;
   area: number;
   population: number;
@@ -7,11 +8,11 @@ export class StatisticalArea {
   kitasIn500m: number;
 
   constructor(properties: { [k: string]: any }) {
-    this.type = 'StatisticalArea';
+    super('StatisticalArea');
     this.name = properties['STGEBNEU'];
     this.population = properties['Gesamt'];
     this.population1to6 = properties['1bis6'];
     this.kitasIn500m = properties['Kita500m'];
-    this.area = properties['area'];
+    this.area = properties['geometry'].getArea();
   }
 }
