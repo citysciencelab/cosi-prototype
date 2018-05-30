@@ -2,23 +2,21 @@ import { Injectable } from '@angular/core';
 import * as ol from 'openlayers';
 import { environment } from '../../environments/environment';
 
-const fill = new ol.style.Fill({ color: [255, 255, 255, 0.4] });
-const stroke = new ol.style.Stroke({ color: [51, 153, 204, 1], width: 1.25 });
 const white = <ol.Color>[255, 255, 255, 1];
 const blue = <ol.Color>[0, 153, 255, 1];
-const width = 3;
+const lightskyblue = <ol.Color>[135, 206, 250, 1];
+const red = <ol.Color>[255, 0, 0, 1];
+const crimson = <ol.Color>[220, 20, 60, 1];
+const font = '18px sans-serif';
 
 @Injectable()
 export class MapService {
   private instance: ol.Map;
-  private defaultStyles: ol.style.Style[];
-  private defaultEditingStyles: { [key: string]: ol.style.Style[] };
   selectInteraction: ol.interaction.Select;
   baseLayers: { [key: string]: ol.layer.Layer };
   thematicLayers: { [key: string]: { [key: string]: ol.layer.Layer } };
 
   constructor() {
-    this.loadDefaultStyles();
     this.instance = new ol.Map({});
     this.addControls();
     this.addLayers();
@@ -315,7 +313,7 @@ export class MapService {
         const selectedLayer = this.getLayerByFeature(feature);
         const styleFunction = this.getStyle(selectedLayer, true);
         if (typeof styleFunction !== 'function') {
-          return this.defaultEditingStyles[feature.getGeometry().getType()];
+          return;
         }
         return styleFunction(feature);
       },
@@ -330,61 +328,61 @@ export class MapService {
   }
 
   private getStyle(layer: string, selected: boolean): (feature: ol.Feature) => ol.style.Style {
-    const textFont = '18px sans-serif';
-    const whiteTextFill = new ol.style.Fill({
-      color: 'white'
-    });
-    const redTextStroke = new ol.style.Stroke({
-      color: 'red',
-      width: 2
-    });
-
     // This map contains style definitions for all layers (deselected/selected)
     const styles = {
       'kitas': {
         default: (feature: ol.Feature) => new ol.style.Style({
           image: new ol.style.Circle({
-            fill: new ol.style.Fill({
-              color: [255, 255, 255, 1]
-            }),
-            stroke: new ol.style.Stroke({
-              color: [51, 153, 204, 1],
-              width: 1.25
-            }),
-            radius: 5
+            radius: 7,
+            fill: new ol.style.Fill({ color: white }),
+            stroke: new ol.style.Stroke({ color: blue, width: 1.5 })
+          }),
+          text: new ol.style.Text({
+            text: '' + (Math.round(feature.get('KapKindneu')) || 0),
+            font: font,
+            fill: new ol.style.Fill({ color: white }),
+            stroke: new ol.style.Stroke({ color: blue, width: 2 }),
+            offsetY: -16
           })
         }),
-        selected: (feature: ol.Feature) => this.defaultEditingStyles['Point']
+        selected: (feature: ol.Feature) => new ol.style.Style({
+          image: new ol.style.Circle({
+            radius: 8,
+            fill: new ol.style.Fill({ color: blue }),
+            stroke: new ol.style.Stroke({ color: white, width: 1.5 })
+          }),
+          text: new ol.style.Text({
+            text: '' + (Math.round(feature.get('KapKindneu')) || 0),
+            font: font,
+            fill: new ol.style.Fill({ color: white }),
+            stroke: new ol.style.Stroke({ color: blue, width: 2 }),
+            offsetY: -16
+          })
+        })
       },
       'einwohner': {
         default: (feature: ol.Feature) => new ol.style.Style({
           fill: new ol.style.Fill({
             color: this.getFill(feature, 'einwohner')
           }),
-          stroke: new ol.style.Stroke({
-            color: [135, 206, 250, 1],
-            width: 1
-          }),
+          stroke: new ol.style.Stroke({ color: lightskyblue, width: 1.5 }),
           text: new ol.style.Text({
             text: '' + (feature.get('1bis6') || 0),
-            font: textFont,
-            fill: whiteTextFill,
-            stroke: redTextStroke
+            font: font,
+            fill: new ol.style.Fill({ color: white }),
+            stroke: new ol.style.Stroke({ color: red, width: 2 })
           })
         }),
         selected: (feature: ol.Feature) => new ol.style.Style({
           fill: new ol.style.Fill({
             color: this.getFill(feature, 'einwohner')
           }),
-          stroke: new ol.style.Stroke({
-            color: blue,
-            width: 3
-          }),
+          stroke: new ol.style.Stroke({ color: blue, width: 2 }),
           text: new ol.style.Text({
             text: '' + (feature.get('1bis6') || 0),
-            font: textFont,
-            fill: whiteTextFill,
-            stroke: redTextStroke
+            font: font,
+            fill: new ol.style.Fill({ color: white }),
+            stroke: new ol.style.Stroke({ color: red, width: 2 })
           })
         })
       },
@@ -392,25 +390,15 @@ export class MapService {
         default: (feature: ol.Feature) => new ol.style.Style({
           image: new ol.style.Circle({
             radius: 7,
-            fill: new ol.style.Fill({
-              color: [255, 255, 255, 0.8]
-            }),
-            stroke: new ol.style.Stroke({
-              color: [220, 20, 60, 1],
-              width: 1.25
-            })
+            fill: new ol.style.Fill({ color: white }),
+            stroke: new ol.style.Stroke({ color: crimson, width: 1.5 })
           })
         }),
         selected: (feature: ol.Feature) => new ol.style.Style({
           image: new ol.style.Circle({
             radius: 8,
-            fill: new ol.style.Fill({
-              color: [220, 20, 60, 1]
-            }),
-            stroke: new ol.style.Stroke({
-              color: white,
-              width: 1.5
-            })
+            fill: new ol.style.Fill({ color: crimson }),
+            stroke: new ol.style.Stroke({ color: white, width: 1.5 })
           })
         })
       },
@@ -418,25 +406,15 @@ export class MapService {
         default: (feature: ol.Feature) => new ol.style.Style({
           image: new ol.style.Circle({
             radius: 7,
-            fill: new ol.style.Fill({
-              color: [255, 255, 255, 0.8]
-            }),
-            stroke: new ol.style.Stroke({
-              color: blue,
-              width: 1.25
-            })
+            fill: new ol.style.Fill({ color: white }),
+            stroke: new ol.style.Stroke({ color: blue, width: 1.5 })
           })
         }),
         selected: (feature: ol.Feature) => new ol.style.Style({
           image: new ol.style.Circle({
             radius: 8,
-            fill: new ol.style.Fill({
-              color: blue
-            }),
-            stroke: new ol.style.Stroke({
-              color: white,
-              width: 1.5
-            })
+            fill: new ol.style.Fill({ color: blue }),
+            stroke: new ol.style.Stroke({ color: white, width: 1.5 })
           })
         })
       },
@@ -503,61 +481,5 @@ export class MapService {
       }
       return current[1];
     }, <ol.Color>[0, 0, 0, 1]);
-  }
-
-  private loadDefaultStyles() {
-    // Default styles are taken from https://openlayers.org/en/latest/apidoc/ol.style.html
-    this.defaultStyles = [
-      new ol.style.Style({
-        image: new ol.style.Circle({
-          fill: fill,
-          stroke: stroke,
-          radius: 5
-        }),
-        fill: fill,
-        stroke: stroke
-      })
-    ];
-    this.defaultEditingStyles = {};
-    this.defaultEditingStyles['Polygon'] = [
-      new ol.style.Style({
-        fill: new ol.style.Fill({
-          color: [255, 255, 255, 0.5]
-        })
-      })
-    ];
-    this.defaultEditingStyles['MultiPolygon'] = this.defaultEditingStyles['Polygon'];
-    this.defaultEditingStyles['LineString'] = [
-      new ol.style.Style({
-        stroke: new ol.style.Stroke({
-          color: white,
-          width: width + 2
-        })
-      }),
-      new ol.style.Style({
-        stroke: new ol.style.Stroke({
-          color: blue,
-          width: width
-        })
-      })
-    ];
-    this.defaultEditingStyles['MultiLineString'] = this.defaultEditingStyles['LineString'];
-    this.defaultEditingStyles['Point'] = [
-      new ol.style.Style({
-        image: new ol.style.Circle({
-          radius: width * 2,
-          fill: new ol.style.Fill({
-            color: blue
-          }),
-          stroke: new ol.style.Stroke({
-            color: white,
-            width: width / 2
-          })
-        }),
-        zIndex: Infinity
-      })
-    ];
-    this.defaultEditingStyles['MultiPoint'] = this.defaultEditingStyles['Point'];
-    this.defaultEditingStyles['GeometryCollection'] = this.defaultEditingStyles['Polygon'].concat(this.defaultEditingStyles['Point']);
   }
 }
