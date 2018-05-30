@@ -89,7 +89,7 @@ export class InfoscreenComponent implements OnInit {
           case 'kitas':
             this.calculateInitialData();
             break;
-          case 'grünflächen':
+          case 'gruenflaechen':
             this.calculateInitialData();
             break;
         }
@@ -106,8 +106,7 @@ export class InfoscreenComponent implements OnInit {
 
   /*
    *   Recalculates the dataproviders (charts, tables etc.) with the changed data
-  */
-
+   */
   calculateInitialData() {
     this.getJSONData(this._urlDistrictProfiles).subscribe(
       data => {
