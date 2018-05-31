@@ -18,7 +18,7 @@ export class MapService {
   baseLayers: { [key: string]: ol.layer.Layer };
   thematicLayers: { [key: string]: { [key: string]: ol.layer.Layer } };
   isFirstClick = false;
-  mapClickEvent = new EventEmitter<any>();
+  toolStartEvent = new EventEmitter<any>();
 
   // Map config
   mapCenter = ol.proj.fromLonLat([9.9880, 53.6126]);
@@ -346,7 +346,7 @@ export class MapService {
       let message: LocalStorageMessage<{}> = { type: 'tool-interaction', data: {name : 'tool-start'} };
       this.localStorageService.sendMessage(message);
 
-      this.mapClickEvent.emit('tool-start');
+      this.toolStartEvent.emit('tool-start');
     }
   }
 

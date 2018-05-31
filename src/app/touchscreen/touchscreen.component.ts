@@ -186,7 +186,7 @@ export class TouchscreenComponent implements OnInit {
       }
     ];
 
-    this.mapService.mapClickEvent.subscribe(
+    this.mapService.toolStartEvent.subscribe(
       (data: any) => {
         if (data == 'tool-start')
           this.toggleMenu();
