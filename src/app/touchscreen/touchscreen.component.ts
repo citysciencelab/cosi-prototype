@@ -143,6 +143,12 @@ export class TouchscreenComponent implements OnInit {
             meta: 'Quelle: MRH'
           },
           {
+            name: 'stadtteileKitaplaetze',
+            displayName: 'Kitaplätze pro Kind (auf Stadtteilebene)',
+            visible: false,
+            meta: 'Quellen: BASFI (Kitaplätze), Statistikamt Nord (Bevölkerungsstruktur)'
+          },
+          {
             name: 'einwohner',
             displayName: 'Einwohner im Alter 0 bis 6 Jahre',
             visible: true,
@@ -161,7 +167,7 @@ export class TouchscreenComponent implements OnInit {
       {
         name: 'stadtteile',
         displayName: 'Stadtteile',
-        visible: true,
+        visible: false,
         legendUrl: 'https://geodienste.hamburg.de/HH_WMS_Verwaltungsgrenzen' +
           '?request=GetLegendGraphic&version=1.3.0&service=WMS&layer=stadtteile&style=style_verwaltungsgrenzen_stadtteile&format=image/png',
         meta: 'Quelle: LGV'
@@ -188,8 +194,9 @@ export class TouchscreenComponent implements OnInit {
 
     this.mapService.toolStartEvent.subscribe(
       (data: any) => {
-        if (data == 'tool-start')
+        if (data === 'tool-start') {
           this.toggleMenu();
+        }
       });
   }
 

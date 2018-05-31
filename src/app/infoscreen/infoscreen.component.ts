@@ -99,6 +99,7 @@ export class InfoscreenComponent implements OnInit {
             this.calculatePublicSpaceData();
             break;
         }
+        break;
       case 'tool-interaction':
         switch (message.data.name) {
           case 'tool-start':
@@ -230,7 +231,7 @@ export class InfoscreenComponent implements OnInit {
   }
 
   doPotentialResets(dataType: string) {
-    if (dataType != 'initial') {
+    if (dataType !== 'initial') {
       this.columnPlotLine = null;
       this.column2PlotLine = null;
     }

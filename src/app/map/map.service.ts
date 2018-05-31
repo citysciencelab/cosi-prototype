@@ -9,7 +9,7 @@ const blue = <ol.Color>[0, 153, 255, 1];
 const lightskyblue = <ol.Color>[135, 206, 250, 1];
 const red = <ol.Color>[255, 0, 0, 1];
 const crimson = <ol.Color>[220, 20, 60, 1];
-const font = '18px sans-serif';
+const purple = <ol.Color>[128, 0, 128, 1];
 
 @Injectable()
 export class MapService {
@@ -103,7 +103,7 @@ export class MapService {
   }
 
   private addLayers() {
-    /* The ordering of the layers is important. The first layer is at the bottom, the last is at the top. */
+    // The order of the layers affects the rendering order when zIndex values are equal.
     this.baseLayers = {
       'osm': new ol.layer.Tile({
         source: new ol.source.OSM()
@@ -148,9 +148,9 @@ export class MapService {
       })
     };
 
-    /* The ordering of the layers is important. The first layer is at the bottom, the last is at the top. */
+    // The order of the layers affects the rendering order when zIndex values are equal.
     this.thematicLayers = {
-      // Vector layers (self-hosted)
+      // Vector layers
       'kitas': {
         'before': new ol.layer.Vector({
           source: new ol.source.Vector({
@@ -158,7 +158,7 @@ export class MapService {
               '&outputFormat=application/json&srsname=EPSG:4326',
             format: new ol.format.GeoJSON()
           }),
-          zIndex: 1
+          zIndex: 10
         }),
         'after': new ol.layer.Vector({
           source: new ol.source.Vector({
@@ -166,33 +166,7 @@ export class MapService {
               '&outputFormat=application/json&srsname=EPSG:4326',
             format: new ol.format.GeoJSON()
           }),
-          zIndex: 1
-        })
-      },
-      'kitasHeatmap': {
-        'before': new ol.layer.Heatmap({
-          source: new ol.source.Vector({
-            url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:kitas' +
-              '&outputFormat=application/json&srsname=EPSG:4326',
-            format: new ol.format.GeoJSON()
-          }),
-          gradient: ['#0ff', '#0f0', '#ff0', '#f00'],
-          weight: feature => feature.get('KapKindneu') / 350,
-          radius: 16,
-          blur: 30,
-          zIndex: 1
-        }),
-        'after': new ol.layer.Heatmap({
-          source: new ol.source.Vector({
-            url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:kitas_neu' +
-              '&outputFormat=application/json&srsname=EPSG:4326',
-            format: new ol.format.GeoJSON()
-          }),
-          gradient: ['#0ff', '#0f0', '#ff0', '#f00'],
-          weight: feature => feature.get('KapKindneu') / 350,
-          radius: 16,
-          blur: 30,
-          zIndex: 1
+          zIndex: 10
         })
       },
       'einwohner': {
@@ -201,14 +175,34 @@ export class MapService {
             url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:einwohner_0bis6' +
               '&outputFormat=application/json&srsname=EPSG:4326',
             format: new ol.format.GeoJSON()
-          })
+          }),
+          zIndex: 1
         }),
         'after': new ol.layer.Vector({
           source: new ol.source.Vector({
             url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:einwohner_0bis6_neu' +
               '&outputFormat=application/json&srsname=EPSG:4326',
             format: new ol.format.GeoJSON()
-          })
+          }),
+          zIndex: 1
+        })
+      },
+      'stadtteileKitaplaetze': {
+        'before': new ol.layer.Vector({
+          source: new ol.source.Vector({
+            url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:stadtteile_grossborstel' +
+              '&outputFormat=application/json&srsname=EPSG:4326',
+            format: new ol.format.GeoJSON()
+          }),
+          zIndex: 2
+        }),
+        'after': new ol.layer.Vector({
+          source: new ol.source.Vector({
+            url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature' +
+              '&typeName=csl:stadtteile_grossborstel_neu&outputFormat=application/json&srsname=EPSG:4326',
+            format: new ol.format.GeoJSON()
+          }),
+          zIndex: 2
         })
       },
       'gruenflaechen': {
@@ -220,7 +214,6 @@ export class MapService {
           })
         })
       },
-      // Vector layers (OpenStreetMap)
       'supermaerkte': {
         '*': new ol.layer.Vector({
           source: new ol.source.Vector({
@@ -240,7 +233,34 @@ export class MapService {
           zIndex: 1
         })
       },
-      // WMS layers
+      // Heatmap layers
+      'kitasHeatmap': {
+        'before': new ol.layer.Heatmap({
+          source: new ol.source.Vector({
+            url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:kitas' +
+              '&outputFormat=application/json&srsname=EPSG:4326',
+            format: new ol.format.GeoJSON()
+          }),
+          gradient: ['#0ff', '#0f0', '#ff0', '#f00'],
+          weight: feature => feature.get('KapKindneu') / 350,
+          radius: 16,
+          blur: 30,
+          zIndex: 11
+        }),
+        'after': new ol.layer.Heatmap({
+          source: new ol.source.Vector({
+            url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:kitas_neu' +
+              '&outputFormat=application/json&srsname=EPSG:4326',
+            format: new ol.format.GeoJSON()
+          }),
+          gradient: ['#0ff', '#0f0', '#ff0', '#f00'],
+          weight: feature => feature.get('KapKindneu') / 350,
+          radius: 16,
+          blur: 30,
+          zIndex: 11
+        })
+      },
+      // Tile layers
       'kitasGehzeit': {
         '*': new ol.layer.Tile({
           source: new ol.source.TileWMS({
@@ -300,7 +320,7 @@ export class MapService {
         this.instance.addLayer(layer);
         // Set the default style for each vector layer
         if (layer.constructor === ol.layer.Vector) {
-          (<ol.layer.Vector>layer).setStyle(this.getStyle(layerGroupName, false));
+          (<ol.layer.Vector>layer).setStyle(this.getStyleFunction(layerGroupName, false));
         }
         layer.setVisible(false);
       });
@@ -317,16 +337,25 @@ export class MapService {
     this.instance.on('singleclick', this.mapClickHandler);
 
     this.selectInteraction = new ol.interaction.Select({
+      layers: [
+        this.thematicLayers['kitas']['before'],
+        this.thematicLayers['kitas']['after'],
+        this.thematicLayers['einwohner']['before'],
+        this.thematicLayers['einwohner']['after'],
+        this.thematicLayers['supermaerkte']['*'],
+        this.thematicLayers['apotheken']['*'],
+        this.thematicLayers['gruenflaechen']['*']
+      ],
       // Because multiple select interactions for different layers don't work,
       // the layer needs to be determined within the style function. This way we can
       // use the styling associated with the layer the selected feature belongs to.
-      style: (feature: ol.Feature) => {
+      style: (feature: ol.Feature, resolution: number) => {
         const selectedLayer = this.getLayerByFeature(feature);
-        const styleFunction = this.getStyle(selectedLayer, true);
+        const styleFunction = this.getStyleFunction(selectedLayer, true);
         if (typeof styleFunction !== 'function') {
           return;
         }
-        return styleFunction(feature);
+        return styleFunction(feature, resolution);
       },
       hitTolerance: 8
     });
@@ -343,14 +372,14 @@ export class MapService {
       this.isFirstClick = true;
       this.getView().animate({ zoom: this.mapZoom}, { center: this.mapCenter });
 
-      let message: LocalStorageMessage<{}> = { type: 'tool-interaction', data: {name : 'tool-start'} };
+      const message: LocalStorageMessage<{}> = { type: 'tool-interaction', data: {name : 'tool-start'} };
       this.localStorageService.sendMessage(message);
 
       this.toolStartEvent.emit('tool-start');
     }
   }
 
-  private getStyle(layer: string, selected: boolean): (feature: ol.Feature) => ol.style.Style {
+  private getStyleFunction(layer: string, selected: boolean): ol.StyleFunction {
     // This map contains style definitions for all layers (deselected/selected)
     const styles = {
       'kitas': {
@@ -362,7 +391,7 @@ export class MapService {
           }),
           text: resolution < 10 ? new ol.style.Text({
             text: '' + (Math.round(feature.get('KapKindneu')) || 0),
-            font: font,
+            font: '18px sans-serif',
             fill: new ol.style.Fill({ color: white }),
             stroke: new ol.style.Stroke({ color: blue, width: 2 }),
             offsetY: -16
@@ -376,11 +405,22 @@ export class MapService {
           }),
           text: resolution < 10 ? new ol.style.Text({
             text: '' + (Math.round(feature.get('KapKindneu')) || 0),
-            font: font,
+            font: '18px sans-serif',
             fill: new ol.style.Fill({ color: white }),
             stroke: new ol.style.Stroke({ color: blue, width: 2 }),
             offsetY: -16
           }) : null
+        })
+      },
+      'stadtteileKitaplaetze': {
+        default: (feature: ol.Feature, resolution: number) => new ol.style.Style({
+          stroke: new ol.style.Stroke({ color: purple, width: 1.5 }),
+          text: new ol.style.Text({
+            text: ('' + (feature.get('Kpl p K') || '')).replace(/\./, ','),
+            font: '22px sans-serif',
+            fill: new ol.style.Fill({ color: white }),
+            stroke: new ol.style.Stroke({ color: purple, width: 2 })
+          })
         })
       },
       'einwohner': {
@@ -388,10 +428,10 @@ export class MapService {
           fill: new ol.style.Fill({
             color: this.getColor(feature, 'einwohner')
           }),
-          stroke: new ol.style.Stroke({ color: lightskyblue, width: 1.5 }),
+          stroke: new ol.style.Stroke({ color: red, width: 0.5 }),
           text: resolution < 10 ? new ol.style.Text({
             text: '' + (feature.get('1bis6') || 0),
-            font: font,
+            font: '18px sans-serif',
             fill: new ol.style.Fill({ color: white }),
             stroke: new ol.style.Stroke({ color: red, width: 2 })
           }) : null
@@ -400,10 +440,10 @@ export class MapService {
           fill: new ol.style.Fill({
             color: this.getColor(feature, 'einwohner')
           }),
-          stroke: new ol.style.Stroke({ color: blue, width: 2 }),
+          stroke: new ol.style.Stroke({ color: red, width: 2 }),
           text: resolution < 10 ? new ol.style.Text({
             text: '' + (feature.get('1bis6') || 0),
-            font: font,
+            font: '18px sans-serif',
             fill: new ol.style.Fill({ color: white }),
             stroke: new ol.style.Stroke({ color: red, width: 2 })
           }) : null
@@ -466,7 +506,10 @@ export class MapService {
     if (!styles.hasOwnProperty(layer)) {
       return;
     }
-    return styles[layer][selected ? 'selected' : 'default'];
+    if (selected && styles[layer].hasOwnProperty('selected')) {
+      return styles[layer]['selected'];
+    }
+    return styles[layer]['default'];
   }
 
   private getColor(feature: ol.Feature, layer: string): ol.Color {
