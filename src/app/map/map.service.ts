@@ -363,7 +363,7 @@ export class MapService {
       'einwohner': {
         default: (feature: ol.Feature, resolution: number) => new ol.style.Style({
           fill: new ol.style.Fill({
-            color: this.getFill(feature, 'einwohner')
+            color: this.getColor(feature, 'einwohner')
           }),
           stroke: new ol.style.Stroke({ color: lightskyblue, width: 1.5 }),
           text: resolution < 10 ? new ol.style.Text({
@@ -375,7 +375,7 @@ export class MapService {
         }),
         selected: (feature: ol.Feature, resolution: number) => new ol.style.Style({
           fill: new ol.style.Fill({
-            color: this.getFill(feature, 'einwohner')
+            color: this.getColor(feature, 'einwohner')
           }),
           stroke: new ol.style.Stroke({ color: blue, width: 2 }),
           text: resolution < 10 ? new ol.style.Text({
@@ -421,16 +421,16 @@ export class MapService {
       'gruenflaechen': {
         default: (feature: ol.Feature) => new ol.style.Style({
           fill: new ol.style.Fill({
-            color: [0, 128, 0, 0.5]
+            color: this.getColor(feature, 'gruenflaechen')
           }),
           stroke: new ol.style.Stroke({
-            color: [0, 128, 0, 1],
+            color: this.getColor(feature, 'gruenflaechen'),
             width: 2
           })
         }),
         selected: (feature: ol.Feature) => new ol.style.Style({
           fill: new ol.style.Fill({
-            color: [0, 128, 0, 0.5]
+            color: this.getColor(feature, 'gruenflaechen')
           }),
           stroke: new ol.style.Stroke({
             color: blue,
@@ -446,7 +446,7 @@ export class MapService {
     return styles[layer][selected ? 'selected' : 'default'];
   }
 
-  private getFill(feature: ol.Feature, layer: string): ol.Color {
+  private getColor(feature: ol.Feature, layer: string): ol.Color {
     const scales: { [key: string]: { [key: string]: ol.Color } } = {
       'einwohner': {
         0: [255, 0, 0, 0],    // 0-9
@@ -456,11 +456,25 @@ export class MapService {
         90: [255, 0, 0, 0.8]  // 90-
       }
     };
+    const categories: { [key: string]: { [key: string]: ol.Color } } = {
+      'gruenflaechen': {
+        'Kleingarten': [160, 82, 45, 0.6],
+        'Dauerkleingarten': [160, 82, 45, 0.6],
+        'Grün an Kleingärten': [160, 82, 45, 0.6],
+        'Parkanlage': [60, 179, 113, 0.6],
+        'Spielplatz': [124, 252, 0, 0.6],
+        'Friedhof': [72, 209, 204, 0.6],
+        'Schutzgrün': [199, 21, 133, 0.6],
+        'anderweitige Nutzung': [106, 90, 205, 0.6]
+      }
+    };
 
     const fillFunctions = {
       'einwohner': (f: ol.Feature) => {
-        const geom = <ol.geom.Polygon>f.getGeometry();
         return this.getColorFromScale(scales['einwohner'], f.get('1bis6'));
+      },
+      'gruenflaechen': (f: ol.Feature) => {
+        return categories['gruenflaechen'][f.get('gruenart')];
       }
     };
 

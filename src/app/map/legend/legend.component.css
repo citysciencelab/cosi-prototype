@@ -21,10 +21,10 @@
 
 .legend-row {
   display: flex;
+  font-size: 90%;
 }
 
 .legend-box {
   width: 20px;
   height: 20px;
-  border: 1px solid lightskyblue;
 }

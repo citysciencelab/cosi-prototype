@@ -50,6 +50,19 @@ export class TouchscreenComponent implements OnInit {
             name: 'gruenflaechen',
             displayName: 'Grünflächen',
             visible: true,
+            legendHtml:
+              '<div class="legend-row"><span class="legend-box" style="background-color: rgba(160, 82, 45, 0.6);">' +
+              '</span>&nbsp;Kleingarten</div>' +
+              '<div class="legend-row"><span class="legend-box" style="background-color: rgba(60, 179, 113, 0.6);">' +
+              '</span>&nbsp;Parkanlage</div>' +
+              '<div class="legend-row"><span class="legend-box" style="background-color: rgba(124, 252, 0, 0.6);">' +
+              '</span>&nbsp;Spielplatz</div>' +
+              '<div class="legend-row"><span class="legend-box" style="background-color: rgba(72, 209, 204, 0.6);">' +
+              '</span>&nbsp;Friedhof</div>' +
+              '<div class="legend-row"><span class="legend-box" style="background-color: rgba(199, 21, 133, 0.6);">' +
+              '</span>&nbsp;Schutzgrün</div>' +
+              '<div class="legend-row"><span class="legend-box" style="background-color: rgba(106, 90, 205, 0.6);">' +
+              '</span>&nbsp;anderweitige Nutzung</div>',
             meta: 'Quelle: LGV'
           }
         ],
