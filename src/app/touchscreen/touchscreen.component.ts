@@ -82,7 +82,7 @@ export class TouchscreenComponent implements OnInit {
               '</span>&nbsp;anderweitige Nutzung</div>',
             meta: 'Quelle: LGV'
           }
-        ],
+        ]
       },
       {
         name: 'nahversorgung',
@@ -126,13 +126,13 @@ export class TouchscreenComponent implements OnInit {
             name: 'kitas',
             displayName: 'Kitas',
             visible: true,
-            meta: 'Quelle: Behörde für Arbeit, Soziales, Familie und Integration'
+            meta: 'Quelle: BASFI'
           },
           {
             name: 'kitasHeatmap',
             displayName: 'Kitas (Heatmap)',
             visible: false,
-            meta: 'Quelle: Behörde für Arbeit, Soziales, Familie und Integration'
+            meta: 'Quelle: BASFI'
           },
           {
             name: 'kitasGehzeit',
@@ -165,9 +165,16 @@ export class TouchscreenComponent implements OnInit {
     ];
     this.baseLayers = [
       {
+        name: 'sozialmonitoring',
+        displayName: 'Sozialmonitoring 2016',
+        visible: false,
+        legendUrl: '/assets/Gesamtindex2016_Legende.png',
+        meta: 'Quelle: BSW'
+      },
+      {
         name: 'stadtteile',
         displayName: 'Stadtteile',
-        visible: false,
+        visible: true,
         legendUrl: 'https://geodienste.hamburg.de/HH_WMS_Verwaltungsgrenzen' +
           '?request=GetLegendGraphic&version=1.3.0&service=WMS&layer=stadtteile&style=style_verwaltungsgrenzen_stadtteile&format=image/png',
         meta: 'Quelle: LGV'

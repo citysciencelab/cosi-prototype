@@ -145,6 +145,13 @@ export class MapService {
           projection: 'EPSG:25832'
         }),
         zIndex: 10
+      }),
+      'sozialmonitoring': new ol.layer.Vector({
+        source: new ol.source.Vector({
+          url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:sozialmonitoring2016' +
+            '&outputFormat=application/json&srsname=EPSG:4326',
+          format: new ol.format.GeoJSON()
+        })
       })
     };
 
@@ -311,8 +318,12 @@ export class MapService {
       }
     };
 
-    Object.values(this.baseLayers).forEach(layer => {
+    Object.entries(this.baseLayers).forEach(([layerName, layer]) => {
       this.instance.addLayer(layer);
+      // Set the default style for each vector layer
+      if (layer.constructor === ol.layer.Vector) {
+        (<ol.layer.Vector>layer).setStyle(this.getStyleFunction(layerName, false));
+      }
     });
 
     Object.entries(this.thematicLayers).forEach(([layerGroupName, layerGroup]) => {
@@ -500,6 +511,26 @@ export class MapService {
             width: 3
           })
         })
+      },
+      'sozialmonitoring': {
+        default: (feature: ol.Feature) => new ol.style.Style({
+          fill: new ol.style.Fill({
+            color: this.getColor(feature, 'sozialmonitoring')
+          }),
+          stroke: new ol.style.Stroke({
+            color: this.getColor(feature, 'sozialmonitoring'),
+            width: 2
+          })
+        }),
+        selected: (feature: ol.Feature) => new ol.style.Style({
+          fill: new ol.style.Fill({
+            color: this.getColor(feature, 'sozialmonitoring')
+          }),
+          stroke: new ol.style.Stroke({
+            color: blue,
+            width: 3
+          })
+        })
       }
     };
 
@@ -532,6 +563,24 @@ export class MapService {
         'Friedhof': [72, 209, 204, 0.6],
         'Schutzgrün': [199, 21, 133, 0.6],
         'anderweitige Nutzung': [106, 90, 205, 0.6]
+      },
+      'sozialmonitoring': {
+        // Status hoch
+        1: [76, 115, 0, 0.6],
+        2: [112, 168, 0, 0.6],
+        3: [200, 215, 158, 0.6],
+        // Status mittel
+        4: [0, 133, 168, 0.6],
+        5: [115, 178, 255, 0.6],
+        6: [189, 210, 255, 0.6],
+        // Status niedrig
+        7: [255, 234, 189, 0.6],
+        8: [255, 170, 1, 0.6],
+        9: [168, 112, 1, 0.6],
+        // Status sehr niedrig
+        10: [230, 173, 188, 0.6],
+        11: [229, 83, 122, 0.6],
+        12: [179, 29, 30, 0.6],
       }
     };
 
@@ -541,6 +590,9 @@ export class MapService {
       },
       'gruenflaechen': (f: ol.Feature) => {
         return categories['gruenflaechen'][f.get('gruenart')];
+      },
+      'sozialmonitoring': (f: ol.Feature) => {
+        return categories['sozialmonitoring'][f.get('Gesamtinde')];
       }
     };
 
