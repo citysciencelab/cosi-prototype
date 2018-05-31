@@ -217,11 +217,11 @@ export class InfoscreenComponent implements OnInit {
           this.columnCategories = this.chartUtils.getUniqueSeriesNames(jsonData, ['Stadtgebiet']);
           this.columnData = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
             'pspace_p_p', 'jahr', ['2016'], 'Groß Borstel');
-          this.columnTitle = 'Öffentlich Grünfläche je EW in m²';
+          this.columnTitle = 'Öffentliche Grünfläche je EW in m²';
 
           this.columnData2 = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
             'parks_playgrounds_p_p', 'jahr', ['2016'], 'Groß Borstel');
-          this.column2Title = 'Park, Spielflatz je EW in m²';
+          this.column2Title = 'Park, Spielplatz je EW in m²';
         });
       },
       error => {
