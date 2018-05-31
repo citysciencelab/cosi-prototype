@@ -331,59 +331,59 @@ export class MapService {
     // This map contains style definitions for all layers (deselected/selected)
     const styles = {
       'kitas': {
-        default: (feature: ol.Feature) => new ol.style.Style({
+        default: (feature: ol.Feature, resolution: number) => new ol.style.Style({
           image: new ol.style.Circle({
             radius: 7,
             fill: new ol.style.Fill({ color: white }),
             stroke: new ol.style.Stroke({ color: blue, width: 1.5 })
           }),
-          text: new ol.style.Text({
+          text: resolution < 10 ? new ol.style.Text({
             text: '' + (Math.round(feature.get('KapKindneu')) || 0),
             font: font,
             fill: new ol.style.Fill({ color: white }),
             stroke: new ol.style.Stroke({ color: blue, width: 2 }),
             offsetY: -16
-          })
+          }) : null
         }),
-        selected: (feature: ol.Feature) => new ol.style.Style({
+        selected: (feature: ol.Feature, resolution: number) => new ol.style.Style({
           image: new ol.style.Circle({
             radius: 8,
             fill: new ol.style.Fill({ color: blue }),
             stroke: new ol.style.Stroke({ color: white, width: 1.5 })
           }),
-          text: new ol.style.Text({
+          text: resolution < 10 ? new ol.style.Text({
             text: '' + (Math.round(feature.get('KapKindneu')) || 0),
             font: font,
             fill: new ol.style.Fill({ color: white }),
             stroke: new ol.style.Stroke({ color: blue, width: 2 }),
             offsetY: -16
-          })
+          }) : null
         })
       },
       'einwohner': {
-        default: (feature: ol.Feature) => new ol.style.Style({
+        default: (feature: ol.Feature, resolution: number) => new ol.style.Style({
           fill: new ol.style.Fill({
             color: this.getFill(feature, 'einwohner')
           }),
           stroke: new ol.style.Stroke({ color: lightskyblue, width: 1.5 }),
-          text: new ol.style.Text({
+          text: resolution < 10 ? new ol.style.Text({
             text: '' + (feature.get('1bis6') || 0),
             font: font,
             fill: new ol.style.Fill({ color: white }),
             stroke: new ol.style.Stroke({ color: red, width: 2 })
-          })
+          }) : null
         }),
-        selected: (feature: ol.Feature) => new ol.style.Style({
+        selected: (feature: ol.Feature, resolution: number) => new ol.style.Style({
           fill: new ol.style.Fill({
             color: this.getFill(feature, 'einwohner')
           }),
           stroke: new ol.style.Stroke({ color: blue, width: 2 }),
-          text: new ol.style.Text({
+          text: resolution < 10 ? new ol.style.Text({
             text: '' + (feature.get('1bis6') || 0),
             font: font,
             fill: new ol.style.Fill({ color: white }),
             stroke: new ol.style.Stroke({ color: red, width: 2 })
-          })
+          }) : null
         })
       },
       'apotheken': {
