@@ -1,14 +1,14 @@
-import { Component, OnInit, NgZone } from '@angular/core';
-import { ChartUtils } from 'angular-dashboard-components/components/utils/chart.utils';
-import { HttpClient } from '@angular/common/http';
-import { LocalStorageMessage } from '../local-storage/local-storage-message.model';
-import { LocalStorageService } from '../local-storage/local-storage.service';
-import { Feature } from '../feature/feature.model';
-import { Kita } from '../feature/kita.model';
-import { StatisticalArea } from '../feature/statistical-area.model';
-import { Supermarket } from '../feature/supermarket.model';
-import { Pharmacy } from '../feature/pharmacy.model';
-import { GreenArea } from '../feature/green-area.model';
+import {Component, OnInit, NgZone} from '@angular/core';
+import {ChartUtils} from 'angular-dashboard-components/components/utils/chart.utils';
+import {HttpClient} from '@angular/common/http';
+import {LocalStorageMessage} from '../local-storage/local-storage-message.model';
+import {LocalStorageService} from '../local-storage/local-storage.service';
+import {Feature} from '../feature/feature.model';
+import {Kita} from '../feature/kita.model';
+import {StatisticalArea} from '../feature/statistical-area.model';
+import {Supermarket} from '../feature/supermarket.model';
+import {Pharmacy} from '../feature/pharmacy.model';
+import {GreenArea} from '../feature/green-area.model';
 
 type AnyFeature = Kita | StatisticalArea | Supermarket | Pharmacy | GreenArea;
 
@@ -28,6 +28,8 @@ export class InfoscreenComponent implements OnInit {
   private _urlDistrictProfiles = 'assets/data/grobo-data.json';
   private _urlInfrastructure = 'assets/data/infrastructure-data.json';
 
+  public isToolStarted = false;
+
   // private rawData;
   // Charts
   public pieData;
@@ -45,7 +47,7 @@ export class InfoscreenComponent implements OnInit {
   public columnTitle: string;
 
   constructor(private localStorageService: LocalStorageService, public chartUtils: ChartUtils, private zone: NgZone,
-    private _http: HttpClient) {
+              private _http: HttpClient) {
   }
 
   ngOnInit(): void {
@@ -93,6 +95,15 @@ export class InfoscreenComponent implements OnInit {
             this.calculateInitialData();
             break;
         }
+      case 'tool-interaction':
+        switch (message.data.name) {
+          case 'tool-start':
+            this.isToolStarted = true;
+            break;
+          case 'tool-reset':
+            this.isToolStarted = false;
+            break;
+        }
     }
   }
 
@@ -117,7 +128,7 @@ export class InfoscreenComponent implements OnInit {
           this.lineCategories = this.chartUtils.getUniqueSeriesNames(jsonData, ['jahr']);
           this.lineData = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
             'Geburten', 'jahr', this.lineCategories, 'Groß Borstel');
-          this.lineTitle = 'Geburten der umliegenden Stadtteile';
+          this.lineTitle = 'Geburten 2012-2016';
 
           // // Always render categories first!
           this.columnCategories = this.chartUtils.getUniqueSeriesNames(jsonData, ['Stadtgebiet']);
@@ -157,8 +168,8 @@ export class InfoscreenComponent implements OnInit {
           // // Always render categories first!
           this.columnCategories = this.chartUtils.getUniqueSeriesNames(jsonData, ['Stadtgebiet']);
           this.columnData = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
-            'apotheken', 'jahr', ['2016'], 'Groß Borstel');
-          this.columnTitle = 'Apotheken der Stadtteile';
+            'apotheken_p_10000', 'jahr', ['2016'], 'Groß Borstel');
+          this.columnTitle = 'Apotheken pro 10 Tsd.';
 
           // this.pieData = {};
           // this.pieData['data'] = [{
@@ -173,8 +184,8 @@ export class InfoscreenComponent implements OnInit {
           // }];
 
           this.columnData2 = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
-            'supermaerkte', 'jahr', ['2016'], 'Groß Borstel');
-          this.column2Title = 'Supermärkte der Stadtteile';
+            'supermaerkte_p_10000', 'jahr', ['2016'], 'Groß Borstel');
+          this.column2Title = 'Supermärkte pro 10 Tsd.';
 
           // this.lineCategories = this.chartUtils.getUniqueSeriesNames(this.jsonData, ['jahr']);
           // this.lineData = this.chartUtils.getSumData(this.jsonData,['jahr'], ['Geburten']);
