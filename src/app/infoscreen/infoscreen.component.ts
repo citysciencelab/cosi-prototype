@@ -25,8 +25,10 @@ export class InfoscreenComponent implements OnInit {
   pharmacy: Pharmacy;
   greenArea: GreenArea;
 
-  private _urlDistrictProfiles = 'assets/data/grobo-data.json';
-  private _urlInfrastructure = 'assets/data/infrastructure-data.json';
+  private _urlDistrictProfilesData = 'assets/data/grobo-data.json';
+  private _urlInfrastructureData = 'assets/data/infrastructure-data.json';
+  private _urlNurseryData= 'assets/data/nursery-data.json';
+  private _urlPublicSpaceData= 'assets/data/public-space-data.json';
 
   public isToolStarted = false;
 
@@ -37,6 +39,7 @@ export class InfoscreenComponent implements OnInit {
 
   public columnData2;
   public column2Title: string;
+  public column2PlotLine: number;
 
   public lineData;
   public lineCategories;
@@ -45,6 +48,7 @@ export class InfoscreenComponent implements OnInit {
   public columnData;
   public columnCategories;
   public columnTitle: string;
+  public columnPlotLine: number;
 
   constructor(private localStorageService: LocalStorageService, public chartUtils: ChartUtils, private zone: NgZone,
               private _http: HttpClient) {
@@ -89,10 +93,10 @@ export class InfoscreenComponent implements OnInit {
             this.calculateInfrastructureData();
             break;
           case 'kitas':
-            this.calculateInitialData();
+            this.calculateNurseryData();
             break;
           case 'gruenflaechen':
-            this.calculateInitialData();
+            this.calculatePublicSpaceData();
             break;
         }
       case 'tool-interaction':
@@ -119,7 +123,8 @@ export class InfoscreenComponent implements OnInit {
    *   Recalculates the dataproviders (charts, tables etc.) with the changed data
    */
   calculateInitialData() {
-    this.getJSONData(this._urlDistrictProfiles).subscribe(
+    this.doPotentialResets('initial');
+    this.getJSONData(this._urlDistrictProfilesData).subscribe(
       data => {
         const jsonData = <Object []> data;
         this.zone.run(() => {
@@ -133,11 +138,11 @@ export class InfoscreenComponent implements OnInit {
             this.lineTitle = 'Geburten 2012-2016';
           }
 
-          // // Always render categories first!
           this.columnCategories = this.chartUtils.getUniqueSeriesNames(jsonData, ['Stadtgebiet']);
           this.columnData = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
             'Anteil_der_unter_18_J_hrigen_in', 'jahr', ['2016'], 'Groß Borstel');
           this.columnTitle = 'Anteil der Bevölkerung < 18 Jahren (2016)';
+          this.columnPlotLine = 16.2;
 
           // No unnecessary reloads
           if (this.pieData == null) {
@@ -149,9 +154,29 @@ export class InfoscreenComponent implements OnInit {
           this.columnData2 = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
             'Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in', 'jahr', ['2016'], 'Groß Borstel');
           this.column2Title = 'Migrationshintergrund in % der Stadtteile (2016)';
+          this.column2PlotLine = 34.1;
+        });
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  }
 
-          // this.lineCategories = this.chartUtils.getUniqueSeriesNames(this.jsonData, ['jahr']);
-          // this.lineData = this.chartUtils.getSumData(this.jsonData,['jahr'], ['Geburten']);
+  calculateNurseryData() {
+    this.doPotentialResets('nursery');
+    this.getJSONData(this._urlNurseryData).subscribe(
+      data => {
+        const jsonData = <Object []> data;
+        this.zone.run(() => {
+          this.columnCategories = this.chartUtils.getUniqueSeriesNames(jsonData, ['Stadtgebiet']);
+          this.columnData = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
+            'unter_6_perc', 'jahr', ['2016'], 'Groß Borstel');
+          this.columnTitle = 'Anteil Bevölkerung < 6 Jahren';
+
+          this.columnData2 = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
+            'spaces_p_child', 'jahr', ['2016'], 'Groß Borstel');
+          this.column2Title = 'Kitaplätze pro Kind';
         });
       },
       error => {
@@ -161,46 +186,54 @@ export class InfoscreenComponent implements OnInit {
   }
 
   calculateInfrastructureData() {
-    this.getJSONData(this._urlInfrastructure).subscribe(
+    this.doPotentialResets('infrastructure');
+    this.getJSONData(this._urlInfrastructureData).subscribe(
       data => {
         const jsonData = <Object []> data;
         this.zone.run(() => {
-
-          // // Always render categories first!
-          // this.lineCategories = this.chartUtils.getUniqueSeriesNames(jsonData, ['jahr']);
-          // this.lineData = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
-          //   'Geburten', 'jahr', this.lineCategories, 'Groß Borstel');
-
-          // // Always render categories first!
           this.columnCategories = this.chartUtils.getUniqueSeriesNames(jsonData, ['Stadtgebiet']);
           this.columnData = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
             'apotheken_p_10000', 'jahr', ['2016'], 'Groß Borstel');
           this.columnTitle = 'Apotheken pro 10 Tsd.';
 
-          // this.pieData = {};
-          // this.pieData['data'] = [{
-          //   name: 'Bevölkerung',
-          //   y:  8459
-          // }, {
-          //   name: 'Zuzüge',
-          //   y: 1458
-          // }, {
-          //   name: 'Fortzüge',
-          //   y: 1770
-          // }];
-
           this.columnData2 = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
             'supermaerkte_p_10000', 'jahr', ['2016'], 'Groß Borstel');
           this.column2Title = 'Supermärkte pro 10 Tsd.';
-
-          // this.lineCategories = this.chartUtils.getUniqueSeriesNames(this.jsonData, ['jahr']);
-          // this.lineData = this.chartUtils.getSumData(this.jsonData,['jahr'], ['Geburten']);
         });
       },
       error => {
         console.log(error);
       }
     );
+  }
+
+  calculatePublicSpaceData() {
+    this.doPotentialResets('public-space');
+    this.getJSONData(this._urlPublicSpaceData).subscribe(
+      data => {
+        const jsonData = <Object []> data;
+        this.zone.run(() => {
+          this.columnCategories = this.chartUtils.getUniqueSeriesNames(jsonData, ['Stadtgebiet']);
+          this.columnData = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
+            'pspace_p_p', 'jahr', ['2016'], 'Groß Borstel');
+          this.columnTitle = 'Öffentlich Grünfläche je EW in m²';
+
+          this.columnData2 = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
+            'parks_playgrounds_p_p', 'jahr', ['2016'], 'Groß Borstel');
+          this.column2Title = 'Park, Spielflatz je EW in m²';
+        });
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  }
+
+  doPotentialResets(dataType: string) {
+    if (dataType != 'initial') {
+      this.columnPlotLine = null;
+      this.column2PlotLine = null;
+    }
   }
 
   getJSONData(url: string) {
