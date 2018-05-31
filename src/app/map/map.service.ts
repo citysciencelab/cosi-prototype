@@ -20,6 +20,10 @@ export class MapService {
   isFirstClick = false;
   mapClickEvent = new EventEmitter<any>();
 
+  // Map config
+  mapCenter = ol.proj.fromLonLat([9.9880, 53.6126]);
+  mapZoom = 14;
+
   constructor(private localStorageService: LocalStorageService) {
     this.instance = new ol.Map({});
     this.addControls();
@@ -337,7 +341,7 @@ export class MapService {
   mapClickHandler = (evt) => {
     if (!this.isFirstClick) {
       this.isFirstClick = true;
-      this.getView().animate({ zoom: 14}, { center: ol.proj.fromLonLat([9.9880, 53.6126]) });
+      this.getView().animate({ zoom: this.mapZoom}, { center: this.mapCenter });
 
       let message: LocalStorageMessage<{}> = { type: 'tool-interaction', data: {name : 'tool-start'} };
       this.localStorageService.sendMessage(message);

@@ -10,15 +10,13 @@ import { MapService } from './map.service';
 })
 export class MapComponent implements OnInit {
   @Output() select = new EventEmitter<ol.interaction.Select.Event>();
-  private center = ol.proj.fromLonLat([9.9880, 53.6126]);
-  private zoom = 14;
 
   constructor(private mapService: MapService) { }
 
   ngOnInit() {
     this.mapService.setTarget('map');
     this.mapService.setView(new ol.View({
-      center: this.center,
+      center: this.mapService.mapCenter,
       zoom: 11,
       minZoom: 11,
       maxZoom: 18
@@ -27,7 +25,7 @@ export class MapComponent implements OnInit {
   }
 
   reset() {
-    this.mapService.getView().animate({ zoom: this.zoom }, { center: this.center });
+    this.mapService.getView().animate({ zoom: this.mapService.mapZoom }, { center: this.mapService.mapCenter });
   }
 
   showLayers(layers: MapLayer[], status: string) {
