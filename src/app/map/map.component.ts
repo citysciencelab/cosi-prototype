@@ -19,7 +19,7 @@ export class MapComponent implements OnInit {
     this.mapService.setTarget('map');
     this.mapService.setView(new ol.View({
       center: this.center,
-      zoom: this.zoom,
+      zoom: 11,
       minZoom: 11,
       maxZoom: 18
     }));

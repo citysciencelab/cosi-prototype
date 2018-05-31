@@ -1,6 +1,8 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import * as ol from 'openlayers';
 import { environment } from '../../environments/environment';
+import {LocalStorageService} from '../local-storage/local-storage.service';
+import {LocalStorageMessage} from '../local-storage/local-storage-message.model';
 
 const white = <ol.Color>[255, 255, 255, 1];
 const blue = <ol.Color>[0, 153, 255, 1];
@@ -15,8 +17,10 @@ export class MapService {
   selectInteraction: ol.interaction.Select;
   baseLayers: { [key: string]: ol.layer.Layer };
   thematicLayers: { [key: string]: { [key: string]: ol.layer.Layer } };
+  isFirstClick = false;
+  mapClickEvent = new EventEmitter<any>();
 
-  constructor() {
+  constructor(private localStorageService: LocalStorageService) {
     this.instance = new ol.Map({});
     this.addControls();
     this.addLayers();
@@ -305,6 +309,9 @@ export class MapService {
       pinchRotate: false
     });
 
+    // Just for the 'start-click'
+    this.instance.on('singleclick', this.mapClickHandler);
+
     this.selectInteraction = new ol.interaction.Select({
       // Because multiple select interactions for different layers don't work,
       // the layer needs to be determined within the style function. This way we can
@@ -325,6 +332,18 @@ export class MapService {
     interactions.forEach(interaction => {
       this.instance.addInteraction(interaction);
     });
+  }
+
+  mapClickHandler = (evt) => {
+    if (!this.isFirstClick) {
+      this.isFirstClick = true;
+      this.getView().animate({ zoom: 14}, { center: ol.proj.fromLonLat([9.9880, 53.6126]) });
+
+      let message: LocalStorageMessage<{}> = { type: 'tool-interaction', data: {name : 'tool-start'} };
+      this.localStorageService.sendMessage(message);
+
+      this.mapClickEvent.emit('tool-start');
+    }
   }
 
   private getStyle(layer: string, selected: boolean): (feature: ol.Feature) => ol.style.Style {

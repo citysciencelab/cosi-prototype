@@ -19,6 +19,7 @@ import { PieComponent} from 'angular-dashboard-components/components/charts/pie/
 import { LineComponent} from 'angular-dashboard-components/components/charts/line/line.component';
 import { WordCloudComponent} from 'angular-dashboard-components/components/charts/word-cloud/word-cloud.component';
 import { ChartUtils} from 'angular-dashboard-components/components/utils/chart.utils';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { ChartUtils} from 'angular-dashboard-components/components/utils/chart.u
     BrowserModule,
     AppRoutingModule,
     ChartModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule
   ],
   providers: [
     ConfigurationService,

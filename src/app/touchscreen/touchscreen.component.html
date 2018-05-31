@@ -1,20 +1,20 @@
 <div class="app-container" (addobject)="onUpdateObject($event)" (updateobject)="onUpdateObject($event)" (removeobject)="onRemoveObject($event)">
   <app-map (select)="onSelect($event)"></app-map>
 
-  <nav class="topic-slider">
+  <nav [@menuState]="state" class="topic-slider">
     <div *ngFor="let topic of topics" [attr.id]="topic.name" class="topic-field" [class.selected]="selectedTopic === topic" (click)="setTopic(topic)" (addobject)="onUpdateObject($event)" (updateobject)="onUpdateObject($event)">{{ topic.displayName }}</div>
   </nav>
 
-  <nav class="progress-slider">
+  <nav [@menuState]="state" class="progress-slider">
     <div *ngFor="let status of statuses" [attr.id]="status.name" class="progress-field" [class.selected]="selectedStatus === status" (click)="setStatus(status)" (addobject)="onUpdateObject($event)" (updateobject)="onUpdateObject($event)">{{ status.displayName }}</div>
   </nav>
 
-  <div class="modal-container-left">
+  <div [@menuState]="state" class="modal-container-left">
     <app-legend [layer]="mapKeyLayer" [visible]="mapKeyVisible" (close)="mapKeyVisible = false"></app-legend>
     <app-layer-control [layers]="(selectedTopic ? selectedTopic.layers : []).concat(baseLayers)" (toggleLayer)="updateMapLayers()" (showInfo)="showMapKey($event)"></app-layer-control>
   </div>
 
-  <div class="modal-container-right">
+  <div [@menuState]="state" class="modal-container-right">
     <div class="reset-button"><a href="#" (click)="map.reset()">Karte zurücksetzen</a></div>
   </div>
 </div>

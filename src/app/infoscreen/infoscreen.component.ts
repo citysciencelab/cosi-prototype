@@ -124,11 +124,14 @@ export class InfoscreenComponent implements OnInit {
         const jsonData = <Object []> data;
         this.zone.run(() => {
 
-          // // Always render categories first!
-          this.lineCategories = this.chartUtils.getUniqueSeriesNames(jsonData, ['jahr']);
-          this.lineData = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
-            'Geburten', 'jahr', this.lineCategories, 'Groß Borstel');
-          this.lineTitle = 'Geburten 2012-2016';
+          // No unnecessary reloads
+          if (this.lineData == null) {
+            // // Always render categories first!
+            this.lineCategories = this.chartUtils.getUniqueSeriesNames(jsonData, ['jahr']);
+            this.lineData = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
+              'Geburten', 'jahr', this.lineCategories, 'Groß Borstel');
+            this.lineTitle = 'Geburten 2012-2016';
+          }
 
           // // Always render categories first!
           this.columnCategories = this.chartUtils.getUniqueSeriesNames(jsonData, ['Stadtgebiet']);
@@ -136,9 +139,12 @@ export class InfoscreenComponent implements OnInit {
             'Anteil_der_unter_18_J_hrigen_in', 'jahr', ['2016'], 'Groß Borstel');
           this.columnTitle = 'Anteil der Bevölkerung < 18 Jahren (2016)';
 
-          this.pieTitle = 'Bevölkerungsanteile';
-          this.pieData = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
-            'Bev_lkerung', 'jahr', ['2016'], 'Groß Borstel');
+          // No unnecessary reloads
+          if (this.pieData == null) {
+            this.pieTitle = 'Bevölkerungsanteile';
+            this.pieData = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
+              'Bev_lkerung', 'jahr', ['2016'], 'Groß Borstel');
+          }
 
           this.columnData2 = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
             'Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in', 'jahr', ['2016'], 'Groß Borstel');

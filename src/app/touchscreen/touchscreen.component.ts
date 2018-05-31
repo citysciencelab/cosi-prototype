@@ -13,11 +13,26 @@ import { StatisticalArea } from '../feature/statistical-area.model';
 import { Supermarket } from '../feature/supermarket.model';
 import { Pharmacy } from '../feature/pharmacy.model';
 import { GreenArea } from '../feature/green-area.model';
+import { trigger, state, style, animate, transition} from '@angular/animations';
+
+type AnyFeature = Kita | StatisticalArea | Supermarket | Pharmacy | GreenArea;
 
 @Component({
   selector: 'app-touchscreen',
   templateUrl: './touchscreen.component.html',
-  styleUrls: ['./touchscreen.component.css']
+  styleUrls: ['./touchscreen.component.css'],
+  animations: [
+    trigger('menuState', [
+      state('inactive', style({
+        opacity: 0
+      })),
+      state('active',   style({
+        opacity: 1
+      })),
+      transition('inactive => active', animate('500ms ease-in')),
+      transition('active => inactive', animate('500ms ease-out'))
+    ])
+  ]
 })
 export class TouchscreenComponent implements OnInit {
   @ViewChild(MapComponent) map: MapComponent;
@@ -28,8 +43,10 @@ export class TouchscreenComponent implements OnInit {
   baseLayers: [MapLayer];
   mapKeyLayer: MapLayer;
   mapKeyVisible: boolean;
+  state = 'inactive';
 
-  constructor(private config: ConfigurationService, private localStorageService: LocalStorageService, private tuioClient: TuioClient) {
+  constructor(private localStorageService: LocalStorageService, private mapService: MapService, private config: ConfigurationService,
+              private tuioClient: TuioClient) {
     this.statuses = [
       {
         name: 'before',
@@ -168,6 +185,12 @@ export class TouchscreenComponent implements OnInit {
         meta: '© OpenStreetMap-Mitwirkende'
       }
     ];
+
+    this.mapService.mapClickEvent.subscribe(
+      (data: any) => {
+        if (data == 'tool-start')
+          this.toggleMenu();
+      });
   }
 
   ngOnInit() {
@@ -252,4 +275,7 @@ export class TouchscreenComponent implements OnInit {
     this.map.clearSelectedFeatures();
   }
 
+  toggleMenu() {
+    this.state = this.state === 'active' ? 'inactive' : 'active';
+  }
 }
