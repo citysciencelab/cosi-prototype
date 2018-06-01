@@ -226,7 +226,8 @@ export class MapService {
             url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:gruenflaechen' +
               '&outputFormat=application/json&srsname=EPSG:4326',
             format: new ol.format.GeoJSON()
-          })
+          }),
+          zIndex: 1
         })
       },
       'supermaerkte': {
@@ -322,6 +323,22 @@ export class MapService {
             }
           }),
           opacity: 0.6
+        })
+      },
+      'flurstuecke': {
+        '*': new ol.layer.Tile({
+          source: new ol.source.TileWMS({
+            url: environment.geoserverUrl + 'csl/wms',
+            params: {
+              LAYERS: 'csl:flurstuecke',
+              STYLES: 'flurstuecke_neu',
+              TILED: true,
+              FORMAT: 'image/png',
+              WIDTH: 256,
+              HEIGHT: 256,
+              SRS: 'EPSG:4326'
+            }
+          })
         })
       }
     };

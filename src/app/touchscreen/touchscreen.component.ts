@@ -82,6 +82,12 @@ export class TouchscreenComponent implements OnInit {
               '<div class="legend-row"><span class="legend-box" style="background-color: rgba(106, 90, 205, 0.6);">' +
               '</span>&nbsp;anderweitige Nutzung</div>',
             meta: 'Quelle: LGV'
+          },
+          {
+            name: 'flurstuecke',
+            displayName: 'Potenzialflächen',
+            visible: false,
+            meta: 'Quelle: LGV, Aufbereitung durch FindingPlaces (2016)'
           }
         ]
       },
