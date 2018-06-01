@@ -133,6 +133,7 @@ export class TouchscreenComponent implements OnInit {
             name: 'kitas',
             displayName: 'Kitas',
             visible: true,
+            legendUrl: 'assets/legend-kita.png',
             meta: 'Quelle: BASFI'
           },
           {
@@ -153,6 +154,7 @@ export class TouchscreenComponent implements OnInit {
             name: 'stadtteileKitaplaetze',
             displayName: 'Kitaplätze pro Kind (auf Stadtteilebene)',
             visible: false,
+            legendUrl: 'assets/legend-kitaprokind.png',
             meta: 'Quellen: BASFI (Kitaplätze), Statistikamt Nord (Bevölkerungsstruktur)'
           },
           {
