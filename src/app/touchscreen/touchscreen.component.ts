@@ -99,12 +99,14 @@ export class TouchscreenComponent implements OnInit {
             name: 'apotheken',
             displayName: 'Apotheken',
             visible: true,
+            legendUrl: 'assets/legend-apotheke.png',
             meta: 'Quelle: OpenStreetMap'
           },
           {
             name: 'supermaerkte',
             displayName: 'Supermärkte',
             visible: true,
+            legendUrl: 'assets/legend-supermarkt.png',
             meta: 'Quelle: OpenStreetMap'
           },
           {
