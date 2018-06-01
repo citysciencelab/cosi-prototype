@@ -32,23 +32,26 @@ export class InfoscreenComponent implements OnInit {
 
   public isToolStarted = false;
 
-  // private rawData;
   // Charts
-  public pieData;
-  public pieTitle: string;
-
-  public columnData2;
-  public column2Title: string;
-  public column2PlotLine: number;
-
   public lineData;
   public lineCategories;
   public lineTitle: string;
+  public lineSubTitle: string;
+
+  public pieData;
+  public pieTitle: string;
+  public pieSubTitle: string;
 
   public columnData;
   public columnCategories;
   public columnTitle: string;
+  public columnSubTitle: string;
   public columnPlotLine: number;
+
+  public columnData2;
+  public column2Title: string;
+  public column2SubTitle: string;
+  public column2PlotLine: number;
 
   constructor(private localStorageService: LocalStorageService, public chartUtils: ChartUtils, private zone: NgZone,
               private _http: HttpClient) {
@@ -136,25 +139,29 @@ export class InfoscreenComponent implements OnInit {
             this.lineCategories = this.chartUtils.getUniqueSeriesNames(jsonData, ['jahr']);
             this.lineData = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
               'Geburten', 'jahr', this.lineCategories, 'Groß Borstel');
-            this.lineTitle = 'Geburten 2012-2016';
+            this.lineTitle = 'Geburten pro Jahr zwischen 2012-2016';
+            this.lineSubTitle = '';
           }
 
           this.columnCategories = this.chartUtils.getUniqueSeriesNames(jsonData, ['Stadtgebiet']);
           this.columnData = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
             'Anteil_der_unter_18_J_hrigen_in', 'jahr', ['2016'], 'Groß Borstel');
-          this.columnTitle = 'Anteil der Bevölkerung < 18 Jahren (2016)';
+          this.columnTitle = 'Anteil der Bevölkerung < 18 Jahren in % (2016)';
+          this.columnSubTitle = 'Die rote Linie zeigt den Hamburger Durchschnitt';
           this.columnPlotLine = 16.2;
 
           // No unnecessary reloads
           if (this.pieData == null) {
-            this.pieTitle = 'Bevölkerungsanteile';
+            this.pieTitle = 'Gesamtbevölkerungsverteilung (2016)';
+            this.pieSubTitle = '';
             this.pieData = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
               'Bev_lkerung', 'jahr', ['2016'], 'Groß Borstel');
           }
 
           this.columnData2 = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
             'Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in', 'jahr', ['2016'], 'Groß Borstel');
-          this.column2Title = 'Migrationshintergrund in % der Stadtteile (2016)';
+          this.column2Title = 'Anteil der Bevölkerung mit Migrationshintergrund in % (2016)';
+          this.column2SubTitle = 'Die rote Linie zeigt den Hamburger Durchschnitt';
           this.column2PlotLine = 34.1;
         });
       },
@@ -173,11 +180,13 @@ export class InfoscreenComponent implements OnInit {
           this.columnCategories = this.chartUtils.getUniqueSeriesNames(jsonData, ['Stadtgebiet']);
           this.columnData = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
             'unter_6_perc', 'jahr', ['2016'], 'Groß Borstel');
-          this.columnTitle = 'Anteil Bevölkerung < 6 Jahren';
+          this.columnTitle = 'Anteil Bevölkerung < 6 Jahren in % (2016)';
+          this.columnSubTitle = '';
 
           this.columnData2 = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
             'spaces_p_child', 'jahr', ['2016'], 'Groß Borstel');
-          this.column2Title = 'Kitaplätze pro Kind';
+          this.column2Title = 'Kitaplätze pro Kind (2016)';
+          this.column2SubTitle = 'Berechnungsgrundlage sind Ø 3m² Fläche pro Kind';
         });
       },
       error => {
@@ -195,11 +204,13 @@ export class InfoscreenComponent implements OnInit {
           this.columnCategories = this.chartUtils.getUniqueSeriesNames(jsonData, ['Stadtgebiet']);
           this.columnData = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
             'apotheken_p_10000', 'jahr', ['2016'], 'Groß Borstel');
-          this.columnTitle = 'Apotheken pro 10 Tsd.';
+          this.columnTitle = 'Apotheken pro 10 Tsd. Einwohner';
+          this.columnSubTitle = '';
 
           this.columnData2 = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
             'supermaerkte_p_10000', 'jahr', ['2016'], 'Groß Borstel');
-          this.column2Title = 'Supermärkte pro 10 Tsd.';
+          this.column2Title = 'Supermärkte pro 10 Tsd. Einwohner';
+          this.column2SubTitle = '';
         });
       },
       error => {
@@ -218,10 +229,12 @@ export class InfoscreenComponent implements OnInit {
           this.columnData = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
             'pspace_p_p', 'jahr', ['2016'], 'Groß Borstel');
           this.columnTitle = 'Öffentliche Grünfläche je EW in m²';
+          this.columnSubTitle = '';
 
           this.columnData2 = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
             'parks_playgrounds_p_p', 'jahr', ['2016'], 'Groß Borstel');
-          this.column2Title = 'Park, Spielplatz je EW in m²';
+          this.column2Title = 'Park-, Spielplatzfläche je EW in m²';
+          this.column2SubTitle = '';
         });
       },
       error => {
