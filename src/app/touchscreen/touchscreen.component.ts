@@ -40,7 +40,8 @@ export class TouchscreenComponent implements OnInit {
   selectedStatus: { name: string, displayName: string };
   topics: [{ name: string, displayName: string, layers: MapLayer[] }];
   selectedTopic: { name: string, displayName: string, layers: MapLayer[] };
-  baseLayers: [MapLayer];
+  baseLayers: MapLayer[];
+  stickyLayers: MapLayer[];
   mapKeyLayer: MapLayer;
   mapKeyVisible: boolean;
   state = 'inactive';
@@ -198,6 +199,13 @@ export class TouchscreenComponent implements OnInit {
         meta: '© OpenStreetMap-Mitwirkende'
       }
     ];
+    this.stickyLayers = [
+      {
+        name: 'grossborstel',
+        displayName: 'Groß Borstel',
+        visible: true
+      }
+    ];
 
     this.mapService.toolStartEvent.subscribe(
       (data: any) => {
@@ -283,9 +291,11 @@ export class TouchscreenComponent implements OnInit {
 
   updateMapLayers() {
     if (this.selectedTopic && this.selectedStatus) {
-      this.map.showLayers(this.selectedTopic.layers.filter(layer => layer.visible), this.selectedStatus.name);
+      const layers = this.selectedTopic.layers.filter(layer => layer.visible);
+      this.map.showLayers(layers, this.selectedStatus.name);
     }
-    this.map.showBaseLayers(this.baseLayers.filter(layer => layer.visible));
+    const baseLayers = this.baseLayers.filter(layer => layer.visible).concat(this.stickyLayers);
+    this.map.showBaseLayers(baseLayers);
     this.map.clearSelectedFeatures();
   }
 

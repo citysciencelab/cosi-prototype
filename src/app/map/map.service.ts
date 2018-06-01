@@ -152,6 +152,14 @@ export class MapService {
             '&outputFormat=application/json&srsname=EPSG:4326',
           format: new ol.format.GeoJSON()
         })
+      }),
+      'grossborstel': new ol.layer.Vector({
+        source: new ol.source.Vector({
+          url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:grossborstel' +
+            '&outputFormat=application/json&srsname=EPSG:4326',
+          format: new ol.format.GeoJSON()
+        }),
+        zIndex: 100
       })
     };
 
@@ -530,6 +538,11 @@ export class MapService {
             color: blue,
             width: 3
           })
+        })
+      },
+      'grossborstel': {
+        default: (feature: ol.Feature) => new ol.style.Style({
+          stroke: new ol.style.Stroke({ color: blue, width: 5 })
         })
       }
     };
