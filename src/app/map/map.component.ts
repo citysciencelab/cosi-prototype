@@ -1,6 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import * as ol from 'openlayers';
-import { MapLayer } from './map-layer.model';
 import { MapService } from './map.service';
 
 @Component({

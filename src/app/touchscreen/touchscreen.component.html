@@ -6,12 +6,12 @@
   </nav>
 
   <nav [@menuState]="state" class="progress-slider">
-    <div *ngFor="let status of statuses" [attr.id]="status.name" class="progress-field" [class.selected]="selectedStatus === status" (click)="setStatus(status)" (addobject)="onUpdateObject($event)" (updateobject)="onUpdateObject($event)">{{ status.displayName }}</div>
+    <div *ngFor="let stage of stages" [attr.id]="stage.name" class="progress-field" [class.selected]="selectedStage === stage" (click)="setStage(stage)" (addobject)="onUpdateObject($event)" (updateobject)="onUpdateObject($event)">{{ stage.displayName }}</div>
   </nav>
 
   <div [@menuState]="state" class="modal-container-left">
     <app-legend [layer]="mapKeyLayer" [visible]="mapKeyVisible" (close)="mapKeyVisible = false"></app-legend>
-    <app-layer-control [layers]="(selectedTopic ? selectedTopic.layers : []).concat(baseLayers)" (toggleLayer)="updateMapLayers()" (showInfo)="showMapKey($event)"></app-layer-control>
+    <app-layer-control [layers]="layers" (toggleLayer)="updateMapLayers()" (showInfo)="showMapKey($event)"></app-layer-control>
   </div>
 
   <div [@menuState]="state" class="modal-container-right">

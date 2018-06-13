@@ -1,8 +1,8 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import * as ol from 'openlayers';
 import { environment } from '../../environments/environment';
-import {LocalStorageService} from '../local-storage/local-storage.service';
-import {LocalStorageMessage} from '../local-storage/local-storage-message.model';
+import { LocalStorageService } from '../local-storage/local-storage.service';
+import { LocalStorageMessage } from '../local-storage/local-storage-message.model';
 
 const white = <ol.Color>[255, 255, 255, 1];
 const blue = <ol.Color>[0, 153, 255, 1];
@@ -406,9 +406,9 @@ export class MapService {
   mapClickHandler = (evt) => {
     if (!this.isFirstClick) {
       this.isFirstClick = true;
-      this.getView().animate({ zoom: this.mapZoom}, { center: this.mapCenter });
+      this.getView().animate({ zoom: this.mapZoom }, { center: this.mapCenter });
 
-      const message: LocalStorageMessage<{}> = { type: 'tool-interaction', data: {name : 'tool-start'} };
+      const message: LocalStorageMessage<{}> = { type: 'tool-interaction', data: { name: 'tool-start' } };
       this.localStorageService.sendMessage(message);
 
       this.toolStartEvent.emit('tool-start');
