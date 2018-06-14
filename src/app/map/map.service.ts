@@ -15,8 +15,8 @@ const purple = <ol.Color>[128, 0, 128, 1];
 export class MapService {
   private instance: ol.Map;
   selectInteraction: ol.interaction.Select;
-  baseLayers: { [key: string]: ol.layer.Layer };
-  thematicLayers: { [key: string]: { [key: string]: ol.layer.Layer } };
+  baseLayers: MapLayer[];
+  topicLayers: MapLayer[];
   isFirstClick = false;
   toolStartEvent = new EventEmitter<any>();
 
@@ -27,7 +27,6 @@ export class MapService {
   constructor(private localStorageService: LocalStorageService) {
     this.instance = new ol.Map({});
     this.addControls();
-    this.addLayers();
     this.addInteractions();
   }
 
@@ -43,55 +42,58 @@ export class MapService {
     return this.instance.getView();
   }
 
-  showBaseLayers(layerNames: string[]) {
-    Object.values(this.baseLayers).forEach(layer => {
-      layer.setVisible(false);
-    });
-    layerNames.forEach(layerName => {
-      if (this.baseLayers.hasOwnProperty(layerName)) {
-        this.baseLayers[layerName].setVisible(true);
+  setSources(baseLayersConfig: MapLayer[], topicLayersConfig: MapLayer[]) {
+    this.baseLayers = this.generateLayers(baseLayersConfig);
+    this.topicLayers = this.generateLayers(topicLayersConfig);
+
+    for (const layer of this.baseLayers) {
+      this.instance.addLayer(layer.olLayer);
+      // Set the default style for each vector layer
+      if (layer.olLayer.constructor === ol.layer.Vector) {
+        (<ol.layer.Vector>layer.olLayer).setStyle(this.getStyleFunction(layer.name, false));
       }
-    });
+    }
+
+    for (const layer of this.topicLayers) {
+      this.instance.addLayer(layer.olLayer);
+      // Set the default style for each vector layer
+      if (layer.olLayer.constructor === ol.layer.Vector) {
+        (<ol.layer.Vector>layer.olLayer).setStyle(this.getStyleFunction(layer.name, false));
+      }
+    }
   }
 
-  showLayers(layerGroupNames: string[], layerName: string) {
-    Object.entries(this.thematicLayers).forEach(([layerGroupName, layerGroup]) => {
-      // Hide all layers
-      Object.values(layerGroup).forEach(layer => {
-        layer.setVisible(false);
-      });
-      if (layerGroupNames.indexOf(layerGroupName) > -1) {
-        // Show requested layers
-        if (layerGroup.hasOwnProperty(layerName)) {
-          layerGroup[layerName].setVisible(true);
-        }
-        // Show static ('*') layers
-        if (layerGroup.hasOwnProperty('*')) {
-          layerGroup['*'].setVisible(true);
-        }
+  showBaseLayers(layerNames: string[]) {
+    for (const layer of this.baseLayers) {
+      layer.olLayer.setVisible(layerNames.indexOf(layer.name) > -1);
+    }
+  }
+
+  showLayers(layerNames: string[], topicName: string, stageName: string) {
+    for (const layer of this.topicLayers) {
+      if (layer.topic === topicName) {
+        const isNameMatch = layerNames.indexOf(layer.name) > -1;
+        const isStageMatch = layer.stage === stageName || layer.stage === '*';
+        layer.olLayer.setVisible(isNameMatch && isStageMatch);
+        // Also set layer visibility for all layers of the same name (but in any stage)
+        layer.visible = isNameMatch;
+      } else {
+        layer.olLayer.setVisible(false);
       }
-    });
+    }
   }
 
   getLayerByFeature(feature: ol.Feature): string {
-    let matchingLayer;
-    for (const [identifier, layerGroup] of Object.entries(this.thematicLayers)) {
-      for (const layer of Object.values(layerGroup)) {
-        const source = <ol.source.Vector>layer.getSource();
-
-        // Skip non-vector sources
-        if (typeof source.forEachFeature !== 'function') {
-          continue;
+    const vectorLayers = this.topicLayers.filter(layer => layer.type === 'Vector' || layer.type === 'Heatmap');
+    for (const layer of vectorLayers) {
+      const source = <ol.source.Vector>layer.olLayer.getSource();
+      source.forEachFeature(f => {
+        if (feature.getId() === f.getId()) {
+          return layer;
         }
-        source.forEachFeature(f => {
-          if (feature.getId() === f.getId()) {
-            matchingLayer = identifier;
-            return;
-          }
-        });
-      }
+      });
     }
-    return matchingLayer;
+    return;
   }
 
   private addControls() {
@@ -102,265 +104,74 @@ export class MapService {
     });
   }
 
-  private addLayers() {
-    // The order of the layers affects the rendering order when zIndex values are equal.
-    this.baseLayers = {
-      'osm': new ol.layer.Tile({
-        source: new ol.source.OSM()
-      }),
-      'dop20': new ol.layer.Tile({
-        source: new ol.source.TileWMS({
-          url: 'https://geodienste.hamburg.de/HH_WMS_DOP20',
-          params: {
-            LAYERS: '1',
-            TILED: true,
-            FORMAT: 'image/png',
-            WIDTH: 256,
-            HEIGHT: 256,
-            SRS: 'EPSG:4326'
+  private generateLayers(layersConfig: MapLayer[]): MapLayer[] {
+    return layersConfig.map(layer => {
+      switch (layer.type) {
+        case 'OSM':
+          layer.olLayer = new ol.layer.Tile({
+            source: new ol.source.OSM(),
+            opacity: layer.opacity,
+            zIndex: layer.zIndex,
+            visible: false
+          });
+          break;
+        case 'WMS':
+          if (!layer.wmsParams) {
+            throw new Error('No WMS params defined for layer ' + layer.name);
           }
-        })
-      }),
-      'geobasis': new ol.layer.Tile({
-        source: new ol.source.TileWMS({
-          url: 'https://geodienste.hamburg.de/HH_WMS_Kombi_DISK_GB',
-          params: {
-            LAYERS: '1,5,9,13',
-            TILED: true,
-            FORMAT: 'image/png',
-            WIDTH: 256,
-            HEIGHT: 256,
-            SRS: 'EPSG:4326'
+          if (layer.wmsParams.TILED) {
+            layer.olLayer = new ol.layer.Tile({
+              source: new ol.source.TileWMS({
+                url: layer.url,
+                params: layer.wmsParams
+              }),
+              opacity: layer.opacity,
+              zIndex: layer.zIndex,
+              visible: false
+            });
+          } else {
+            layer.olLayer = new ol.layer.Image({
+              source: new ol.source.ImageWMS({
+                url: layer.url,
+                params: layer.wmsParams,
+                projection: layer.wmsProjection
+              }),
+              opacity: layer.opacity,
+              zIndex: layer.zIndex,
+              visible: false
+            });
           }
-        })
-      }),
-      'stadtteile': new ol.layer.Image({
-        source: new ol.source.ImageWMS({
-          url: 'https://geodienste.hamburg.de/HH_WMS_Verwaltungsgrenzen',
-          params: {
-            LAYERS: 'stadtteile',
-            FORMAT: 'image/png',
-            SRS: 'EPSG:4326'
-          },
-          projection: 'EPSG:25832'
-        }),
-        zIndex: 10
-      }),
-      'sozialmonitoring': new ol.layer.Vector({
-        source: new ol.source.Vector({
-          url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:sozialmonitoring2016' +
-            '&outputFormat=application/json&srsname=EPSG:4326',
-          format: new ol.format.GeoJSON()
-        })
-      }),
-      'grossborstel': new ol.layer.Vector({
-        source: new ol.source.Vector({
-          url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:grossborstel' +
-            '&outputFormat=application/json&srsname=EPSG:4326',
-          format: new ol.format.GeoJSON()
-        }),
-        zIndex: 100
-      })
-    };
-
-    // The order of the layers affects the rendering order when zIndex values are equal.
-    this.thematicLayers = {
-      // Vector layers
-      'kitas': {
-        'before': new ol.layer.Vector({
-          source: new ol.source.Vector({
-            url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:kitas' +
-              '&outputFormat=application/json&srsname=EPSG:4326',
-            format: new ol.format.GeoJSON()
-          }),
-          zIndex: 10
-        }),
-        'after': new ol.layer.Vector({
-          source: new ol.source.Vector({
-            url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:kitas_neu' +
-              '&outputFormat=application/json&srsname=EPSG:4326',
-            format: new ol.format.GeoJSON()
-          }),
-          zIndex: 10
-        })
-      },
-      'einwohner': {
-        'before': new ol.layer.Vector({
-          source: new ol.source.Vector({
-            url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:einwohner_0bis6' +
-              '&outputFormat=application/json&srsname=EPSG:4326',
-            format: new ol.format.GeoJSON()
-          }),
-          zIndex: 1
-        }),
-        'after': new ol.layer.Vector({
-          source: new ol.source.Vector({
-            url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:einwohner_0bis6_neu' +
-              '&outputFormat=application/json&srsname=EPSG:4326',
-            format: new ol.format.GeoJSON()
-          }),
-          zIndex: 1
-        })
-      },
-      'stadtteileKitaplaetze': {
-        'before': new ol.layer.Vector({
-          source: new ol.source.Vector({
-            url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:stadtteile_grossborstel' +
-              '&outputFormat=application/json&srsname=EPSG:4326',
-            format: new ol.format.GeoJSON()
-          }),
-          zIndex: 2
-        }),
-        'after': new ol.layer.Vector({
-          source: new ol.source.Vector({
-            url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature' +
-              '&typeName=csl:stadtteile_grossborstel_neu&outputFormat=application/json&srsname=EPSG:4326',
-            format: new ol.format.GeoJSON()
-          }),
-          zIndex: 2
-        })
-      },
-      'gruenflaechen': {
-        '*': new ol.layer.Vector({
-          source: new ol.source.Vector({
-            url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:gruenflaechen' +
-              '&outputFormat=application/json&srsname=EPSG:4326',
-            format: new ol.format.GeoJSON()
-          }),
-          zIndex: 1
-        })
-      },
-      'supermaerkte': {
-        '*': new ol.layer.Vector({
-          source: new ol.source.Vector({
-            url: 'https://overpass-api.de/api/interpreter' +
-              '?data=(area[name="Hamburg"];)->.a;node["shop"="supermarket"](area.a);out;',
-            format: new ol.format.OSMXML()
-          })
-        })
-      },
-      'apotheken': {
-        '*': new ol.layer.Vector({
-          source: new ol.source.Vector({
-            url: 'https://overpass-api.de/api/interpreter' +
-              '?data=(area[name="Hamburg"];)->.a;node["amenity"="pharmacy"](area.a);out;',
-            format: new ol.format.OSMXML()
-          }),
-          zIndex: 1
-        })
-      },
-      // Heatmap layers
-      'kitasHeatmap': {
-        'before': new ol.layer.Heatmap({
-          source: new ol.source.Vector({
-            url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:kitas' +
-              '&outputFormat=application/json&srsname=EPSG:4326',
-            format: new ol.format.GeoJSON()
-          }),
-          gradient: ['#0ff', '#0f0', '#ff0', '#f00'],
-          weight: feature => feature.get('KapKindneu') / 350,
-          radius: 16,
-          blur: 30,
-          zIndex: 11
-        }),
-        'after': new ol.layer.Heatmap({
-          source: new ol.source.Vector({
-            url: environment.geoserverUrl + 'csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:kitas_neu' +
-              '&outputFormat=application/json&srsname=EPSG:4326',
-            format: new ol.format.GeoJSON()
-          }),
-          gradient: ['#0ff', '#0f0', '#ff0', '#f00'],
-          weight: feature => feature.get('KapKindneu') / 350,
-          radius: 16,
-          blur: 30,
-          zIndex: 11
-        })
-      },
-      // Tile layers
-      'kitasGehzeit': {
-        '*': new ol.layer.Tile({
-          source: new ol.source.TileWMS({
-            url: 'https://geodienste.hamburg.de/MRH_WMS_REA_Soziales',
-            params: {
-              LAYERS: '6',
-              TILED: true,
-              FORMAT: 'image/png',
-              WIDTH: 256,
-              HEIGHT: 256,
-              SRS: 'EPSG:4326'
-            }
-          }),
-          opacity: 0.6
-        })
-      },
-      'supermaerkteGehzeit': {
-        '*': new ol.layer.Tile({
-          source: new ol.source.TileWMS({
-            url: 'https://geodienste.hamburg.de/MRH_WMS_REA_Einzelhandel',
-            params: {
-              LAYERS: '2',
-              TILED: true,
-              FORMAT: 'image/png',
-              WIDTH: 256,
-              HEIGHT: 256,
-              SRS: 'EPSG:4326'
-            }
-          }),
-          opacity: 0.6
-        })
-      },
-      'apothekenGehzeit': {
-        '*': new ol.layer.Tile({
-          source: new ol.source.TileWMS({
-            url: 'https://geodienste.hamburg.de/MRH_WMS_REA_Gesundheit',
-            params: {
-              LAYERS: '2',
-              TILED: true,
-              FORMAT: 'image/png',
-              WIDTH: 256,
-              HEIGHT: 256,
-              SRS: 'EPSG:4326'
-            }
-          }),
-          opacity: 0.6
-        })
-      },
-      'flurstuecke': {
-        '*': new ol.layer.Tile({
-          source: new ol.source.TileWMS({
-            url: environment.geoserverUrl + 'csl/wms',
-            params: {
-              LAYERS: 'csl:flurstuecke',
-              STYLES: 'flurstuecke_neu',
-              TILED: true,
-              FORMAT: 'image/png',
-              WIDTH: 256,
-              HEIGHT: 256,
-              SRS: 'EPSG:4326'
-            }
-          })
-        })
+          break;
+        case 'Vector':
+          layer.olLayer = new ol.layer.Vector({
+            renderMode: 'image', // for performance
+            source: new ol.source.Vector({
+              url: layer.url,
+              format: new ol.format[layer.format]()
+            }),
+            opacity: layer.opacity,
+            zIndex: layer.zIndex,
+            visible: false
+          });
+          break;
+        case 'Heatmap':
+          layer.olLayer = new ol.layer.Heatmap({
+            source: new ol.source.Vector({
+              url: layer.url,
+              format: new ol.format[layer.format]()
+            }),
+            weight: layer.weightAttribute ? feature => feature.get(layer.weightAttribute) / layer.weightAttributeMax : feature => 1,
+            gradient: layer.gradient && layer.gradient.length > 1 ? layer.gradient : ['#0ff', '#0f0', '#ff0', '#f00'],
+            radius: layer.radius !== undefined ? layer.radius : 16,
+            blur: layer.blur !== undefined ? layer.blur : 30,
+            opacity: layer.opacity,
+            zIndex: layer.zIndex,
+            visible: false
+          });
+          break;
       }
-    };
-
-    Object.entries(this.baseLayers).forEach(([layerName, layer]) => {
-      this.instance.addLayer(layer);
-      // Set the default style for each vector layer
-      if (layer.constructor === ol.layer.Vector) {
-        (<ol.layer.Vector>layer).setStyle(this.getStyleFunction(layerName, false));
-      }
-    });
-
-    Object.entries(this.thematicLayers).forEach(([layerGroupName, layerGroup]) => {
-      Object.values(layerGroup).forEach(layer => {
-        this.instance.addLayer(layer);
-        // Set the default style for each vector layer
-        if (layer.constructor === ol.layer.Vector) {
-          (<ol.layer.Vector>layer).setStyle(this.getStyleFunction(layerGroupName, false));
-        }
-        layer.setVisible(false);
-      });
-    });
+      return layer;
+    }) || [];
   }
 
   private addInteractions() {
@@ -373,15 +184,16 @@ export class MapService {
     this.instance.on('singleclick', this.mapClickHandler);
 
     this.selectInteraction = new ol.interaction.Select({
-      layers: [
-        this.thematicLayers['kitas']['before'],
-        this.thematicLayers['kitas']['after'],
-        this.thematicLayers['einwohner']['before'],
-        this.thematicLayers['einwohner']['after'],
-        this.thematicLayers['supermaerkte']['*'],
-        this.thematicLayers['apotheken']['*'],
-        this.thematicLayers['gruenflaechen']['*']
-      ],
+      // FIXME
+      // layers: [
+      //   this.thematicLayers['kitas']['before'],
+      //   this.thematicLayers['kitas']['after'],
+      //   this.thematicLayers['einwohner']['before'],
+      //   this.thematicLayers['einwohner']['after'],
+      //   this.thematicLayers['supermaerkte']['*'],
+      //   this.thematicLayers['apotheken']['*'],
+      //   this.thematicLayers['gruenflaechen']['*']
+      // ],
       // Because multiple select interactions for different layers don't work,
       // the layer needs to be determined within the style function. This way we can
       // use the styling associated with the layer the selected feature belongs to.

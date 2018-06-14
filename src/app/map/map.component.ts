@@ -27,8 +27,8 @@ export class MapComponent implements OnInit {
     this.mapService.getView().animate({ zoom: this.mapService.mapZoom }, { center: this.mapService.mapCenter });
   }
 
-  showLayers(layers: MapLayer[], status: string) {
-    this.mapService.showLayers(layers.map(layer => layer.name), status);
+  showLayers(layers: MapLayer[], topic: Topic, stage: Stage) {
+    this.mapService.showLayers(layers.map(layer => layer.name), topic ? topic.name : '', stage ? stage.name : '');
   }
 
   showBaseLayers(layers: MapLayer[]) {

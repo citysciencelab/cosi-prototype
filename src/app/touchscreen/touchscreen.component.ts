@@ -39,16 +39,20 @@ export class TouchscreenComponent implements OnInit {
   selectedTopic: Topic;
   stages: Stage[];
   selectedStage: Stage;
-  layers: MapLayer[];
+  layers: MapLayer[]; // for the layer switcher
   mapKeyLayer: MapLayer;
   mapKeyVisible: boolean;
   state = 'inactive';
 
-  constructor(private localStorageService: LocalStorageService, private mapService: MapService, private config: ConfigurationService,
-    private tuioClient: TuioClient) {
+  constructor(private config: ConfigurationService, private localStorageService: LocalStorageService, private tuioClient: TuioClient,
+    public mapService: MapService) {
     this.topics = this.config.topics;
     this.stages = this.config.stages;
     this.selectedStage = this.config.stages[0];
+
+    const baseLayers = this.config.baseLayers.concat(this.config.stickyLayers);
+    const topicLayers = this.config.topicLayers;
+    this.mapService.setSources(baseLayers, topicLayers);
 
     this.mapService.toolStartEvent.subscribe(
       (data: any) => {
@@ -120,12 +124,14 @@ export class TouchscreenComponent implements OnInit {
   }
 
   getBaseLayers() {
-    return this.config.baseLayers.concat(this.config.stickyLayers);
+    return this.config.baseLayers;
   }
 
   getTopicLayers(topic: Topic, stage: Stage) {
     return this.config.topicLayers.filter(layer => {
-      return layer.topic === topic.name && (layer.stage === stage.name || layer.stage === '*');
+      const isTopicMatch = topic && layer.topic === topic.name;
+      const isStageMatch = stage && layer.stage === stage.name || layer.stage === '*';
+      return isTopicMatch && isStageMatch;
     });
   }
 
@@ -134,15 +140,13 @@ export class TouchscreenComponent implements OnInit {
     this.mapKeyVisible = true;
   }
 
+  /*
+   * Set layer visibility e.g. after interaction with side panels or layer switcher
+   */
   updateMapLayers() {
-    this.layers = [];
-    if (this.selectedTopic && this.selectedStage) {
-      this.layers = this.getTopicLayers(this.selectedTopic, this.selectedStage);
-      this.map.showLayers(this.layers.filter(layer => layer.visible), this.selectedStage.name);
-    }
-    const baseLayers = this.getBaseLayers();
-    this.layers = this.layers.concat(baseLayers);
-    this.map.showBaseLayers(baseLayers.filter(layer => layer.visible));
+    this.layers = this.getTopicLayers(this.selectedTopic, this.selectedStage).concat(this.getBaseLayers());
+    this.map.showBaseLayers(this.mapService.baseLayers.filter(layer => layer.visible));
+    this.map.showLayers(this.layers.filter(layer => layer.visible), this.selectedTopic, this.selectedStage);
     this.map.clearSelectedFeatures();
   }
 
