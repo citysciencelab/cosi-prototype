@@ -127,12 +127,8 @@ export class TouchscreenComponent implements OnInit {
     return this.config.baseLayers;
   }
 
-  getTopicLayers(topic: Topic, stage: Stage) {
-    return this.config.topicLayers.filter(layer => {
-      const isTopicMatch = topic && layer.topic === topic.name;
-      const isStageMatch = stage && layer.stage === stage.name || layer.stage === '*';
-      return isTopicMatch && isStageMatch;
-    });
+  getTopicLayers(topic: Topic) {
+    return topic ? this.config.topicLayers.filter(layer => layer.topic === topic.name) : [];
   }
 
   showMapKey(layer: MapLayer) {
@@ -144,7 +140,7 @@ export class TouchscreenComponent implements OnInit {
    * Set layer visibility e.g. after interaction with side panels or layer switcher
    */
   updateMapLayers() {
-    this.layers = this.getTopicLayers(this.selectedTopic, this.selectedStage).concat(this.getBaseLayers());
+    this.layers = this.getTopicLayers(this.selectedTopic).concat(this.getBaseLayers());
     this.map.showBaseLayers(this.mapService.baseLayers.filter(layer => layer.visible));
     this.map.showLayers(this.layers.filter(layer => layer.visible), this.selectedTopic, this.selectedStage);
     this.map.clearSelectedFeatures();

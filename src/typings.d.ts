@@ -14,18 +14,19 @@ declare interface Stage {
   displayName: string;
 }
 
+declare interface Source {
+  url: string;
+  wmsParams?: { [key: string]: string | number | boolean };
+  wmsProjection?: string;
+  format?: string;
+}
+
 declare interface MapLayer {
   name: string;
   displayName: string;
   topic?: string;
-  stage?: string;
   type: 'WMS' | 'OSM' | 'Vector' | 'Heatmap';
-  url?: string;
-  // WMS
-  wmsParams?: { [key: string]: string | number | boolean };
-  wmsProjection?: string;
-  // Vector/Heatmap
-  format?: string;
+  source: Source | { [stage: string]: Source };
   // Heatmap
   weightAttribute?: string;
   weightAttributeMax?: number;
@@ -40,7 +41,7 @@ declare interface MapLayer {
   legendUrl?: string;
   meta?: string;
   // No config - assigned at runtime
-  olLayer?: ol.layer.Layer;
+  olLayer?: { [stage: string]: ol.layer.Layer };
 }
 
 declare interface Config {

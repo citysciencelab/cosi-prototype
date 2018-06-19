@@ -46,129 +46,134 @@ export class MapService {
     this.baseLayers = this.generateLayers(baseLayersConfig);
     this.topicLayers = this.generateLayers(topicLayersConfig);
 
-    for (const layer of this.baseLayers) {
-      this.instance.addLayer(layer.olLayer);
-      // Set the default style for each vector layer
-      if (layer.olLayer.constructor === ol.layer.Vector) {
-        (<ol.layer.Vector>layer.olLayer).setStyle(this.getStyleFunction(layer.name, false));
-      }
-    }
-
-    for (const layer of this.topicLayers) {
-      this.instance.addLayer(layer.olLayer);
-      // Set the default style for each vector layer
-      if (layer.olLayer.constructor === ol.layer.Vector) {
-        (<ol.layer.Vector>layer.olLayer).setStyle(this.getStyleFunction(layer.name, false));
-      }
+    for (const layer of this.baseLayers.concat(this.topicLayers)) {
+      Object.values(layer.olLayer).forEach(olLayer => {
+        this.instance.addLayer(olLayer);
+        // Set the default style for each vector layer
+        if (olLayer.constructor === ol.layer.Vector) {
+          (<ol.layer.Vector>olLayer).setStyle(this.getStyleFunction(layer.name, false));
+        }
+      });
     }
   }
 
   showBaseLayers(layerNames: string[]) {
     for (const layer of this.baseLayers) {
-      layer.olLayer.setVisible(layerNames.indexOf(layer.name) > -1);
+      Object.values(layer.olLayer).forEach(olLayer => olLayer.setVisible(layerNames.indexOf(layer.name) > -1));
     }
   }
 
   showLayers(layerNames: string[], topicName: string, stageName: string) {
     for (const layer of this.topicLayers) {
       if (layer.topic === topicName) {
-        const isNameMatch = layerNames.indexOf(layer.name) > -1;
-        const isStageMatch = layer.stage === stageName || layer.stage === '*';
-        layer.olLayer.setVisible(isNameMatch && isStageMatch);
-        // Also set layer visibility for all layers of the same name (but in any stage)
-        layer.visible = isNameMatch;
+        // Set layer visibility
+        layer.visible = layerNames.indexOf(layer.name) > -1;
+        // Show/hide layers
+        for (const [key, olLayer] of Object.entries(layer.olLayer)) {
+          olLayer.setVisible(layer.visible && (key === stageName || key === '*'));
+        }
       } else {
-        layer.olLayer.setVisible(false);
+        // Hide all other topics
+        for (const olLayer of Object.values(layer.olLayer)) {
+          olLayer.setVisible(false);
+        }
       }
     }
   }
 
-  getLayerByFeature(feature: ol.Feature): string {
+  getLayerByFeature(feature: ol.Feature): MapLayer {
     const vectorLayers = this.topicLayers.filter(layer => layer.type === 'Vector' || layer.type === 'Heatmap');
+    let matchingLayer;
     for (const layer of vectorLayers) {
-      const source = <ol.source.Vector>layer.olLayer.getSource();
-      source.forEachFeature(f => {
-        if (feature.getId() === f.getId()) {
-          return layer;
-        }
-      });
+      for (const olLayer of Object.values(layer.olLayer)) {
+        const source = <ol.source.Vector>olLayer.getSource();
+        source.forEachFeature(f => {
+          if (feature.getId() === f.getId()) {
+            matchingLayer = layer;
+          }
+        });
+      }
     }
-    return;
-  }
-
-  private addControls() {
-    const controls = ol.control.defaults().extend([new ol.control.ScaleLine()]);
-
-    controls.forEach(control => {
-      this.instance.addControl(control);
-    });
+    return matchingLayer;
   }
 
   private generateLayers(layersConfig: MapLayer[]): MapLayer[] {
     return layersConfig.map(layer => {
-      switch (layer.type) {
-        case 'OSM':
-          layer.olLayer = new ol.layer.Tile({
-            source: new ol.source.OSM(),
-            opacity: layer.opacity,
-            zIndex: layer.zIndex,
-            visible: false
-          });
-          break;
-        case 'WMS':
-          if (!layer.wmsParams) {
-            throw new Error('No WMS params defined for layer ' + layer.name);
-          }
-          if (layer.wmsParams.TILED) {
-            layer.olLayer = new ol.layer.Tile({
-              source: new ol.source.TileWMS({
-                url: layer.url,
-                params: layer.wmsParams
+      // Normalize the config fields
+      if (layer.source && layer.source.hasOwnProperty('url')) {
+        layer.source = { '*': <Source>layer.source };
+      }
+      return layer;
+    }).map(layer => {
+      // Create the OpenLayers layers
+      layer.olLayer = {};
+      for (const [key, source] of Object.entries(layer.source)) {
+        switch (layer.type) {
+          case 'OSM':
+            layer.olLayer[key] = new ol.layer.Tile({
+              source: new ol.source.OSM({
+                url: source.url
               }),
               opacity: layer.opacity,
               zIndex: layer.zIndex,
               visible: false
             });
-          } else {
-            layer.olLayer = new ol.layer.Image({
-              source: new ol.source.ImageWMS({
-                url: layer.url,
-                params: layer.wmsParams,
-                projection: layer.wmsProjection
+            break;
+          case 'WMS':
+            if (!source.wmsParams) {
+              throw new Error('No WMS params defined for layer ' + layer.name);
+            }
+            if (source.wmsParams.TILED) {
+              layer.olLayer[key] = new ol.layer.Tile({
+                source: new ol.source.TileWMS({
+                  url: source.url,
+                  params: source.wmsParams
+                }),
+                opacity: layer.opacity,
+                zIndex: layer.zIndex,
+                visible: false
+              });
+            } else {
+              layer.olLayer[key] = new ol.layer.Image({
+                source: new ol.source.ImageWMS({
+                  url: source.url,
+                  params: source.wmsParams,
+                  projection: source.wmsProjection
+                }),
+                opacity: layer.opacity,
+                zIndex: layer.zIndex,
+                visible: false
+              });
+            }
+            break;
+          case 'Vector':
+            layer.olLayer[key] = new ol.layer.Vector({
+              renderMode: 'image', // for performance
+              source: new ol.source.Vector({
+                url: source.url,
+                format: new ol.format[source.format]()
               }),
               opacity: layer.opacity,
               zIndex: layer.zIndex,
               visible: false
             });
-          }
-          break;
-        case 'Vector':
-          layer.olLayer = new ol.layer.Vector({
-            renderMode: 'image', // for performance
-            source: new ol.source.Vector({
-              url: layer.url,
-              format: new ol.format[layer.format]()
-            }),
-            opacity: layer.opacity,
-            zIndex: layer.zIndex,
-            visible: false
-          });
-          break;
-        case 'Heatmap':
-          layer.olLayer = new ol.layer.Heatmap({
-            source: new ol.source.Vector({
-              url: layer.url,
-              format: new ol.format[layer.format]()
-            }),
-            weight: layer.weightAttribute ? feature => feature.get(layer.weightAttribute) / layer.weightAttributeMax : feature => 1,
-            gradient: layer.gradient && layer.gradient.length > 1 ? layer.gradient : ['#0ff', '#0f0', '#ff0', '#f00'],
-            radius: layer.radius !== undefined ? layer.radius : 16,
-            blur: layer.blur !== undefined ? layer.blur : 30,
-            opacity: layer.opacity,
-            zIndex: layer.zIndex,
-            visible: false
-          });
-          break;
+            break;
+          case 'Heatmap':
+            layer.olLayer[key] = new ol.layer.Heatmap({
+              source: new ol.source.Vector({
+                url: source.url,
+                format: new ol.format[source.format]()
+              }),
+              weight: layer.weightAttribute ? feature => feature.get(layer.weightAttribute) / layer.weightAttributeMax : feature => 1,
+              gradient: layer.gradient && layer.gradient.length > 1 ? layer.gradient : ['#0ff', '#0f0', '#ff0', '#f00'],
+              radius: layer.radius !== undefined ? layer.radius : 16,
+              blur: layer.blur !== undefined ? layer.blur : 30,
+              opacity: layer.opacity,
+              zIndex: layer.zIndex,
+              visible: false
+            });
+            break;
+        }
       }
       return layer;
     }) || [];
@@ -199,7 +204,7 @@ export class MapService {
       // use the styling associated with the layer the selected feature belongs to.
       style: (feature: ol.Feature, resolution: number) => {
         const selectedLayer = this.getLayerByFeature(feature);
-        const styleFunction = this.getStyleFunction(selectedLayer, true);
+        const styleFunction = this.getStyleFunction(selectedLayer.name, true);
         if (typeof styleFunction !== 'function') {
           return;
         }
@@ -212,6 +217,14 @@ export class MapService {
 
     interactions.forEach(interaction => {
       this.instance.addInteraction(interaction);
+    });
+  }
+
+  private addControls() {
+    const controls = ol.control.defaults().extend([new ol.control.ScaleLine()]);
+
+    controls.forEach(control => {
+      this.instance.addControl(control);
     });
   }
 
