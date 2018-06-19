@@ -1,15 +1,7 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import * as ol from 'openlayers';
-import { environment } from '../../environments/environment';
 import { LocalStorageService } from '../local-storage/local-storage.service';
 import { LocalStorageMessage } from '../local-storage/local-storage-message.model';
-
-const white = <ol.Color>[255, 255, 255, 1];
-const blue = <ol.Color>[0, 153, 255, 1];
-const lightskyblue = <ol.Color>[135, 206, 250, 1];
-const red = <ol.Color>[255, 0, 0, 1];
-const crimson = <ol.Color>[220, 20, 60, 1];
-const purple = <ol.Color>[128, 0, 128, 1];
 
 @Injectable()
 export class MapService {
@@ -26,8 +18,6 @@ export class MapService {
 
   constructor(private localStorageService: LocalStorageService) {
     this.instance = new ol.Map({});
-    this.addControls();
-    this.addInteractions();
   }
 
   setTarget(target: string) {
@@ -46,15 +36,22 @@ export class MapService {
     this.baseLayers = this.generateLayers(baseLayersConfig);
     this.topicLayers = this.generateLayers(topicLayersConfig);
 
-    for (const layer of this.baseLayers.concat(this.topicLayers)) {
+    this.generateStyles(this.baseLayers);
+    this.generateStyles(this.topicLayers);
+
+    for (const layer of this.topicLayers.concat(this.baseLayers).reverse()) {
       Object.values(layer.olLayer).forEach(olLayer => {
         this.instance.addLayer(olLayer);
         // Set the default style for each vector layer
         if (olLayer.constructor === ol.layer.Vector) {
-          (<ol.layer.Vector>olLayer).setStyle(this.getStyleFunction(layer.name, false));
+          (<ol.layer.Vector>olLayer).setStyle(layer.olDefaultStyle);
         }
       });
     }
+
+    // FIXME these should probably go somewhere else
+    this.addControls();
+    this.addInteractions();
   }
 
   showBaseLayers(layerNames: string[]) {
@@ -179,6 +176,120 @@ export class MapService {
     }) || [];
   }
 
+  private generateStyles(layers: MapLayer[]) {
+    for (const layer of layers) {
+      if (layer.style) {
+        layer.olDefaultStyle = this.styleConfigToStyleFunction(layer.style, layer.scale, layer.scaleAttribute);
+      }
+      if (layer.selectedStyle) {
+        layer.olSelectedStyle = this.styleConfigToStyleFunction(layer.selectedStyle, layer.scale, layer.scaleAttribute);
+      }
+    }
+  }
+
+  private styleConfigToStyleFunction(style: LayerStyle, scale: { [key: string]: ol.Color }, scaleAttribute: string): ol.StyleFunction {
+    // Function to build a Fill object
+    const getFill = (feature: ol.Feature) => {
+      if (style.fill.color) {
+        return new ol.style.Fill(style.fill);
+      }
+      if (style.fill.categorizedScale) {
+        return new ol.style.Fill({
+          color: this.getColorFromCategorizedScale(feature, scaleAttribute, scale)
+        });
+      }
+      if (style.fill.graduatedScale) {
+        return new ol.style.Fill({
+          color: this.getColorFromGraduatedScale(feature, scaleAttribute, scale)
+        });
+      }
+    };
+
+    // Function to build a Stroke object
+    const getStroke = (feature: ol.Feature) => {
+      if (style.stroke.color) {
+        return new ol.style.Stroke(style.stroke);
+      }
+      if (style.stroke.categorizedScale) {
+        return new ol.style.Stroke({
+          color: this.getColorFromCategorizedScale(feature, scaleAttribute, scale),
+          width: style.stroke.width
+        });
+      }
+      if (style.stroke.graduatedScale) {
+        return new ol.style.Stroke({
+          color: this.getColorFromGraduatedScale(feature, scaleAttribute, scale),
+          width: style.stroke.width
+        });
+      }
+    };
+
+    const minResolution = style.text && style.text.minResolution ? style.text.minResolution : 0;
+    const maxResolution = style.text && style.text.maxResolution ? style.text.maxResolution : Infinity;
+
+    // Here the actual style function is returned
+    return (feature: ol.Feature, resolution: number) => new ol.style.Style({
+      fill: style.fill ? getFill(feature) : null,
+      stroke: style.stroke ? getStroke(feature) : null,
+      image: style.circle ? new ol.style.Circle({
+        radius: style.circle.radius,
+        fill: new ol.style.Fill(style.circle.fill),
+        stroke: new ol.style.Stroke(style.circle.stroke)
+      }) : null,
+      text: style.text && resolution <= maxResolution && resolution >= minResolution ? new ol.style.Text({
+        text: this.formatText(feature.get(style.text.attribute), style.text.round),
+        font: style.text.font,
+        fill: new ol.style.Fill(style.text.fill),
+        stroke: new ol.style.Stroke(style.text.stroke),
+        offsetX: style.text.offsetX,
+        offsetY: style.text.offsetY
+      }) : null
+    });
+  }
+
+  private formatText(value: any, round: boolean): string {
+    if (value === null) {
+      return '';
+    }
+    if (typeof value === 'number') {
+      value = round ? Math.round(value) : value;
+    }
+    return '' + value;
+  }
+
+  private getColorFromCategorizedScale(feature: ol.Feature, attribute: string, scale: { [key: string]: ol.Color }): ol.Color {
+    if (!scale) {
+      throw new Error('Cannot apply style: scale is not defined');
+    }
+    if (!attribute) {
+      throw new Error('Cannot apply style: scale attribute is not defined');
+    }
+    return scale[feature.get(attribute)];
+  }
+
+  private getColorFromGraduatedScale(feature: ol.Feature, attribute: string, scale: { [key: string]: ol.Color }): ol.Color {
+    if (!scale) {
+      throw new Error('Cannot apply style: scale is not defined');
+    }
+    if (!attribute) {
+      throw new Error('Cannot apply style: scale attribute is not defined');
+    }
+    let value = feature.get(attribute);
+    if (value === null) {
+      value = 0;
+    }
+    if (typeof value !== 'number') {
+      throw new Error('Cannot apply style: value is not a number');
+    }
+    return Object.entries(scale).reduce((previous, current) => {
+      const limit = parseInt(current[0], 10);
+      if (value < limit) {
+        return previous;
+      }
+      return current[1];
+    }, <ol.Color>[0, 0, 0, 1]);
+  }
+
   private addInteractions() {
     const defaultInteractions = ol.interaction.defaults({
       altShiftDragRotate: false,
@@ -189,26 +300,20 @@ export class MapService {
     this.instance.on('singleclick', this.mapClickHandler);
 
     this.selectInteraction = new ol.interaction.Select({
-      // FIXME
-      // layers: [
-      //   this.thematicLayers['kitas']['before'],
-      //   this.thematicLayers['kitas']['after'],
-      //   this.thematicLayers['einwohner']['before'],
-      //   this.thematicLayers['einwohner']['after'],
-      //   this.thematicLayers['supermaerkte']['*'],
-      //   this.thematicLayers['apotheken']['*'],
-      //   this.thematicLayers['gruenflaechen']['*']
-      // ],
+      // Selectable layers
+      layers: this.topicLayers.filter(layer => layer.selectable).reduce((layers: ol.layer.Layer[], layer) => {
+        layers.push(... Object.values(layer.olLayer));
+        return layers;
+      }, []),
       // Because multiple select interactions for different layers don't work,
       // the layer needs to be determined within the style function. This way we can
       // use the styling associated with the layer the selected feature belongs to.
       style: (feature: ol.Feature, resolution: number) => {
         const selectedLayer = this.getLayerByFeature(feature);
-        const styleFunction = this.getStyleFunction(selectedLayer.name, true);
-        if (typeof styleFunction !== 'function') {
+        if (typeof selectedLayer.olSelectedStyle !== 'function') {
           return;
         }
-        return styleFunction(feature, resolution);
+        return selectedLayer.olSelectedStyle(feature, resolution);
       },
       hitTolerance: 8
     });
@@ -240,233 +345,4 @@ export class MapService {
     }
   }
 
-  private getStyleFunction(layer: string, selected: boolean): ol.StyleFunction {
-    // This map contains style definitions for all layers (deselected/selected)
-    const styles = {
-      'kitas': {
-        default: (feature: ol.Feature, resolution: number) => new ol.style.Style({
-          image: new ol.style.Circle({
-            radius: 7,
-            fill: new ol.style.Fill({ color: white }),
-            stroke: new ol.style.Stroke({ color: blue, width: 1.5 })
-          }),
-          text: resolution < 10 ? new ol.style.Text({
-            text: '' + (Math.round(feature.get('KapKindneu')) || 0),
-            font: '18px sans-serif',
-            fill: new ol.style.Fill({ color: white }),
-            stroke: new ol.style.Stroke({ color: blue, width: 2 }),
-            offsetY: -16
-          }) : null
-        }),
-        selected: (feature: ol.Feature, resolution: number) => new ol.style.Style({
-          image: new ol.style.Circle({
-            radius: 8,
-            fill: new ol.style.Fill({ color: blue }),
-            stroke: new ol.style.Stroke({ color: white, width: 1.5 })
-          }),
-          text: resolution < 10 ? new ol.style.Text({
-            text: '' + (Math.round(feature.get('KapKindneu')) || 0),
-            font: '18px sans-serif',
-            fill: new ol.style.Fill({ color: white }),
-            stroke: new ol.style.Stroke({ color: blue, width: 2 }),
-            offsetY: -16
-          }) : null
-        })
-      },
-      'stadtteileKitaplaetze': {
-        default: (feature: ol.Feature, resolution: number) => new ol.style.Style({
-          stroke: new ol.style.Stroke({ color: purple, width: 1.5 }),
-          text: new ol.style.Text({
-            text: ('' + (feature.get('Kpl p K') || '')).replace(/\./, ','),
-            font: '22px sans-serif',
-            fill: new ol.style.Fill({ color: white }),
-            stroke: new ol.style.Stroke({ color: purple, width: 2 })
-          })
-        })
-      },
-      'einwohner': {
-        default: (feature: ol.Feature, resolution: number) => new ol.style.Style({
-          fill: new ol.style.Fill({
-            color: this.getColor(feature, 'einwohner')
-          }),
-          stroke: new ol.style.Stroke({ color: red, width: 0.5 }),
-          text: resolution < 10 ? new ol.style.Text({
-            text: '' + (feature.get('1bis6') || 0),
-            font: '18px sans-serif',
-            fill: new ol.style.Fill({ color: white }),
-            stroke: new ol.style.Stroke({ color: red, width: 2 })
-          }) : null
-        }),
-        selected: (feature: ol.Feature, resolution: number) => new ol.style.Style({
-          fill: new ol.style.Fill({
-            color: this.getColor(feature, 'einwohner')
-          }),
-          stroke: new ol.style.Stroke({ color: red, width: 2 }),
-          text: resolution < 10 ? new ol.style.Text({
-            text: '' + (feature.get('1bis6') || 0),
-            font: '18px sans-serif',
-            fill: new ol.style.Fill({ color: white }),
-            stroke: new ol.style.Stroke({ color: red, width: 2 })
-          }) : null
-        })
-      },
-      'apotheken': {
-        default: (feature: ol.Feature) => new ol.style.Style({
-          image: new ol.style.Circle({
-            radius: 7,
-            fill: new ol.style.Fill({ color: white }),
-            stroke: new ol.style.Stroke({ color: crimson, width: 1.5 })
-          })
-        }),
-        selected: (feature: ol.Feature) => new ol.style.Style({
-          image: new ol.style.Circle({
-            radius: 8,
-            fill: new ol.style.Fill({ color: crimson }),
-            stroke: new ol.style.Stroke({ color: white, width: 1.5 })
-          })
-        })
-      },
-      'supermaerkte': {
-        default: (feature: ol.Feature) => new ol.style.Style({
-          image: new ol.style.Circle({
-            radius: 7,
-            fill: new ol.style.Fill({ color: white }),
-            stroke: new ol.style.Stroke({ color: blue, width: 1.5 })
-          })
-        }),
-        selected: (feature: ol.Feature) => new ol.style.Style({
-          image: new ol.style.Circle({
-            radius: 8,
-            fill: new ol.style.Fill({ color: blue }),
-            stroke: new ol.style.Stroke({ color: white, width: 1.5 })
-          })
-        })
-      },
-      'gruenflaechen': {
-        default: (feature: ol.Feature) => new ol.style.Style({
-          fill: new ol.style.Fill({
-            color: this.getColor(feature, 'gruenflaechen')
-          }),
-          stroke: new ol.style.Stroke({
-            color: this.getColor(feature, 'gruenflaechen'),
-            width: 2
-          })
-        }),
-        selected: (feature: ol.Feature) => new ol.style.Style({
-          fill: new ol.style.Fill({
-            color: this.getColor(feature, 'gruenflaechen')
-          }),
-          stroke: new ol.style.Stroke({
-            color: blue,
-            width: 3
-          })
-        })
-      },
-      'sozialmonitoring': {
-        default: (feature: ol.Feature) => new ol.style.Style({
-          fill: new ol.style.Fill({
-            color: this.getColor(feature, 'sozialmonitoring')
-          }),
-          stroke: new ol.style.Stroke({
-            color: this.getColor(feature, 'sozialmonitoring'),
-            width: 2
-          })
-        }),
-        selected: (feature: ol.Feature) => new ol.style.Style({
-          fill: new ol.style.Fill({
-            color: this.getColor(feature, 'sozialmonitoring')
-          }),
-          stroke: new ol.style.Stroke({
-            color: blue,
-            width: 3
-          })
-        })
-      },
-      'grossborstel': {
-        default: (feature: ol.Feature) => new ol.style.Style({
-          stroke: new ol.style.Stroke({ color: blue, width: 5 })
-        })
-      }
-    };
-
-    if (!styles.hasOwnProperty(layer)) {
-      return;
-    }
-    if (selected && styles[layer].hasOwnProperty('selected')) {
-      return styles[layer]['selected'];
-    }
-    return styles[layer]['default'];
-  }
-
-  private getColor(feature: ol.Feature, layer: string): ol.Color {
-    const scales: { [key: string]: { [key: string]: ol.Color } } = {
-      'einwohner': {
-        0: [255, 0, 0, 0],    // 0-9
-        10: [255, 0, 0, 0.2], // 10-24
-        25: [255, 0, 0, 0.4], // 25-49
-        50: [255, 0, 0, 0.6], // 50-89
-        90: [255, 0, 0, 0.8]  // 90-
-      }
-    };
-    const categories: { [key: string]: { [key: string]: ol.Color } } = {
-      'gruenflaechen': {
-        'Kleingarten': [160, 82, 45, 0.6],
-        'Dauerkleingarten': [160, 82, 45, 0.6],
-        'Grün an Kleingärten': [160, 82, 45, 0.6],
-        'Parkanlage': [60, 179, 113, 0.6],
-        'Spielplatz': [124, 252, 0, 0.6],
-        'Friedhof': [72, 209, 204, 0.6],
-        'Schutzgrün': [199, 21, 133, 0.6],
-        'anderweitige Nutzung': [106, 90, 205, 0.6]
-      },
-      'sozialmonitoring': {
-        // Status hoch
-        1: [76, 115, 0, 0.6],
-        2: [112, 168, 0, 0.6],
-        3: [200, 215, 158, 0.6],
-        // Status mittel
-        4: [0, 133, 168, 0.6],
-        5: [115, 178, 255, 0.6],
-        6: [189, 210, 255, 0.6],
-        // Status niedrig
-        7: [255, 234, 189, 0.6],
-        8: [255, 170, 1, 0.6],
-        9: [168, 112, 1, 0.6],
-        // Status sehr niedrig
-        10: [230, 173, 188, 0.6],
-        11: [229, 83, 122, 0.6],
-        12: [179, 29, 30, 0.6],
-      }
-    };
-
-    const fillFunctions = {
-      'einwohner': (f: ol.Feature) => {
-        return this.getColorFromScale(scales['einwohner'], f.get('1bis6'));
-      },
-      'gruenflaechen': (f: ol.Feature) => {
-        return categories['gruenflaechen'][f.get('gruenart')];
-      },
-      'sozialmonitoring': (f: ol.Feature) => {
-        return categories['sozialmonitoring'][f.get('Gesamtinde')];
-      }
-    };
-
-    if (!fillFunctions.hasOwnProperty(layer)) {
-      return;
-    }
-    return fillFunctions[layer](feature);
-  }
-
-  private getColorFromScale(scale: { [key: string]: ol.Color }, value: number): ol.Color {
-    if (value === null) {
-      value = 0;
-    }
-    return Object.entries(scale).reduce((previous, current) => {
-      const limit = parseInt(current[0], 10);
-      if (value < limit) {
-        return previous;
-      }
-      return current[1];
-    }, <ol.Color>[0, 0, 0, 1]);
-  }
 }

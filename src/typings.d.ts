@@ -21,6 +21,40 @@ declare interface Source {
   format?: string;
 }
 
+declare interface Fill {
+  color?: string;
+  categorizedScale?: boolean;
+  graduatedScale?: boolean;
+}
+
+declare interface Stroke {
+  color?: string;
+  width?: number;
+  categorizedScale?: boolean;
+  graduatedScale?: boolean;
+}
+
+declare interface LayerStyle {
+  fill?: Fill;
+  stroke?: Stroke;
+  circle?: {
+    radius: number;
+    fill: Fill;
+    stroke: Stroke;
+  };
+  text?: {
+    maxResolution?: number;
+    minResolution?: number;
+    attribute: string;
+    round: boolean;
+    font: string;
+    fill: Fill;
+    stroke: Stroke;
+    offsetX?: number;
+    offsetY?: number;
+  };
+}
+
 declare interface MapLayer {
   name: string;
   displayName: string;
@@ -37,11 +71,18 @@ declare interface MapLayer {
   opacity?: number;
   zIndex?: number;
   visible: boolean;
+  selectable?: boolean;
   legendHtml?: string;
   legendUrl?: string;
   meta?: string;
+  style?: LayerStyle;
+  selectedStyle?: LayerStyle;
+  scale?: { [key: string]: ol.Color };
+  scaleAttribute?: string;
   // No config - assigned at runtime
   olLayer?: { [stage: string]: ol.layer.Layer };
+  olDefaultStyle?: ol.StyleFunction;
+  olSelectedStyle?: ol.StyleFunction;
 }
 
 declare interface Config {
