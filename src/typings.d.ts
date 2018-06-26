@@ -15,7 +15,8 @@ declare interface Stage {
 }
 
 declare interface Source {
-  url: string;
+  url?: string;
+  projection?: string;
   wmsParams?: { [key: string]: string | number | boolean };
   wmsProjection?: string;
   format?: string;
@@ -59,7 +60,7 @@ declare interface MapLayer {
   name: string;
   displayName: string;
   topic?: string;
-  type: 'WMS' | 'OSM' | 'Vector' | 'Heatmap';
+  type: 'WMS' | 'OSM' | 'Tile' | 'Vector' | 'Heatmap';
   source: Source | { [stage: string]: Source };
   // Heatmap
   weightAttribute?: string;

@@ -120,9 +120,7 @@
       "name": "osm",
       "displayName": "OpenStreetMap",
       "type": "OSM",
-      "source": {
-        "url": "https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      },
+      "source": {},
       "visible": false,
       "meta": "© OpenStreetMap-Mitwirkende"
     }

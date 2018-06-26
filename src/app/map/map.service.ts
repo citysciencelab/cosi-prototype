@@ -109,7 +109,18 @@ export class MapService {
           case 'OSM':
             layer.olLayer[key] = new ol.layer.Tile({
               source: new ol.source.OSM({
-                url: source.url
+                url: source.url ? source.url : undefined
+              }),
+              opacity: layer.opacity,
+              zIndex: layer.zIndex,
+              visible: false
+            });
+            break;
+          case 'Tile':
+            layer.olLayer[key] = new ol.layer.Tile({
+              source: new ol.source.TileImage({
+                url: source.url,
+                projection: source.projection
               }),
               opacity: layer.opacity,
               zIndex: layer.zIndex,
