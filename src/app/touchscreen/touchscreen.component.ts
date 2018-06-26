@@ -275,6 +275,10 @@ export class TouchscreenComponent implements OnInit {
   onRemoveObject(e: CustomEvent) {
   }
 
+  onContextMenuClick() {
+    return false;
+  }
+
   setStatus(status: { name: string, displayName: string }) {
     this.selectedStatus = status;
     this.updateMapLayers();

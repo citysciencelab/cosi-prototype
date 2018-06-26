@@ -1,4 +1,4 @@
-<div class="app-container" (addobject)="onUpdateObject($event)" (updateobject)="onUpdateObject($event)" (removeobject)="onRemoveObject($event)">
+<div class="app-container" (addobject)="onUpdateObject($event)" (updateobject)="onUpdateObject($event)" (removeobject)="onRemoveObject($event)"  (contextmenu)="onContextMenuClick($event)">
   <app-map (select)="onSelect($event)"></app-map>
 
   <nav [@menuState]="state" class="topic-slider">
