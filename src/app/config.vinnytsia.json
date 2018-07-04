@@ -1,0 +1,156 @@
+{
+  "enableTuio": false,
+  "topics": [
+    {
+      "name": "pois",
+      "displayName": "POIs"
+    },
+    {
+      "name": "landuse",
+      "displayName": "Landuse"
+    }
+  ],
+  "stages": [
+  ],
+  "baseLayers": [
+    {
+      "name": "taxplan",
+      "displayName": "Tax deduction zones",
+      "type": "Tile",
+      "source": {
+        "url": "https://gisapi.vmr.gov.ua/OpenData/genplan/2014/zone_nalog/GoogleMapsCompatible/{z}/{y}/{x}.png?ver=30714",
+        "projection": "EPSG:3857"
+      },
+      "visible": false,
+      "meta": "Source: Vinnytsia Geoportal (map.vmr.gov.ua)"
+    },
+    {
+      "name": "zoneplan",
+      "displayName": "Zoning plan",
+      "type": "Tile",
+      "source": {
+        "url": "https://gisapi.vmr.gov.ua/OpenData/zoneplan/2017/GoogleMapsCompatible/{z}/{y}/{x}.png?ver=200217",
+        "projection": "EPSG:3857"
+      },
+      "visible": false,
+      "meta": "Source: Vinnytsia geoportal (map.vmr.gov.ua)"
+    },
+    {
+      "name": "generalplan",
+      "displayName": "General plan",
+      "type": "Tile",
+      "source": {
+        "url": "https://gisapi.vmr.gov.ua/OpenData/genplan/2013/main/GoogleMapsCompatible/{z}/{y}/{x}.png?ver=190218",
+        "projection": "EPSG:3857"
+      },
+      "visible": false,
+      "meta": "Source: Vinnytsia Geoportal (map.vmr.gov.ua)"
+    },
+    {
+      "name": "cityplan",
+      "displayName": "Vinnytsia city plan",
+      "type": "Tile",
+      "source": {
+        "url": "https://gisapi.vmr.gov.ua/OpenData/addr2015/GoogleMapsCompatible/{z}/{y}/{y}_{x}.png?ver=280516",
+        "projection": "EPSG:3857"
+      },
+      "visible": false,
+      "meta": "Source: Vinnytsia Geoportal (map.vmr.gov.ua)"
+    },
+    {
+      "name": "osm",
+      "displayName": "OpenStreetMap",
+      "type": "OSM",
+      "source": {},
+      "visible": true,
+      "meta": "© OpenStreetMap contributors"
+    }
+  ],
+  "topicLayers": [
+    {
+      "name": "pois",
+      "displayName": "Points of interest",
+      "topic": "pois",
+      "type": "Vector",
+      "source": {
+        "url": "http://csl.local.hcuhh.de:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:ukraine_osm_pois&outputFormat=application/json&srsname=EPSG:4326",
+        "format": "GeoJSON"
+      },
+      "zIndex": 10,
+      "visible": true,
+      "selectable": true,
+      "meta": "Source: OpenStreetMap",
+      "style": {
+        "circle": {
+          "radius": 7,
+          "fill": {
+            "color": "white"
+          },
+          "stroke": {
+            "color": "dodgerblue",
+            "width": 1.5
+          }
+        }
+      },
+      "selectedStyle": {
+        "circle": {
+          "radius": 8,
+          "fill": {
+            "color": "dodgerblue"
+          },
+          "stroke": {
+            "color": "white",
+            "width": 1.5
+          }
+        }
+      }
+    },
+    {
+      "name": "landuse",
+      "displayName": "Landuse",
+      "topic": "landuse",
+      "type": "Vector",
+      "source": {
+        "url": "http://csl.local.hcuhh.de:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:ukraine_osm_landuse_a&outputFormat=application/json&srsname=EPSG:4326",
+        "format": "GeoJSON"
+      },
+      "zIndex": 10,
+      "visible": true,
+      "selectable": true,
+      "meta": "Source: OpenStreetMap",
+      "style": {
+        "fill": {
+          "categorizedScale": true
+        },
+        "stroke": {
+          "categorizedScale": true,
+          "width": 2
+        }
+      },
+      "selectedStyle": {
+        "fill": {
+          "categorizedScale": true
+        },
+        "stroke": {
+          "color": "dodgerblue",
+          "width": 3
+        }
+      },
+      "scale": {
+        "Kleingarten": [160, 82, 45, 0.6],
+        "Dauerkleingarten": [160, 82, 45, 0.6],
+        "Grün an Kleingärten": [160, 82, 45, 0.6],
+        "forest": [60, 179, 113, 0.6],
+        "Spielplatz": [124, 252, 0, 0.6],
+        "Friedhof": [72, 209, 204, 0.6],
+        "Schutzgrün": [199, 21, 133, 0.6],
+        "anderweitige Nutzung": [106, 90, 205, 0.6]
+      },
+      "scaleAttribute": "fclass"
+    }
+  ],
+  "stickyLayers": [
+  ],
+  "mapCenter": [28.4680, 49.2323],
+  "mapZoom": 14
+}
