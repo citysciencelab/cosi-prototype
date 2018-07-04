@@ -61,7 +61,8 @@ declare interface MapLayer {
   displayName: string;
   topic?: string;
   type: 'WMS' | 'OSM' | 'Tile' | 'Vector' | 'Heatmap';
-  source: Source | { [stage: string]: Source };
+  source?: Source;
+  sources?: { [stage: string]: Source };
   // Heatmap
   weightAttribute?: string;
   weightAttributeMax?: number;

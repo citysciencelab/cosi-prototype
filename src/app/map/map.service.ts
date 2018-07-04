@@ -97,14 +97,25 @@ export class MapService {
   private generateLayers(layersConfig: MapLayer[]): MapLayer[] {
     return layersConfig.map(layer => {
       // Normalize the config fields
-      if (layer.source && layer.source.hasOwnProperty('url')) {
-        layer.source = { '*': <Source>layer.source };
+      if (!layer.sources) {
+        layer.sources = {};
+      }
+      if (layer.source) {
+        if (!layer.sources.hasOwnProperty('*')) {
+          layer.sources['*'] = layer.source;
+        } else {
+          console.warn('Not overriding the "*" source with "source" value in layer ' + layer.name);
+        }
       }
       return layer;
     }).map(layer => {
       // Create the OpenLayers layers
       layer.olLayer = {};
-      for (const [key, source] of Object.entries(layer.source)) {
+      const sourceEntries = Object.entries(layer.sources);
+      if (sourceEntries.length === 0) {
+        throw new Error('No sources provided for layer ' + layer.name);
+      }
+      for (const [key, source] of sourceEntries) {
         switch (layer.type) {
           case 'OSM':
             layer.olLayer[key] = new ol.layer.Tile({
@@ -155,6 +166,9 @@ export class MapService {
             }
             break;
           case 'Vector':
+            if (!source.format || typeof ol.format[source.format] !== 'function') {
+              throw new Error('No vector format provided for layer ' + layer.name);
+            }
             layer.olLayer[key] = new ol.layer.Vector({
               renderMode: 'image', // for performance
               source: new ol.source.Vector({

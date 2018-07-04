@@ -131,7 +131,7 @@
       "displayName": "Kitas",
       "topic": "kitas",
       "type": "Vector",
-      "source": {
+      "sources": {
         "before": {
           "url": "http://csl.local.hcuhh.de:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:kitas&outputFormat=application/json&srsname=EPSG:4326",
           "format": "GeoJSON"
@@ -204,7 +204,7 @@
       "displayName": "Kitas (Heatmap)",
       "topic": "kitas",
       "type": "Heatmap",
-      "source": {
+      "sources": {
         "before": {
           "url": "http://csl.local.hcuhh.de:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:kitas&outputFormat=application/json&srsname=EPSG:4326",
           "format": "GeoJSON"
@@ -246,7 +246,7 @@
       "displayName": "Kitaplätze pro Kind (auf Stadtteilebene)",
       "topic": "kitas",
       "type": "Vector",
-      "source": {
+      "sources": {
         "before": {
           "url": "http://csl.local.hcuhh.de:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:stadtteile_grossborstel&outputFormat=application/json&srsname=EPSG:4326",
           "format": "GeoJSON"
@@ -283,7 +283,7 @@
       "displayName": "Einwohner im Alter 0 bis 6 Jahre",
       "topic": "kitas",
       "type": "Vector",
-      "source": {
+      "sources": {
         "before": {
           "url": "http://csl.local.hcuhh.de:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:einwohner_0bis6&outputFormat=application/json&srsname=EPSG:4326",
           "format": "GeoJSON"
@@ -550,5 +550,9 @@
         }
       }
     }
-  ]
+  ],
+  "mapCenter": [9.9880, 53.6126],
+  "mapZoom": 14,
+  "mapMinZoom": 11,
+  "mapMaxZoom": 18
 }
