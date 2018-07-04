@@ -94,6 +94,10 @@ declare interface Config {
   baseLayers: MapLayer[];
   topicLayers: MapLayer[];
   stickyLayers: MapLayer[];
+  mapCenter: [number, number];
+  mapZoom: number;
+  mapMinZoom?: number;
+  mapMaxZoom?: number;
 }
 
 declare module '*.json' {

@@ -1,6 +1,9 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import * as ol from 'openlayers';
+import { ConfigurationService } from '../configuration.service';
 import { MapService } from './map.service';
+import { LocalStorageService } from '../local-storage/local-storage.service';
+import { LocalStorageMessage } from '../local-storage/local-storage-message.model';
 
 @Component({
   selector: 'app-map',
@@ -9,22 +12,38 @@ import { MapService } from './map.service';
 })
 export class MapComponent implements OnInit {
   @Output() select = new EventEmitter<ol.interaction.Select.Event>();
+  @Output() toolStart = new EventEmitter<string>();
+  private isFirstClick = false;
 
-  constructor(private mapService: MapService) { }
+  // Map config
+  center: ol.Coordinate;
+  zoom: number;
+  minZoom: number;
+  maxZoom: number;
+
+  constructor(private config: ConfigurationService, private mapService: MapService, private localStorageService: LocalStorageService) {
+    this.center = ol.proj.fromLonLat(config.mapCenter);
+    this.zoom = config.mapZoom;
+    this.minZoom = config.mapMinZoom;
+    this.maxZoom = config.mapMaxZoom;
+  }
 
   ngOnInit() {
     this.mapService.setTarget('map');
     this.mapService.setView(new ol.View({
-      center: this.mapService.mapCenter,
-      zoom: 11,
-      minZoom: 11,
-      maxZoom: 18
+      center: this.center,
+      zoom: this.zoom - 3, // the zoom animation will correct the zoom level later
+      minZoom: this.minZoom,
+      maxZoom: this.maxZoom
     }));
     this.mapService.selectInteraction.on('select', e => this.select.emit(<ol.interaction.Select.Event>e));
+
+    // Just for the 'start-click'
+    this.mapService.on('singleclick', this.onMapClick.bind(this));
   }
 
   reset() {
-    this.mapService.getView().animate({ zoom: this.mapService.mapZoom }, { center: this.mapService.mapCenter });
+    this.mapService.getView().animate({ zoom: this.zoom }, { center: this.center });
   }
 
   showLayers(layers: MapLayer[], topic: Topic, stage: Stage) {
@@ -41,6 +60,20 @@ export class MapComponent implements OnInit {
 
   getLayerByFeature(feature: ol.Feature) {
     return this.mapService.getLayerByFeature(feature);
+  }
+
+  onMapClick() {
+    if (!this.isFirstClick) {
+      this.mapService.getView().animate({ zoom: this.zoom }, { center: this.center });
+
+      const message: LocalStorageMessage<{}> = {
+        type: 'tool-interaction',
+        data: { name: 'tool-start' }
+      };
+      this.localStorageService.sendMessage(message);
+      this.toolStart.emit('tool-start');
+    }
+    this.isFirstClick = true;
   }
 
 }

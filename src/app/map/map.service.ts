@@ -1,7 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import * as ol from 'openlayers';
-import { LocalStorageService } from '../local-storage/local-storage.service';
-import { LocalStorageMessage } from '../local-storage/local-storage-message.model';
 
 @Injectable()
 export class MapService {
@@ -9,15 +7,13 @@ export class MapService {
   selectInteraction: ol.interaction.Select;
   baseLayers: MapLayer[];
   topicLayers: MapLayer[];
-  isFirstClick = false;
-  toolStartEvent = new EventEmitter<any>();
 
-  // Map config
-  mapCenter = ol.proj.fromLonLat([9.9880, 53.6126]);
-  mapZoom = 14;
-
-  constructor(private localStorageService: LocalStorageService) {
+  constructor() {
     this.instance = new ol.Map({});
+  }
+
+  on(type: string, listener: ol.EventsListenerFunctionType) {
+    this.instance.on(type, listener);
   }
 
   setTarget(target: string) {
@@ -321,9 +317,6 @@ export class MapService {
       pinchRotate: false
     });
 
-    // Just for the 'start-click'
-    this.instance.on('singleclick', this.mapClickHandler);
-
     this.selectInteraction = new ol.interaction.Select({
       // Selectable layers
       layers: this.topicLayers.filter(layer => layer.selectable).reduce((layers: ol.layer.Layer[], layer) => {
@@ -356,18 +349,6 @@ export class MapService {
     controls.forEach(control => {
       this.instance.addControl(control);
     });
-  }
-
-  mapClickHandler = (evt) => {
-    if (!this.isFirstClick) {
-      this.isFirstClick = true;
-      this.getView().animate({ zoom: this.mapZoom }, { center: this.mapCenter });
-
-      const message: LocalStorageMessage<{}> = { type: 'tool-interaction', data: { name: 'tool-start' } };
-      this.localStorageService.sendMessage(message);
-
-      this.toolStartEvent.emit('tool-start');
-    }
   }
 
 }

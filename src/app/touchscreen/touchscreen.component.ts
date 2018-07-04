@@ -53,13 +53,6 @@ export class TouchscreenComponent implements OnInit {
     const baseLayers = this.config.baseLayers.concat(this.config.stickyLayers);
     const topicLayers = this.config.topicLayers;
     this.mapService.setSources(baseLayers, topicLayers);
-
-    this.mapService.toolStartEvent.subscribe(
-      (data: any) => {
-        if (data === 'tool-start') {
-          this.toggleMenu();
-        }
-      });
   }
 
   ngOnInit() {

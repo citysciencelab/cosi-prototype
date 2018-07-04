@@ -10,13 +10,16 @@ export class ConfigurationService {
   baseLayers: MapLayer[];
   topicLayers: MapLayer[];
   stickyLayers: MapLayer[];
+  mapCenter: [number, number];
+  mapZoom: number;
+  mapMinZoom?: number;
+  mapMaxZoom?: number;
 
   constructor() {
-    this.enableTuio = config.enableTuio;
-    this.topics = config.topics;
-    this.stages = config.stages;
-    this.baseLayers = config.baseLayers;
-    this.topicLayers = config.topicLayers;
-    this.stickyLayers = config.stickyLayers;
+    for (const key in config) {
+      if (config.hasOwnProperty(key)) {
+        this[key] = config[key];
+      }
+    }
   }
 }

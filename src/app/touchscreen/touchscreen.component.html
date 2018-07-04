@@ -1,5 +1,5 @@
 <div class="app-container" (addobject)="onUpdateObject($event)" (updateobject)="onUpdateObject($event)" (removeobject)="onRemoveObject($event)">
-  <app-map (select)="onSelect($event)"></app-map>
+  <app-map (toolStart)="toggleMenu()" (select)="onSelect($event)"></app-map>
 
   <nav [@menuState]="state" class="topic-slider">
     <div *ngFor="let topic of topics" [attr.id]="topic.name" class="topic-field" [class.selected]="selectedTopic === topic" (click)="setTopic(topic)" (addobject)="onUpdateObject($event)" (updateobject)="onUpdateObject($event)">{{ topic.displayName }}</div>
