@@ -9,7 +9,12 @@ export class MapService {
   topicLayers: MapLayer[];
 
   constructor() {
-    this.instance = new ol.Map({});
+    this.instance = new ol.Map({
+      interactions: ol.interaction.defaults({
+        altShiftDragRotate: false,
+        pinchRotate: false
+      })
+    });
   }
 
   on(type: string, listener: ol.EventsListenerFunctionType) {
@@ -312,11 +317,6 @@ export class MapService {
   }
 
   private addInteractions() {
-    const defaultInteractions = ol.interaction.defaults({
-      altShiftDragRotate: false,
-      pinchRotate: false
-    });
-
     this.selectInteraction = new ol.interaction.Select({
       // Selectable layers
       layers: this.topicLayers.filter(layer => layer.selectable).reduce((layers: ol.layer.Layer[], layer) => {
@@ -336,11 +336,7 @@ export class MapService {
       hitTolerance: 8
     });
 
-    const interactions = defaultInteractions.extend([this.selectInteraction]);
-
-    interactions.forEach(interaction => {
-      this.instance.addInteraction(interaction);
-    });
+    this.instance.addInteraction(this.selectInteraction);
   }
 
   private addControls() {
