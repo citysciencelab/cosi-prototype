@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { MapLayer } from '../map-layer.model';
 
 @Component({
   selector: 'app-layer-control',

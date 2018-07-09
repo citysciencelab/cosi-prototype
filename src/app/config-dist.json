@@ -1,3 +1,8 @@
 {
-  "enableTuio": false
+  "enableTuio": false,
+  "topics": [],
+  "stages": [],
+  "baseLayers": [],
+  "topicLayers": [],
+  "stickyLayers": []
 }
