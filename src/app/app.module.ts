@@ -48,7 +48,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ConfigurationService,
     LocalStorageService,
     MapService,
-    TuioClient,
+    {
+      provide: TuioClient,
+      useFactory: () => new TuioClient({ enableCursorEvent: false })
+    },
     ChartUtils
   ],
   bootstrap: [AppComponent]
