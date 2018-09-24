@@ -91,6 +91,8 @@ export class InfoscreenComponent implements OnInit {
         this.removeAll();
         break;
       case 'topic-select':
+        this.hasSelectedFeature = false;
+        this.removeAll();
         switch (message.data.name) {
           case 'nahversorgung':
             this.calculateInfrastructureData();

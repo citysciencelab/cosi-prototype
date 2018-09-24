@@ -15,11 +15,11 @@ import { LocalStorageService } from './local-storage/local-storage.service';
 import { LegendComponent } from './map/legend/legend.component';
 import { LayerControlComponent } from './map/layer-control/layer-control.component';
 import { HttpClientModule } from '@angular/common/http';
-import { ChartModule} from 'angular-highcharts';
-import { PieComponent} from 'angular-dashboard-components/components/charts/pie/pie.component';
-import { LineComponent} from 'angular-dashboard-components/components/charts/line/line.component';
-import { WordCloudComponent} from 'angular-dashboard-components/components/charts/word-cloud/word-cloud.component';
-import { ChartUtils} from 'angular-dashboard-components/components/utils/chart.utils';
+import { ChartModule } from 'angular-highcharts';
+import { PieComponent } from 'angular-dashboard-components/components/charts/pie/pie.component';
+import { LineComponent } from 'angular-dashboard-components/components/charts/line/line.component';
+import { WordCloudComponent } from 'angular-dashboard-components/components/charts/word-cloud/word-cloud.component';
+import { ChartUtils } from 'angular-dashboard-components/components/utils/chart.utils';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
