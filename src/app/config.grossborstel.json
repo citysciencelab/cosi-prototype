@@ -355,8 +355,8 @@
       "topic": "nahversorgung",
       "type": "Vector",
       "source": {
-        "url": "https://overpass-api.de/api/interpreter?data=(area[name=\"Hamburg\"];)->.a;node[\"amenity\"=\"pharmacy\"](area.a);out;",
-        "format": "OSMXML"
+        "url": "http://csl.local.hcuhh.de:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:apotheken_all&outputFormat=application/json&srsname=EPSG:4326",
+        "format": "GeoJSON"
       },
       "visible": true,
       "selectable": true,
@@ -393,8 +393,8 @@
       "topic": "nahversorgung",
       "type": "Vector",
       "source": {
-        "url": "https://overpass-api.de/api/interpreter?data=(area[name=\"Hamburg\"];)->.a;node[\"shop\"=\"supermarket\"](area.a);out;",
-        "format": "OSMXML"
+        "url": "http://csl.local.hcuhh.de:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:supermaerkte_all&outputFormat=application/json&srsname=EPSG:4326",
+        "format": "GeoJSON"
       },
       "visible": true,
       "selectable": true,
