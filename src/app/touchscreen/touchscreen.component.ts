@@ -115,8 +115,13 @@ export class TouchscreenComponent implements OnInit {
   }
 
   setTopic(topic: Topic) {
-    this.selectedTopic = topic;
-    this.localStorageService.sendMessage({ type: 'topic-select', data: topic });
+    if (this.selectedTopic === topic) {
+      this.selectedTopic = null;
+      this.localStorageService.sendMessage({ type: 'topic-select', data: null });
+    } else {
+      this.selectedTopic = topic;
+      this.localStorageService.sendMessage({ type: 'topic-select', data: topic });
+    }
     this.updateMapLayers();
   }
 
