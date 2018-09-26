@@ -1,18 +1,14 @@
 import { Feature } from './feature.model';
 
 export class StatisticalArea extends Feature {
-  name: string;
-  area: number;
+  name: number;
   population: number;
-  population1to6: number;
-  kitasIn500m: number;
+  population1to6: string;
 
   constructor(properties: { [k: string]: any }) {
     super('StatisticalArea');
-    this.name = properties['STGEBNEU'];
+    this.name = properties['BBLOCK'];
     this.population = properties['Gesamt'];
-    this.population1to6 = properties['1bis6'];
-    this.kitasIn500m = properties['Kita500m'];
-    this.area = properties['geometry'].getArea();
+    this.population1to6 = properties['1bis6range'];
   }
 }

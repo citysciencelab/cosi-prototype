@@ -300,54 +300,30 @@
       "meta": "Quelle: Statistikamt Nord",
       "style": {
         "fill": {
-          "graduatedScale": true
+          "categorizedScale": true
         },
         "stroke": {
           "color": "red",
           "width": 0.5
-        },
-        "text": {
-          "maxResolution": 10,
-          "attribute": "1bis6",
-          "font": "18px sans-serif",
-          "fill": {
-            "color": "white"
-          },
-          "stroke": {
-            "color": "red",
-            "width": 2
-          }
         }
       },
       "selectedStyle": {
         "fill": {
-          "graduatedScale": true
+          "categorizedScale": true
         },
         "stroke": {
           "color": "red",
           "width": 2
-        },
-        "text": {
-          "maxResolution": 10,
-          "attribute": "1bis6",
-          "font": "18px sans-serif",
-          "fill": {
-            "color": "white"
-          },
-          "stroke": {
-            "color": "red",
-            "width": 2
-          }
         }
       },
       "scale": {
-        "0": [255, 0, 0, 0],
-        "10": [255, 0, 0, 0.2],
-        "25": [255, 0, 0, 0.4],
-        "50": [255, 0, 0, 0.6],
-        "90": [255, 0, 0, 0.8]
+        "0-9": [255, 0, 0, 0],
+        "10-24": [255, 0, 0, 0.2],
+        "25-49": [255, 0, 0, 0.4],
+        "50-89": [255, 0, 0, 0.6],
+        "90-": [255, 0, 0, 0.8]
       },
-      "scaleAttribute": "1bis6"
+      "scaleAttribute": "1bis6range"
     },
     {
       "name": "apotheken",
