@@ -80,7 +80,8 @@ export class MapService {
   }
 
   getLayerByFeature(feature: ol.Feature): MapLayer {
-    const vectorLayers = this.topicLayers.filter(layer => layer.type === 'Vector' || layer.type === 'Heatmap');
+    // This whole thing becomes problematic as soon as more than one layer is using the same vector data source ...
+    const vectorLayers = this.topicLayers.filter(layer => layer.type === 'Vector');
     let matchingLayer;
     for (const layer of vectorLayers) {
       for (const olLayer of Object.values(layer.olLayer)) {
