@@ -216,6 +216,7 @@
       },
       "weightAttribute": "KapKindneu",
       "weightAttributeMax": 350,
+      "radius": 20,
       "zIndex": 11,
       "visible": false,
       "meta": "Quelle: BASFI"
@@ -256,24 +257,24 @@
           "format": "GeoJSON"
         }
       },
-      "zIndex": 2,
+      "zIndex": 20,
       "visible": false,
       "legendUrl": "assets/legend-kitaprokind.png",
       "meta": "Quellen: BASFI (Kitaplätze), Statistikamt Nord (Bevölkerungsstruktur)",
       "style": {
         "stroke": {
           "color": "purple",
-          "width": 1.5
+          "width": 2
         },
         "text": {
           "attribute": "Kpl p K",
-          "font": "22px sans-serif",
+          "font": "28px sans-serif",
           "fill": {
             "color": "white"
           },
           "stroke": {
             "color": "purple",
-            "width": 2
+            "width": 3
           }
         }
       }
@@ -340,13 +341,13 @@
       "meta": "Quelle: OpenStreetMap",
       "style": {
         "circle": {
-          "radius": 7,
+          "radius": 8,
           "fill": {
             "color": "white"
           },
           "stroke": {
             "color": "crimson",
-            "width": 1.5
+            "width": 2.5
           }
         }
       },
@@ -358,7 +359,7 @@
           },
           "stroke": {
             "color": "white",
-            "width": 1.5
+            "width": 2.5
           }
         }
       }
@@ -378,13 +379,13 @@
       "meta": "Quelle: OpenStreetMap",
       "style": {
         "circle": {
-          "radius": 7,
+          "radius": 8,
           "fill": {
             "color": "white"
           },
           "stroke": {
             "color": "dodgerblue",
-            "width": 1.5
+            "width": 2.5
           }
         }
       },
@@ -396,7 +397,7 @@
           },
           "stroke": {
             "color": "white",
-            "width": 1.5
+            "width": 2.5
           }
         }
       }
