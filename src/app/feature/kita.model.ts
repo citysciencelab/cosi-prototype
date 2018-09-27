@@ -12,7 +12,15 @@ export class Kita extends Feature {
   constructor(properties: { [k: string]: any }) {
     super('Kita');
     this.name = properties['Name'];
-    this.address = properties['Strasse'] + ' ' + properties['Hausnr'] + ', ' + properties['PLZ'] + ' ' + properties['Ort'];
+    let addressPart1 = properties['Strasse'] || '';
+    if (properties['Hausnr']) {
+      addressPart1 += ' ' + properties['Hausnr'];
+    }
+    let addressPart2 = properties['Ort'] || '';
+    if (properties['PLZ']) {
+      addressPart2 = properties['PLZ'] + ' ' + addressPart2;
+    }
+    this.address = addressPart1 && addressPart2 ? addressPart1 + ', ' + addressPart2 : addressPart1 + addressPart2;
     this.organisation = properties['Traeger'];
     this.association = properties['Spitzenver'];
     this.services = properties['Leistungsn'];
