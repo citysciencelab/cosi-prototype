@@ -487,26 +487,6 @@
         "anderweitige Nutzung": [106, 90, 205, 0.6]
       },
       "scaleAttribute": "gruenart"
-    },
-    {
-      "name": "flurstuecke",
-      "displayName": "Potenzialflächen",
-      "topic": "gruenflaechen",
-      "type": "WMS",
-      "source": {
-        "url": "http://csl.local.hcuhh.de:8080/geoserver/csl/wms",
-        "wmsParams": {
-          "LAYERS": "csl:flurstuecke",
-          "STYLES": "flurstuecke_neu",
-          "FORMAT": "image/png",
-          "TILED": true,
-          "WIDTH": 256,
-          "HEIGHT": 256,
-          "SRS": "EPSG:4326"
-        }
-      },
-      "visible": false,
-      "meta": "Quelle: LGV, Aufbereitung durch FindingPlaces (2016)"
     }
   ],
   "stickyLayers": [
