@@ -15,12 +15,21 @@ import { LocalStorageService } from './local-storage/local-storage.service';
 import { LegendComponent } from './map/legend/legend.component';
 import { LayerControlComponent } from './map/layer-control/layer-control.component';
 import { HttpClientModule } from '@angular/common/http';
-import { ChartModule } from 'angular-highcharts';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import { PieComponent } from 'angular-dashboard-components/components/charts/pie/pie.component';
 import { LineComponent } from 'angular-dashboard-components/components/charts/line/line.component';
 import { WordCloudComponent } from 'angular-dashboard-components/components/charts/word-cloud/word-cloud.component';
 import { ChartUtils } from 'angular-dashboard-components/components/utils/chart.utils';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { ChartModule, HIGHCHARTS_MODULES } from 'angular-highcharts';
+import * as more from 'highcharts/highcharts-more.src';
+import * as exporting from 'highcharts/modules/exporting.src';
+import * as wordcloud from 'highcharts/modules/wordcloud.src';
+
+export function highchartsModules() {
+  return [ more, exporting, wordcloud];
+}
 
 @NgModule({
   declarations: [
@@ -44,15 +53,22 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserAnimationsModule
   ],
   providers: [
-    { provide: LocationStrategy, useClass: HashLocationStrategy },
     ConfigurationService,
     LocalStorageService,
+    ChartUtils,
     MapService,
+    {
+      provide: HIGHCHARTS_MODULES,
+      useFactory: highchartsModules
+    },
+    {
+      provide: LocationStrategy,
+      useClass: HashLocationStrategy
+    },
     {
       provide: TuioClient,
       useFactory: () => new TuioClient({ enableCursorEvent: false })
-    },
-    ChartUtils
+    }
   ],
   bootstrap: [AppComponent]
 })
