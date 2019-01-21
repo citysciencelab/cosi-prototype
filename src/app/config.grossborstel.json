@@ -216,7 +216,6 @@
       },
       "weightAttribute": "KapKindneu",
       "weightAttributeMax": 350,
-      "radius": 20,
       "zIndex": 11,
       "visible": false,
       "meta": "Quelle: BASFI"
@@ -257,24 +256,24 @@
           "format": "GeoJSON"
         }
       },
-      "zIndex": 20,
+      "zIndex": 2,
       "visible": false,
       "legendUrl": "assets/legend-kitaprokind.png",
       "meta": "Quellen: BASFI (Kitaplätze), Statistikamt Nord (Bevölkerungsstruktur)",
       "style": {
         "stroke": {
           "color": "purple",
-          "width": 2
+          "width": 1.5
         },
         "text": {
           "attribute": "Kpl p K",
-          "font": "28px sans-serif",
+          "font": "22px sans-serif",
           "fill": {
             "color": "white"
           },
           "stroke": {
             "color": "purple",
-            "width": 3
+            "width": 2
           }
         }
       }
@@ -301,30 +300,54 @@
       "meta": "Quelle: Statistikamt Nord",
       "style": {
         "fill": {
-          "categorizedScale": true
+          "graduatedScale": true
         },
         "stroke": {
           "color": "red",
           "width": 0.5
+        },
+        "text": {
+          "maxResolution": 10,
+          "attribute": "1bis6",
+          "font": "18px sans-serif",
+          "fill": {
+            "color": "white"
+          },
+          "stroke": {
+            "color": "red",
+            "width": 2
+          }
         }
       },
       "selectedStyle": {
         "fill": {
-          "categorizedScale": true
+          "graduatedScale": true
         },
         "stroke": {
           "color": "red",
           "width": 2
+        },
+        "text": {
+          "maxResolution": 10,
+          "attribute": "1bis6",
+          "font": "18px sans-serif",
+          "fill": {
+            "color": "white"
+          },
+          "stroke": {
+            "color": "red",
+            "width": 2
+          }
         }
       },
       "scale": {
-        "0-9": [255, 0, 0, 0],
-        "10-24": [255, 0, 0, 0.2],
-        "25-49": [255, 0, 0, 0.4],
-        "50-89": [255, 0, 0, 0.6],
-        "90-": [255, 0, 0, 0.8]
+        "0": [255, 0, 0, 0],
+        "10": [255, 0, 0, 0.2],
+        "25": [255, 0, 0, 0.4],
+        "50": [255, 0, 0, 0.6],
+        "90": [255, 0, 0, 0.8]
       },
-      "scaleAttribute": "1bis6range"
+      "scaleAttribute": "1bis6"
     },
     {
       "name": "apotheken",
@@ -332,8 +355,8 @@
       "topic": "nahversorgung",
       "type": "Vector",
       "source": {
-        "url": "http://csl.local.hcuhh.de:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:apotheken_all&outputFormat=application/json&srsname=EPSG:4326",
-        "format": "GeoJSON"
+        "url": "https://overpass-api.de/api/interpreter?data=(area[name=\"Hamburg\"];)->.a;node[\"amenity\"=\"pharmacy\"](area.a);out;",
+        "format": "OSMXML"
       },
       "visible": true,
       "selectable": true,
@@ -341,13 +364,13 @@
       "meta": "Quelle: OpenStreetMap",
       "style": {
         "circle": {
-          "radius": 8,
+          "radius": 7,
           "fill": {
             "color": "white"
           },
           "stroke": {
             "color": "crimson",
-            "width": 2.5
+            "width": 1.5
           }
         }
       },
@@ -359,7 +382,7 @@
           },
           "stroke": {
             "color": "white",
-            "width": 2.5
+            "width": 1.5
           }
         }
       }
@@ -370,8 +393,8 @@
       "topic": "nahversorgung",
       "type": "Vector",
       "source": {
-        "url": "http://csl.local.hcuhh.de:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:supermaerkte_all&outputFormat=application/json&srsname=EPSG:4326",
-        "format": "GeoJSON"
+        "url": "https://overpass-api.de/api/interpreter?data=(area[name=\"Hamburg\"];)->.a;node[\"shop\"=\"supermarket\"](area.a);out;",
+        "format": "OSMXML"
       },
       "visible": true,
       "selectable": true,
@@ -379,13 +402,13 @@
       "meta": "Quelle: OpenStreetMap",
       "style": {
         "circle": {
-          "radius": 8,
+          "radius": 7,
           "fill": {
             "color": "white"
           },
           "stroke": {
             "color": "dodgerblue",
-            "width": 2.5
+            "width": 1.5
           }
         }
       },
@@ -397,7 +420,7 @@
           },
           "stroke": {
             "color": "white",
-            "width": 2.5
+            "width": 1.5
           }
         }
       }
@@ -487,6 +510,26 @@
         "anderweitige Nutzung": [106, 90, 205, 0.6]
       },
       "scaleAttribute": "gruenart"
+    },
+    {
+      "name": "flurstuecke",
+      "displayName": "Potenzialflächen",
+      "topic": "gruenflaechen",
+      "type": "WMS",
+      "source": {
+        "url": "http://csl.local.hcuhh.de:8080/geoserver/csl/wms",
+        "wmsParams": {
+          "LAYERS": "csl:flurstuecke",
+          "STYLES": "flurstuecke_neu",
+          "FORMAT": "image/png",
+          "TILED": true,
+          "WIDTH": 256,
+          "HEIGHT": 256,
+          "SRS": "EPSG:4326"
+        }
+      },
+      "visible": false,
+      "meta": "Quelle: LGV, Aufbereitung durch FindingPlaces (2016)"
     }
   ],
   "stickyLayers": [
@@ -513,3 +556,4 @@
   "mapMinZoom": 11,
   "mapMaxZoom": 18
 }
+
