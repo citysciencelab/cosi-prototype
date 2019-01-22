@@ -20,6 +20,7 @@ export class MapComponent implements OnInit {
   zoom: number;
   minZoom: number;
   maxZoom: number;
+  popUp: ol.Overlay;
 
   constructor(private config: ConfigurationService, private mapService: MapService, private localStorageService: LocalStorageService) {
     this.center = ol.proj.fromLonLat(config.mapCenter);
@@ -36,10 +37,36 @@ export class MapComponent implements OnInit {
       minZoom: this.minZoom,
       maxZoom: this.maxZoom
     }));
-    this.mapService.selectInteraction.on('select', e => this.select.emit(<ol.interaction.Select.Event>e));
+    if (this.config.disableInfoScreen) {
+      const element = document.getElementById('popup');
+      this.popUp = new ol.Overlay({
+        element: element,
+        stopEvent: false
+      });
+      this.mapService.setPopUp(this.popUp);
+      this.mapService.selectInteraction.on('select', e => this.createPopUp(e));
+
+    } else {
+      this.mapService.selectInteraction.on('select', e => this.select.emit(<ol.interaction.Select.Event>e));
+    }
 
     // Just for the 'start-click'
     this.mapService.on('singleclick', this.onMapClick.bind(this));
+  }
+
+  createPopUp(evt) {
+    if (evt.selected.length > 0) {
+      const element = this.popUp.getElement();
+      const coordinate = evt.mapBrowserEvent.pixel;
+      // var hdms = ol.coordinate.toStringHDMS(ol.proj.toLonLat(coordinate));
+
+      this.popUp.setPosition([100, 100]);
+
+      // const info = e.selected[0].getProperties();
+      // var coord = e.mapBrowserEvent.pixel;
+      // this.popUp.setOffset([0, -22]);
+      // this.popUp.setPosition(coord);
+    }
   }
 
   reset() {

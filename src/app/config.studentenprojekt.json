@@ -1,17 +1,28 @@
 {
+  "disableInfoScreen": true,
   "enableTuio": false,
   "topics": [
     {
       "name": "verkehr",
-      "displayName": "Ver-kehr"
+      "displayName": "Verkehr"
     },
     {
       "name": "freizeit",
-      "displayName": "Frei-zeit"
+      "displayName": "Freizeit"
     },
     {
       "name": "kitas",
-      "displayName": "Bil-dung"
+      "displayName": "Bildung"
+    }
+  ],
+  "stages": [
+    {
+      "name": "before",
+      "displayName": "Vor Bebauung"
+    },
+    {
+      "name": "after",
+      "displayName": "Nach Bebauung"
     }
   ],
   "baseLayers": [
@@ -211,90 +222,6 @@
       "meta": "Quelle: MRH"
     },
     {
-      "name": "hhSchulen",
-      "displayName": "Öffentliche Schulen",
-      "topic": "kitas",
-      "type": "WMS",
-      "source": {
-        "url": "https://geodienste.hamburg.de/HH_WMS_Schulen",
-        "wmsParams": {
-          "LAYERS": "6",
-          "FORMAT": "image/png",
-          "TILED": true,
-          "WIDTH": 256,
-          "HEIGHT": 256,
-          "SRS": "EPSG:4326"
-        }
-      },
-      "opacity": 0.9,
-      "visible": false,
-      "legendUrl": "https://geodienste.hamburg.de/HH_WMS_Schulen?request=GetLegendGraphic&version=1.3.0&format=image/png&layer=6",
-      "meta": "Quelle: MRH"
-    },
-    {
-      "name": "schulsporthallen",
-      "displayName": "Schulsporthallen",
-      "topic": "freizeit",
-      "type": "WMS",
-      "source": {
-        "url": "https://geodienste.hamburg.de/HH_WMS_Sporthallen",
-        "wmsParams": {
-          "LAYERS": "2",
-          "FORMAT": "image/png",
-          "TILED": true,
-          "WIDTH": 256,
-          "HEIGHT": 256,
-          "SRS": "EPSG:4326"
-        }
-      },
-      "opacity": 0.9,
-      "visible": false,
-      "legendUrl": "https://geodienste.hamburg.de/HH_WMS_Sporthallen?request=GetLegendGraphic&version=1.3.0&format=image/png&layer=2",
-      "meta": "Quelle: MRH"
-    },
-    {
-      "name": "sportstaetten",
-      "displayName": "Sportstätten",
-      "topic": "freizeit",
-      "type": "WMS",
-      "source": {
-        "url": "https://geodienste.hamburg.de/HH_WMS_Sportstaetten",
-        "wmsParams": {
-          "LAYERS": "2",
-          "FORMAT": "image/png",
-          "TILED": true,
-          "WIDTH": 256,
-          "HEIGHT": 256,
-          "SRS": "EPSG:4326"
-        }
-      },
-      "opacity": 0.9,
-      "visible": false,
-      "legendUrl": "https://geodienste.hamburg.de/HH_WMS_Sportstaetten?request=GetLegendGraphic&version=1.3.0&format=image/png&layer=2",
-      "meta": "Quelle: MRH"
-    },
-    {
-      "name": "badegewaesser",
-      "displayName": "Badegewässer",
-      "topic": "freizeit",
-      "type": "WMS",
-      "source": {
-        "url": "https://geodienste.hamburg.de/HH_WMS_Badegewaesser",
-        "wmsParams": {
-          "LAYERS": "2",
-          "FORMAT": "image/png",
-          "TILED": true,
-          "WIDTH": 256,
-          "HEIGHT": 256,
-          "SRS": "EPSG:4326"
-        }
-      },
-      "opacity": 0.9,
-      "visible": false,
-      "legendUrl": "https://geodienste.hamburg.de/HH_WMS_Badegewaesser?request=GetLegendGraphic&version=1.3.0&format=image/png&layer=2",
-      "meta": "Quelle: MRH"
-    },
-    {
       "name": "gruenflaechen",
       "displayName": "Grünflächen",
       "topic": "freizeit",
@@ -303,6 +230,7 @@
         "url": "http://csl.local.hcuhh.de:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:gruenflaechen&outputFormat=application/json&srsname=EPSG:4326",
         "format": "GeoJSON"
       },
+      "opacity": 0.6,
       "zIndex": 1,
       "visible": true,
       "selectable": true,
@@ -339,14 +267,77 @@
       "scaleAttribute": "gruenart"
     },
     {
-      "name": "verkehr",
-      "displayName": "Öffentliche Verkehrsmittel ",
-      "topic": "verkehr",
+      "name": "hhSchulen",
+      "displayName": "Öffentliche Schulen",
+      "topic": "kitas",
+      "type": "WMS",
+      "source": {
+        "url": "https://geodienste.hamburg.de/HH_WMS_Schulen",
+        "wmsParams": {
+          "LAYERS": "hh_schulen_dwh",
+          "FORMAT": "image/png",
+          "TILED": true,
+          "WIDTH": 256,
+          "HEIGHT": 256,
+          "SRS": "EPSG:4326"
+        }
+      },
+      "opacity": 0.9,
+      "visible": false,
+      "legendUrl": "https://geodienste.hamburg.de/HH_WMS_Schulen?request=GetLegendGraphic&version=1.3.0&format=image/png&layer=6",
+      "meta": "Quelle: MRH"
+    },
+    {
+      "name": "schulsporthallen",
+      "displayName": "Schulsporthallen",
+      "topic": "freizeit",
+      "type": "WMS",
+      "source": {
+        "url": "https://geodienste.hamburg.de/HH_WMS_Sporthallen",
+        "wmsParams": {
+          "LAYERS": "theme_sporthallen",
+          "FORMAT": "image/png",
+          "TILED": true,
+          "WIDTH": 256,
+          "HEIGHT": 256,
+          "SRS": "EPSG:4326"
+        }
+      },
+      "opacity": 0.9,
+      "visible": false,
+      "legendUrl": "https://geodienste.hamburg.de/HH_WMS_Sporthallen?request=GetLegendGraphic&version=1.3.0&format=image/png&layer=2",
+      "meta": "Quelle: MRH"
+    },
+    {
+      "name": "sportstaetten",
+      "displayName": "Sportstätten",
+      "topic": "freizeit",
+      "type": "WMS",
+      "source": {
+        "url": "https://geodienste.hamburg.de/HH_WMS_Sportstaetten",
+        "wmsParams": {
+          "LAYERS": "sportataetten",
+          "FORMAT": "image/png",
+          "TILED": true,
+          "WIDTH": 256,
+          "HEIGHT": 256,
+          "SRS": "EPSG:4326"
+        }
+      },
+      "opacity": 0.9,
+      "visible": false,
+      "legendUrl": "https://geodienste.hamburg.de/HH_WMS_Sportstaetten?request=GetLegendGraphic&version=1.3.0&format=image/png&layer=2",
+      "meta": "Quelle: MRH"
+    },
+    {
+      "name": "badegewaesser",
+      "displayName": "Badegewässer",
+      "topic": "freizeit",
       "type": "WMS",
       "source": {
         "url": "https://geodienste.hamburg.de/HH_WMS_Badegewaesser",
         "wmsParams": {
-          "LAYERS": "2",
+          "LAYERS": "theme_hh_badegewaesser",
           "FORMAT": "image/png",
           "TILED": true,
           "WIDTH": 256,
@@ -358,6 +349,47 @@
       "visible": false,
       "legendUrl": "https://geodienste.hamburg.de/HH_WMS_Badegewaesser?request=GetLegendGraphic&version=1.3.0&format=image/png&layer=2",
       "meta": "Quelle: MRH"
+    },
+    {
+      "name": "verkehr",
+      "displayName": "Öffentliche Verkehrsmittel",
+      "topic": "verkehr",
+      "type": "WMS",
+      "source": {
+        "url": "http://geodienste.hamburg.de/wms_hvv",
+        "wmsParams": {
+          "LAYERS": "geofoxdb_stations",
+          "FORMAT": "image/png",
+          "TILED": true,
+          "WIDTH": 256,
+          "HEIGHT": 256,
+          "SRS": "EPSG:4326"
+        }
+      },
+      "opacity": 0.9,
+      "visible": false,
+      "legendUrl": "http://geodienste.hamburg.de/wms_hvv?request=GetLegendGraphic&version=1.3.0&format=image/png&layer=2",
+      "meta": "Quelle: MRH"
+    }
+  ],
+  "stickyLayers": [
+    {
+      "name": "grossborstel",
+      "displayName": "Groß Borstel",
+      "type": "Vector",
+      "source": {
+        "url": "http://csl.local.hcuhh.de:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:grossborstel&outputFormat=application/json&srsname=EPSG:4326",
+        "format": "GeoJSON"
+      },
+      "zIndex": 100,
+      "visible": true,
+      "style": {
+        "stroke": {
+          "color": "dodgerblue",
+          "width": 5
+        }
+      },
+      "opacity": 0
     }
   ],
   "mapCenter": [9.9880, 53.6126],
@@ -365,4 +397,3 @@
   "mapMinZoom": 11,
   "mapMaxZoom": 18
 }
-

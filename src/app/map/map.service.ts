@@ -29,6 +29,10 @@ export class MapService {
     this.instance.setView(view);
   }
 
+  setPopUp(popup: ol.Overlay) {
+    this.instance.addOverlay(popup);
+  }
+
   getView() {
     return this.instance.getView();
   }

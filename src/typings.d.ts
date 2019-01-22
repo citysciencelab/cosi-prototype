@@ -88,6 +88,7 @@ declare interface MapLayer {
 }
 
 declare interface Config {
+  disableInfoScreen: boolean;
   enableTuio: boolean;
   stages: Stage[];
   topics: Topic[];

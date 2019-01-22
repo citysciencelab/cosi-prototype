@@ -4,6 +4,7 @@ import config from './config.json';
 @Injectable()
 export class ConfigurationService {
   // Config fields are defined in typings.d.ts
+  disableInfoScreen: boolean;
   enableTuio: boolean;
   topics: Topic[];
   stages: Stage[];

@@ -1,4 +1,5 @@
 {
+  "disableInfoScreen": false,
   "enableTuio": false,
   "topics": [
     {
