@@ -44,31 +44,12 @@ export class MapComponent implements OnInit {
         stopEvent: false
       });
       this.mapService.setPopUp(this.popUp);
-      this.mapService.selectInteraction.on('select', e => this.createPopUp(e));
-
     } else {
       this.mapService.selectInteraction.on('select', e => this.select.emit(<ol.interaction.Select.Event>e));
     }
 
-    // Just for the 'start-click'
-    this.mapService.on('singleclick', this.onMapClick.bind(this));
+    this.mapService.on('singleclick', this.mapClickHandler);
   }
-
-  createPopUp(evt) {
-    if (evt.selected.length > 0) {
-      const element = this.popUp.getElement();
-      const coordinate = evt.mapBrowserEvent.pixel;
-      // var hdms = ol.coordinate.toStringHDMS(ol.proj.toLonLat(coordinate));
-
-      this.popUp.setPosition([100, 100]);
-
-      // const info = e.selected[0].getProperties();
-      // var coord = e.mapBrowserEvent.pixel;
-      // this.popUp.setOffset([0, -22]);
-      // this.popUp.setPosition(coord);
-    }
-  }
-
   reset() {
     this.mapService.getView().animate({ zoom: this.zoom }, { center: this.center });
   }
@@ -89,7 +70,7 @@ export class MapComponent implements OnInit {
     return this.mapService.getLayerByFeature(feature);
   }
 
-  onMapClick() {
+  mapClickHandler = (evt) => {
     if (!this.isFirstClick) {
       this.mapService.getView().animate({ zoom: this.zoom }, { center: this.center });
 
@@ -99,8 +80,40 @@ export class MapComponent implements OnInit {
       };
       this.localStorageService.sendMessage(message);
       this.toolStart.emit('tool-start');
+      this.isFirstClick = true;
+    } else if (this.popUp) {
+      const features = evt.map.getFeaturesAtPixel(evt.pixel);
+      if (features) {
+        // const properties = evt.selected[0].getProperties();
+        const coordinate = evt.coordinate;
+        const element = document.getElementById('popup');
+        // element.innerText = 'schlmmm';
+        element.innerHTML = this.getTextFromFeatureProperties(features[0]);
+        this.popUp.setPosition(coordinate);
+      } else {
+        this.popUp.setPosition(undefined);
+      }
     }
-    this.isFirstClick = true;
+  }
+
+  getTextFromFeatureProperties(feature) {
+    let content = '';
+    for (const key of Object.keys(feature.getProperties())) {
+      if (key.toUpperCase().indexOf('SHAPE') === -1) {
+        let viewKey = key.replace('_', ' ');
+        viewKey = this.capitalize(key);
+        const value = feature.getProperties()[key];
+        if (typeof value === 'string') {
+            content = content + viewKey + ' : ' + value + '<br />';
+        }
+      }
+    }
+    return content;
+  }
+
+  // Irgendwie in eine Utils classe
+  capitalize(text) {
+    return text.charAt(0).toUpperCase() + text.slice(1);
   }
 
 }

@@ -31,42 +31,6 @@
   ],
   "baseLayers": [
     {
-      "name": "sozialmonitoring",
-      "displayName": "Sozialmonitoring 2016",
-      "type": "Vector",
-      "source": {
-        "url": "http://csl.local.hcuhh.de:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:sozialmonitoring2016&outputFormat=application/json&srsname=EPSG:4326",
-        "format": "GeoJSON"
-      },
-      "visible": false,
-      "legendUrl": "/assets/Gesamtindex2016_Legende.png",
-      "meta": "Quelle: BSW",
-      "style": {
-        "fill": {
-          "categorizedScale": true
-        },
-        "stroke": {
-          "categorizedScale": true,
-          "width": 2
-        }
-      },
-      "scale": {
-        "1": [76, 115, 0, 0.6],
-        "2": [112, 168, 0, 0.6],
-        "3": [200, 215, 158, 0.6],
-        "4": [0, 133, 168, 0.6],
-        "5": [115, 178, 255, 0.6],
-        "6": [189, 210, 255, 0.6],
-        "7": [255, 234, 189, 0.6],
-        "8": [255, 170, 1, 0.6],
-        "9": [168, 112, 1, 0.6],
-        "10": [230, 173, 188, 0.6],
-        "11": [229, 83, 122, 0.6],
-        "12": [179, 29, 30, 0.6]
-      },
-      "scaleAttribute": "Gesamtinde"
-    },
-    {
       "name": "stadtteile",
       "displayName": "Stadtteile",
       "type": "WMS",
@@ -134,19 +98,37 @@
     {
       "name": "integrationskurse",
       "displayName": "Integrationskurse",
-      "topic" : "integation",
+      "topic" : "integration",
       "type": "Vector",
       "source": {
-        "url": "http://csl.local.hcuhh.de:8080/geoserver/Gefluechteteninfrastruktur_Wandsbek/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Gefluechteteninfrastruktur_Wandsbek:Vorhandene_Integrationskurse&maxFeatures=50&outputFormat=application/json",
+        "url": "http://csl.local.hcuhh.de:8080/geoserver/Gefluechteteninfrastruktur_Wandsbek/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Gefluechteteninfrastruktur_Wandsbek:Vorhandene_Integrationskurse&outputFormat=application/json",
         "format": "GeoJSON"
       },
       "zIndex": 100,
       "visible": true,
       "selectable": true,
       "style": {
-        "stroke": {
-          "color": "dodgerblue",
-          "width": 5
+        "circle": {
+          "radius": 7,
+          "fill": {
+            "color": "dodgerblue"
+          },
+          "stroke": {
+            "color": "dodgerblue",
+            "width": 1.5
+          }
+        }
+      },
+      "selectedStyle": {
+        "circle": {
+          "radius": 7,
+          "fill": {
+            "color": "dodgerblue"
+          },
+          "stroke": {
+            "color": "black",
+            "width": 1
+          }
         }
       },
       "opacity": 1
@@ -154,19 +136,37 @@
     {
       "name": "moeglicheflaechen",
       "displayName": "Flächen für mögliche Integrationsangebote",
-      "topic" : "integation",
+      "topic" : "integration",
       "type": "Vector",
       "source": {
-        "url": "http://csl.local.hcuhh.de:8080/geoserver/Gefluechteteninfrastruktur_Wandsbek/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Gefluechteteninfrastruktur_Wandsbek:Moegliche_Flaechen_fuer_Integrationsangebote&maxFeatures=50&outputFormat=application/json",
+        "url": "http://csl.local.hcuhh.de:8080/geoserver/Gefluechteteninfrastruktur_Wandsbek/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Gefluechteteninfrastruktur_Wandsbek:Moegliche_Flaechen_fuer_Integrationsangebote&outputFormat=application/json",
         "format": "GeoJSON"
       },
       "zIndex": 100,
-      "visible": true,
+      "visible": false,
       "selectable": true,
       "style": {
-        "stroke": {
-          "color": "dodgerblue",
-          "width": 5
+        "circle": {
+          "radius": 7,
+          "fill": {
+            "color": "#CD5C5C"
+          },
+          "stroke": {
+            "color": "#CD5C5C",
+            "width": 1.5
+          }
+        }
+      },
+      "selectedStyle": {
+        "circle": {
+          "radius": 7,
+          "fill": {
+            "color": "#CD5C5C"
+          },
+          "stroke": {
+            "color": "black",
+            "width": 1
+          }
         }
       },
       "opacity": 1
@@ -174,19 +174,37 @@
     {
       "name": "leerstaende",
       "displayName": "Leerstände für mögliche Integrationsangebote",
-      "topic" : "integation",
+      "topic" : "integration",
       "type": "Vector",
       "source": {
-        "url": "http://csl.local.hcuhh.de:8080/geoserver/Gefluechteteninfrastruktur_Wandsbek/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Gefluechteteninfrastruktur_Wandsbek:Leerstaende_fuer_moegliche_Integrationsangebote&maxFeatures=50&outputFormat=application/json",
+        "url": "http://csl.local.hcuhh.de:8080/geoserver/Gefluechteteninfrastruktur_Wandsbek/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Gefluechteteninfrastruktur_Wandsbek:Leerstaende_fuer_moegliche_Integrationsangebote&outputFormat=application/json",
         "format": "GeoJSON"
       },
       "zIndex": 100,
-      "visible": true,
+      "visible": false,
       "selectable": true,
       "style": {
-        "stroke": {
-          "color": "dodgerblue",
-          "width": 5
+        "circle": {
+          "radius": 7,
+          "fill": {
+            "color": "#008000"
+          },
+          "stroke": {
+            "color": "#008000",
+            "width": 1.5
+          }
+        }
+      },
+      "selectedStyle": {
+        "circle": {
+          "radius": 7,
+          "fill": {
+            "color": "#008000"
+          },
+          "stroke": {
+            "color": "black",
+            "width": 1
+          }
         }
       },
       "opacity": 1
@@ -194,19 +212,37 @@
     {
       "name": "mehrsprachigeaerzte",
       "displayName": "Mehrsprachige Ärzte",
-      "topic" : "integation",
+      "topic" : "integration",
       "type": "Vector",
       "source": {
-        "url": "http://csl.local.hcuhh.de:8080/geoserver/Gefluechteteninfrastruktur_Wandsbek/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Gefluechteteninfrastruktur_Wandsbek:Mehrsprachige_Aerzte&maxFeatures=50&outputFormat=application/json",
+        "url": "http://csl.local.hcuhh.de:8080/geoserver/Gefluechteteninfrastruktur_Wandsbek/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Gefluechteteninfrastruktur_Wandsbek:Mehrsprachige_Aerzte&outputFormat=application/json",
         "format": "GeoJSON"
       },
       "zIndex": 100,
-      "visible": true,
+      "visible": false,
       "selectable": true,
       "style": {
-        "stroke": {
-          "color": "dodgerblue",
-          "width": 5
+        "circle": {
+          "radius": 7,
+          "fill": {
+            "color": "#a3964b"
+          },
+          "stroke": {
+            "color": "#a3964b",
+            "width": 1.5
+          }
+        }
+      },
+      "selectedStyle": {
+        "circle": {
+          "radius": 7,
+          "fill": {
+            "color": "#a3964b"
+          },
+          "stroke": {
+            "color": "black",
+            "width": 1
+          }
         }
       },
       "opacity": 1
