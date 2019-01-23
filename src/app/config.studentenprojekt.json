@@ -7,6 +7,10 @@
       "displayName": "Verkehr"
     },
     {
+      "name" : "integration",
+      "displayName" : "Integration"
+    },
+    {
       "name": "freizeit",
       "displayName": "Freizeit"
     },
@@ -127,6 +131,86 @@
     }
   ],
   "topicLayers": [
+    {
+      "name": "integrationskurse",
+      "displayName": "Integrationskurse",
+      "topic" : "integation",
+      "type": "Vector",
+      "source": {
+        "url": "http://csl.local.hcuhh.de:8080/geoserver/Gefluechteteninfrastruktur_Wandsbek/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Gefluechteteninfrastruktur_Wandsbek:Vorhandene_Integrationskurse&maxFeatures=50&outputFormat=application/json",
+        "format": "GeoJSON"
+      },
+      "zIndex": 100,
+      "visible": true,
+      "selectable": true,
+      "style": {
+        "stroke": {
+          "color": "dodgerblue",
+          "width": 5
+        }
+      },
+      "opacity": 1
+    },
+    {
+      "name": "moeglicheflaechen",
+      "displayName": "Flächen für mögliche Integrationsangebote",
+      "topic" : "integation",
+      "type": "Vector",
+      "source": {
+        "url": "http://csl.local.hcuhh.de:8080/geoserver/Gefluechteteninfrastruktur_Wandsbek/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Gefluechteteninfrastruktur_Wandsbek:Moegliche_Flaechen_fuer_Integrationsangebote&maxFeatures=50&outputFormat=application/json",
+        "format": "GeoJSON"
+      },
+      "zIndex": 100,
+      "visible": true,
+      "selectable": true,
+      "style": {
+        "stroke": {
+          "color": "dodgerblue",
+          "width": 5
+        }
+      },
+      "opacity": 1
+    },
+    {
+      "name": "leerstaende",
+      "displayName": "Leerstände für mögliche Integrationsangebote",
+      "topic" : "integation",
+      "type": "Vector",
+      "source": {
+        "url": "http://csl.local.hcuhh.de:8080/geoserver/Gefluechteteninfrastruktur_Wandsbek/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Gefluechteteninfrastruktur_Wandsbek:Leerstaende_fuer_moegliche_Integrationsangebote&maxFeatures=50&outputFormat=application/json",
+        "format": "GeoJSON"
+      },
+      "zIndex": 100,
+      "visible": true,
+      "selectable": true,
+      "style": {
+        "stroke": {
+          "color": "dodgerblue",
+          "width": 5
+        }
+      },
+      "opacity": 1
+    },
+    {
+      "name": "mehrsprachigeaerzte",
+      "displayName": "Mehrsprachige Ärzte",
+      "topic" : "integation",
+      "type": "Vector",
+      "source": {
+        "url": "http://csl.local.hcuhh.de:8080/geoserver/Gefluechteteninfrastruktur_Wandsbek/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Gefluechteteninfrastruktur_Wandsbek:Mehrsprachige_Aerzte&maxFeatures=50&outputFormat=application/json",
+        "format": "GeoJSON"
+      },
+      "zIndex": 100,
+      "visible": true,
+      "selectable": true,
+      "style": {
+        "stroke": {
+          "color": "dodgerblue",
+          "width": 5
+        }
+      },
+      "opacity": 1
+    },
     {
       "name": "kitas",
       "displayName": "Kitas",
@@ -392,7 +476,7 @@
       "opacity": 0
     }
   ],
-  "mapCenter": [9.9880, 53.6126],
+  "mapCenter": [10.095790, 53.582160],
   "mapZoom": 14,
   "mapMinZoom": 11,
   "mapMaxZoom": 18
