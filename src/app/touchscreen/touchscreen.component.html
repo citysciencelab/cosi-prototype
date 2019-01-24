@@ -1,12 +1,12 @@
 <div class="app-container" (addobject)="onUpdateObject($event)" (updateobject)="onUpdateObject($event)" (removeobject)="onRemoveObject($event)" (contextmenu)="onContextMenuClick()">
   <app-map (toolStart)="toggleMenu()" (select)="onSelect($event)"></app-map>
 
-  <nav [@menuState]="state" class="topic-slider">
-    <div *ngFor="let topic of topics" [attr.id]="topic.name" class="topic-field" [class.selected]="selectedTopic === topic" (click)="setTopic(topic)" (addobject)="onUpdateObject($event)" (updateobject)="onUpdateObject($event)">{{ topic.displayName }}</div>
+  <nav [@menuState]="state" class="menu-slider topic-slider">
+    <div *ngFor="let topic of topics" [attr.id]="topic.name" class="menu-field topic-field" [class.selected]="selectedTopic === topic" (click)="setTopic(topic)" (addobject)="onUpdateObject($event)" (updateobject)="onUpdateObject($event)">{{ topic.displayName }}</div>
   </nav>
 
-  <nav [@menuState]="state" class="progress-slider">
-    <div *ngFor="let stage of stages" [attr.id]="stage.name" class="progress-field" [class.selected]="selectedStage === stage" (click)="setStage(stage)" (addobject)="onUpdateObject($event)" (updateobject)="onUpdateObject($event)">{{ stage.displayName }}</div>
+  <nav [@menuState]="state" class="menu-slider progress-slider">
+    <div *ngFor="let stage of stages" [attr.id]="stage.name" class="menu-field progress-field" [class.selected]="selectedStage === stage" (click)="setStage(stage)" (addobject)="onUpdateObject($event)" (updateobject)="onUpdateObject($event)">{{ stage.displayName }}</div>
   </nav>
 
   <div [@menuState]="state" class="modal-container-left">

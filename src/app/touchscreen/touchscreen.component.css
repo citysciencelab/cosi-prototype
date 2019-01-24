@@ -28,25 +28,34 @@
   background-color: white;
 }
 
-.progress-slider {
+.menu-slider {
   position: absolute;
   top: 0;
-  right: 0;
   display: flex;
   flex-direction: column-reverse;
   justify-content: space-around;
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.75);
+  background-color: transparent;
 }
 
-.progress-field {
-  background-color: rgba(128, 128, 128, 0.5);
+.menu-field {
+  background-color: rgba(255, 255, 255, 0.75);
   margin: 15px;
+  border: 1px solid gray;
   width: 100px;
   text-align: center;
   cursor: pointer;
+  border-radius: 10px;
   padding: 50% 0;
   user-select: none;
+}
+
+.progress-slider {
+  right: 0;
+  /*background-color: rgba(255, 255, 255, 0.75);*/
+}
+
+.progress-field {
 }
 
 .progress-field.selected {
@@ -54,24 +63,11 @@
 }
 
 .topic-slider {
-  position: absolute;
-  top: 0;
   left: 0;
-  display: flex;
-  flex-direction: column-reverse;
-  justify-content: space-around;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.75);
+  /*background-color: rgba(255, 255, 255, 0.75);*/
 }
 
 .topic-field {
-  background-color: rgba(128, 128, 128, 0.5);
-  margin: 15px;
-  width: 100px;
-  text-align: center;
-  cursor: pointer;
-  padding: 50% 0;
-  user-select: none;
 }
 
 .topic-field.selected {
@@ -91,13 +87,19 @@
 }
 
 .reset-button {
+  background-color: rgba(255, 255, 255, 0.75);
   padding: 10px;
   margin: 15px;
-  background-color: rgba(255, 255, 255, 0.9);
   border: 1px solid gray;
   border-radius: 10px;
 }
 
 .reset-button a {
-  font-size: 90%;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+}
+.reset-button a:hover {
+  text-decoration: none;
 }
