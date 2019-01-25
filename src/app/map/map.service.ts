@@ -1,6 +1,5 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import * as ol from 'openlayers';
-import proj4 from 'proj4';
 
 @Injectable()
 export class MapService {
@@ -187,14 +186,6 @@ export class MapService {
             if (!source.format || typeof ol.format[source.format] !== 'function') {
               throw new Error('No vector format provided for layer ' + layer.name);
             }
-
-            //const myProjectionName = 'EPSG:25832';;
-            //proj4.defs(myProjectionName, '+proj=utm +zone=32 +ellps=GRS80 +units=m +no_defs');
-            //ol.proj.setProj4(proj4);
-
-            //const myProjection = ol.proj.get(myProjectionName);
-            //myProjection.setExtent([239323.44497533192, 4294418.796805557, 760676.5550246682, 9320086.206906328]);
-
             layer.olLayer[key] = new ol.layer.Vector({
               renderMode: 'image', // for performance
               source: new ol.source.Vector({
@@ -205,7 +196,6 @@ export class MapService {
               zIndex: layer.zIndex,
               visible: false
             });
-
             break;
           case 'Heatmap':
             layer.olLayer[key] = new ol.layer.Heatmap({

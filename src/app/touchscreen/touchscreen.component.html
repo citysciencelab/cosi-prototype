@@ -15,7 +15,8 @@
     <app-layer-control [layers]="layers" (toggleLayer)="updateMapLayers()" (showInfo)="showMapKey($event)"></app-layer-control>
   </div>
 
-  <div [@menuState]="state" class="modal-container-right">
+  <div [@menuState]="state" class="modal-container-right"
+       [ngClass]="isNoMenus ? 'modal-container-right-nomenu' : ''">
     <div class="reset-button"><a href="#" (click)="map.reset()">Karte zurücksetzen</a></div>
   </div>
 </div>

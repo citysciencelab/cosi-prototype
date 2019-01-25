@@ -90,6 +90,10 @@
   right: 130px;
 }
 
+.modal-container-right-nomenu {
+  right: 0 !important;
+}
+
 .reset-button {
   background-color: rgba(255, 255, 255, 0.75);
   padding: 10px;
