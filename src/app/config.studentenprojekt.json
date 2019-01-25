@@ -1,5 +1,6 @@
 {
   "disableInfoScreen": true,
+  "noSideMenus" : true,
   "enableTuio": false,
   "topics": [
     {

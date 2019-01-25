@@ -1,2 +1,3 @@
 <div id="map"></div>
-<div id="popup" class="ol-popup">Test</div>
+<div id="popup" class="ol-popup"
+     [ngClass]="!disableInfoScreen ? 'ol-popup-noshow' : ''">Test</div>

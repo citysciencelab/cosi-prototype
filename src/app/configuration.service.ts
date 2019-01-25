@@ -5,6 +5,7 @@ import config from './config.json';
 export class ConfigurationService {
   // Config fields are defined in typings.d.ts
   disableInfoScreen: boolean;
+  noSideMenus: boolean;
   enableTuio: boolean;
   topics: Topic[];
   stages: Stage[];

@@ -80,6 +80,10 @@
   left: 130px;
 }
 
+.modal-container-left-nomenu {
+  left: 0 !important;
+}
+
 .modal-container-right {
   position: absolute;
   bottom: 0;

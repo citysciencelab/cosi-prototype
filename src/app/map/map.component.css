@@ -10,3 +10,7 @@
   left: -50px;
   min-width: 280px;
 }
+
+.ol-popup-noshow {
+  display: none;
+}

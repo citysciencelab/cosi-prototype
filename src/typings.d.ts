@@ -89,6 +89,7 @@ declare interface MapLayer {
 
 declare interface Config {
   disableInfoScreen: boolean;
+  noSideMenus: boolean;
   enableTuio: boolean;
   stages: Stage[];
   topics: Topic[];

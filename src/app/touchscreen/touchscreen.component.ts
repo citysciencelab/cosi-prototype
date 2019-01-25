@@ -43,12 +43,14 @@ export class TouchscreenComponent implements OnInit {
   mapKeyLayer: MapLayer;
   mapKeyVisible: boolean;
   state = 'inactive';
+  isNoMenus = false;
 
   constructor(private config: ConfigurationService, private localStorageService: LocalStorageService, private tuioClient: TuioClient,
     public mapService: MapService) {
     this.topics = this.config.topics;
     this.stages = this.config.stages;
     this.selectedStage = this.config.stages[0];
+    this.isNoMenus = this.config.noSideMenus;
 
     const baseLayers = this.config.baseLayers.concat(this.config.stickyLayers);
     const topicLayers = this.config.topicLayers;
@@ -130,7 +132,11 @@ export class TouchscreenComponent implements OnInit {
   }
 
   getTopicLayers(topic: Topic) {
-    return topic ? this.config.topicLayers.filter(layer => layer.topic === topic.name) : [];
+    if (this.isNoMenus) {
+      return this.config.topicLayers;
+    } else {
+      return topic ? this.config.topicLayers.filter(layer => layer.topic === topic.name) : [];
+    }
   }
 
   showMapKey(layer: MapLayer) {

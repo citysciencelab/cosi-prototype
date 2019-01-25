@@ -21,12 +21,14 @@ export class MapComponent implements OnInit {
   minZoom: number;
   maxZoom: number;
   popUp: ol.Overlay;
+  disableInfoScreen = false;
 
   constructor(private config: ConfigurationService, private mapService: MapService, private localStorageService: LocalStorageService) {
     this.center = ol.proj.fromLonLat(config.mapCenter);
     this.zoom = config.mapZoom;
     this.minZoom = config.mapMinZoom;
     this.maxZoom = config.mapMaxZoom;
+    this.disableInfoScreen = this.config.disableInfoScreen;
   }
 
   ngOnInit() {
@@ -55,7 +57,11 @@ export class MapComponent implements OnInit {
   }
 
   showLayers(layers: MapLayer[], topic: Topic, stage: Stage) {
-    this.mapService.showLayers(layers.map(layer => layer.name), topic ? topic.name : '', stage ? stage.name : '');
+    if (!this.config.noSideMenus) {
+      this.mapService.showLayers(layers.map(layer => layer.name), topic ? topic.name : '', stage ? stage.name : '');
+    } else {
+      this.mapService.showLayersNoTopic(layers.map(layer => layer.name));
+    }
   }
 
   showBaseLayers(layers: MapLayer[]) {
