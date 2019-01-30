@@ -21,6 +21,7 @@ import { PieComponent } from 'angular-dashboard-components/components/charts/pie
 import { LineComponent } from 'angular-dashboard-components/components/charts/line/line.component';
 import { WordCloudComponent } from 'angular-dashboard-components/components/charts/word-cloud/word-cloud.component';
 import { ChartUtils } from 'angular-dashboard-components/components/utils/chart.utils';
+import { ThemeUtils } from 'angular-dashboard-components/components/utils/theme.utils';
 
 import { ChartModule, HIGHCHARTS_MODULES } from 'angular-highcharts';
 import * as more from 'highcharts/highcharts-more.src';
@@ -56,6 +57,7 @@ export function highchartsModules() {
     ConfigurationService,
     LocalStorageService,
     ChartUtils,
+    ThemeUtils,
     MapService,
     {
       provide: HIGHCHARTS_MODULES,

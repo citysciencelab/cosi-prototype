@@ -1,5 +1,6 @@
 import {Component, OnInit, NgZone} from '@angular/core';
 import {ChartUtils} from 'angular-dashboard-components/components/utils/chart.utils';
+import {ThemeUtils} from 'angular-dashboard-components/components/utils/theme.utils';
 import {HttpClient} from '@angular/common/http';
 import {LocalStorageMessage} from '../local-storage/local-storage-message.model';
 import {LocalStorageService} from '../local-storage/local-storage.service';
@@ -9,6 +10,7 @@ import {StatisticalArea} from '../feature/statistical-area.model';
 import {Supermarket} from '../feature/supermarket.model';
 import {Pharmacy} from '../feature/pharmacy.model';
 import {GreenArea} from '../feature/green-area.model';
+import * as Highcharts from 'highcharts';
 
 type AnyFeature = Kita | StatisticalArea | Supermarket | Pharmacy | GreenArea;
 
@@ -18,6 +20,7 @@ type AnyFeature = Kita | StatisticalArea | Supermarket | Pharmacy | GreenArea;
   styleUrls: ['./infoscreen.component.css']
 })
 export class InfoscreenComponent implements OnInit {
+
   hasSelectedFeature: boolean;
   kita: Kita;
   statisticalArea: StatisticalArea;
@@ -52,9 +55,12 @@ export class InfoscreenComponent implements OnInit {
   public column2Title: string;
   public column2SubTitle: string;
   public column2PlotLine: number;
+  private chartTheme = 'sand-signika';
 
-  constructor(private localStorageService: LocalStorageService, public chartUtils: ChartUtils, private zone: NgZone,
-              private _http: HttpClient) {
+  constructor(private localStorageService: LocalStorageService, public chartUtils: ChartUtils, public themeUtils: ThemeUtils,
+              private zone: NgZone, private _http: HttpClient) {
+    Highcharts.setOptions(this.themeUtils.getTheme(this.chartTheme));
+    this.chartUtils.setPresetColors(this.themeUtils.getThemeColors(this.chartTheme));
   }
 
   ngOnInit(): void {
@@ -144,7 +150,7 @@ export class InfoscreenComponent implements OnInit {
             // // Always render categories first!
             this.lineCategories = this.chartUtils.getUniqueSeriesNames(jsonData, ['jahr']);
             this.lineData = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
-              'Geburten', 'jahr', this.lineCategories, 'Groß Borstel');
+              'Geburten', 'jahr', this.lineCategories, 'Groß Borstel', true);
             this.lineTitle = 'Geburten pro Jahr zwischen 2012-2016';
             this.lineSubTitle = '';
           }
@@ -161,7 +167,7 @@ export class InfoscreenComponent implements OnInit {
             this.pieTitle = 'Gesamtbevölkerungsverteilung (2016)';
             this.pieSubTitle = '';
             this.pieData = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
-              'Bev_lkerung', 'jahr', ['2016'], 'Groß Borstel');
+              'Bev_lkerung', 'jahr', ['2016'], 'Groß Borstel', true);
           }
 
           this.columnData2 = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',

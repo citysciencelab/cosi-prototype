@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="row">
+  <div id="infoscreen-row" class="row">
 
     <!--Startscreen-->
     <div *ngIf="!isToolStarted"
@@ -117,6 +117,7 @@
           <dash-line [chartTitle]="lineTitle"
                      [chartSubTitle]="lineSubTitle"
                      [series]="lineData"
+                     [isExport]="false"
                      [chartType]="'line'"
                      [xCategories]="lineCategories"></dash-line>
         </div>
@@ -131,6 +132,7 @@
                      [chartSubTitle]="columnSubTitle"
                      [legendEnabled]="false"
                      [series]="columnData"
+                     [isExport]="false"
                      [chartType]="'column'"
                      [plotLineValue]="columnPlotLine"
                      [xCategories]="columnCategories"></dash-line>
@@ -145,6 +147,7 @@
           <dash-pie [chartTitle]="pieTitle"
                     [chartSubTitle]="pieSubTitle"
                     [dataLabelDistance]="0"
+                    [isExport]="false"
                     [isPercentageLabel]="false"
                     [isNoDecimalPlace]="true"
                     [series]="pieData"></dash-pie>
@@ -155,7 +158,7 @@
     <div *ngIf="isToolStarted"
          class="col-md-3 col-sm-6">
       <div class="shadow-element holder-element">
-        <div *ngIf="columnData2" id="line_chart_holder" style="height: 400px; width: 250px">
+        <div *ngIf="columnData2">
           <dash-line style="height: 100%; width: 100%"
                      [lineId]="'line_chart_holder'"
                      [chartTitle]="column2Title"
