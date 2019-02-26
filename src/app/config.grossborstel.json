@@ -32,7 +32,7 @@
       "displayName": "Sozialmonitoring 2016",
       "type": "Vector",
       "source": {
-        "url": "http://csl.local.hcuhh.de:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:sozialmonitoring2016&outputFormat=application/json&srsname=EPSG:4326",
+        "url": "http://localhost:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:sozialmonitoring2016&outputFormat=application/json&srsname=EPSG:4326",
         "format": "GeoJSON"
       },
       "visible": false,
@@ -89,7 +89,7 @@
       "source": {
         "url": "https://geodienste.hamburg.de/HH_WMS_Kombi_DISK_GB",
         "wmsParams": {
-          "LAYERS": "1,5,9,13",
+          "LAYERS": "6,10,18,26,2,14,22,30",
           "FORMAT": "image/png",
           "TILED": true,
           "WIDTH": 256,
@@ -135,11 +135,11 @@
       "type": "Vector",
       "sources": {
         "before": {
-          "url": "http://csl.local.hcuhh.de:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:kitas&outputFormat=application/json&srsname=EPSG:4326",
+          "url": "http://localhost:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:kitas&outputFormat=application/json&srsname=EPSG:4326",
           "format": "GeoJSON"
         },
         "after": {
-          "url": "http://csl.local.hcuhh.de:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:kitas_neu&outputFormat=application/json&srsname=EPSG:4326",
+          "url": "http://localhost:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:kitas_neu&outputFormat=application/json&srsname=EPSG:4326",
           "format": "GeoJSON"
         }
       },
@@ -208,11 +208,11 @@
       "type": "Heatmap",
       "sources": {
         "before": {
-          "url": "http://csl.local.hcuhh.de:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:kitas&outputFormat=application/json&srsname=EPSG:4326",
+          "url": "http://localhost:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:kitas&outputFormat=application/json&srsname=EPSG:4326",
           "format": "GeoJSON"
         },
         "after": {
-          "url": "http://csl.local.hcuhh.de:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:kitas_neu&outputFormat=application/json&srsname=EPSG:4326",
+          "url": "http://localhost:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:kitas_neu&outputFormat=application/json&srsname=EPSG:4326",
           "format": "GeoJSON"
         }
       },
@@ -250,11 +250,11 @@
       "type": "Vector",
       "sources": {
         "before": {
-          "url": "http://csl.local.hcuhh.de:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:stadtteile_grossborstel&outputFormat=application/json&srsname=EPSG:4326",
+          "url": "http://localhost:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:stadtteile_grossborstel&outputFormat=application/json&srsname=EPSG:4326",
           "format": "GeoJSON"
         },
         "after": {
-          "url": "http://csl.local.hcuhh.de:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:stadtteile_grossborstel_neu&outputFormat=application/json&srsname=EPSG:4326",
+          "url": "http://localhost:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:stadtteile_grossborstel_neu&outputFormat=application/json&srsname=EPSG:4326",
           "format": "GeoJSON"
         }
       },
@@ -287,11 +287,11 @@
       "type": "Vector",
       "sources": {
         "before": {
-          "url": "http://csl.local.hcuhh.de:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:einwohner_0bis6&outputFormat=application/json&srsname=EPSG:4326",
+          "url": "http://localhost:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:einwohner_0bis6&outputFormat=application/json&srsname=EPSG:4326",
           "format": "GeoJSON"
         },
         "after": {
-          "url": "http://csl.local.hcuhh.de:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:einwohner_0bis6_neu&outputFormat=application/json&srsname=EPSG:4326",
+          "url": "http://localhost:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:einwohner_0bis6_neu&outputFormat=application/json&srsname=EPSG:4326",
           "format": "GeoJSON"
         }
       },
@@ -357,8 +357,8 @@
       "topic": "nahversorgung",
       "type": "Vector",
       "source": {
-        "url": "https://overpass-api.de/api/interpreter?data=(area[name=\"Hamburg\"];)->.a;node[\"amenity\"=\"pharmacy\"](area.a);out;",
-        "format": "OSMXML"
+        "url": "http://localhost:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:apotheken_all&outputFormat=application/json&srsname=EPSG:4326",
+        "format": "GeoJSON"
       },
       "visible": true,
       "selectable": true,
@@ -395,8 +395,8 @@
       "topic": "nahversorgung",
       "type": "Vector",
       "source": {
-        "url": "https://overpass-api.de/api/interpreter?data=(area[name=\"Hamburg\"];)->.a;node[\"shop\"=\"supermarket\"](area.a);out;",
-        "format": "OSMXML"
+        "url": "http://localhost:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:supermaerkte_all&outputFormat=application/json&srsname=EPSG:4326",
+        "format": "GeoJSON"
       },
       "visible": true,
       "selectable": true,
@@ -475,7 +475,7 @@
       "topic": "gruenflaechen",
       "type": "Vector",
       "source": {
-        "url": "http://csl.local.hcuhh.de:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:gruenflaechen&outputFormat=application/json&srsname=EPSG:4326",
+        "url": "http://localhost:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:gruenflaechen&outputFormat=application/json&srsname=EPSG:4326",
         "format": "GeoJSON"
       },
       "zIndex": 1,
@@ -512,26 +512,6 @@
         "anderweitige Nutzung": [106, 90, 205, 0.6]
       },
       "scaleAttribute": "gruenart"
-    },
-    {
-      "name": "flurstuecke",
-      "displayName": "Potenzialflächen",
-      "topic": "gruenflaechen",
-      "type": "WMS",
-      "source": {
-        "url": "http://csl.local.hcuhh.de:8080/geoserver/csl/wms",
-        "wmsParams": {
-          "LAYERS": "csl:flurstuecke",
-          "STYLES": "flurstuecke_neu",
-          "FORMAT": "image/png",
-          "TILED": true,
-          "WIDTH": 256,
-          "HEIGHT": 256,
-          "SRS": "EPSG:4326"
-        }
-      },
-      "visible": false,
-      "meta": "Quelle: LGV, Aufbereitung durch FindingPlaces (2016)"
     }
   ],
   "stickyLayers": [
@@ -540,7 +520,7 @@
       "displayName": "Groß Borstel",
       "type": "Vector",
       "source": {
-        "url": "http://csl.local.hcuhh.de:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:grossborstel&outputFormat=application/json&srsname=EPSG:4326",
+        "url": "http://localhost:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:grossborstel&outputFormat=application/json&srsname=EPSG:4326",
         "format": "GeoJSON"
       },
       "zIndex": 100,
@@ -558,4 +538,3 @@
   "mapMinZoom": 11,
   "mapMaxZoom": 18
 }
-

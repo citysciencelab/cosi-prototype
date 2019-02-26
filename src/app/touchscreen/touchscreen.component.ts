@@ -108,7 +108,7 @@ export class TouchscreenComponent implements OnInit {
   }
 
   onContextMenuClick() {
-    return false;
+    return !environment.production;
   }
 
   setStage(stage: Stage) {

@@ -13,7 +13,8 @@ export class MapService {
       interactions: ol.interaction.defaults({
         altShiftDragRotate: false,
         pinchRotate: false
-      })
+      }),
+      controls: []
     });
   }
 
@@ -356,7 +357,7 @@ export class MapService {
   }
 
   private addControls() {
-    const controls = ol.control.defaults().extend([new ol.control.ScaleLine()]);
+    const controls = [new ol.control.Zoom()];
 
     controls.forEach(control => {
       this.instance.addControl(control);
