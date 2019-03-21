@@ -56,7 +56,6 @@ export class MapService {
     }
 
     // FIXME these should probably go somewhere else
-    this.addControls();
     this.addInteractions();
   }
 
@@ -354,14 +353,6 @@ export class MapService {
     });
 
     this.instance.addInteraction(this.selectInteraction);
-  }
-
-  private addControls() {
-    const controls = [new ol.control.Zoom()];
-
-    controls.forEach(control => {
-      this.instance.addControl(control);
-    });
   }
 
 }

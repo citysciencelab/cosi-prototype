@@ -52,7 +52,6 @@
 
 .progress-slider {
   right: 0;
-  /*background-color: rgba(255, 255, 255, 0.75);*/
 }
 
 .progress-field {
@@ -64,7 +63,6 @@
 
 .topic-slider {
   left: 0;
-  /*background-color: rgba(255, 255, 255, 0.75);*/
 }
 
 .topic-field {
@@ -95,7 +93,6 @@
 }
 
 .reset-button {
-  display: none;
   background-color: rgba(255, 255, 255, 0.75);
   padding: 10px;
   margin: 15px;
@@ -109,6 +106,7 @@
   line-height: 1.5;
   color: #212529;
 }
+
 .reset-button a:hover {
   text-decoration: none;
 }
