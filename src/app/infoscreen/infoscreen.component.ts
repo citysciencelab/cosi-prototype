@@ -1,4 +1,4 @@
-import {Component, OnInit, NgZone} from '@angular/core';
+import {Component, OnInit, NgZone, Inject, LOCALE_ID} from '@angular/core';
 import {ChartUtils} from 'angular-dashboard-components/components/utils/chart.utils';
 import {ThemeUtils} from 'angular-dashboard-components/components/utils/theme.utils';
 import {HttpClient} from '@angular/common/http';
@@ -20,7 +20,6 @@ type AnyFeature = Kita | StatisticalArea | Supermarket | Pharmacy | GreenArea;
   styleUrls: ['./infoscreen.component.css']
 })
 export class InfoscreenComponent implements OnInit {
-
   hasSelectedFeature: boolean;
   kita: Kita;
   statisticalArea: StatisticalArea;
@@ -58,7 +57,7 @@ export class InfoscreenComponent implements OnInit {
   private chartTheme = 'sand-signika';
 
   constructor(private localStorageService: LocalStorageService, public chartUtils: ChartUtils, public themeUtils: ThemeUtils,
-              private zone: NgZone, private _http: HttpClient) {
+              private zone: NgZone, private _http: HttpClient, @Inject(LOCALE_ID) private locale) {
     Highcharts.setOptions(this.themeUtils.getTheme(this.chartTheme));
     this.chartUtils.setPresetColors(this.themeUtils.getThemeColors(this.chartTheme));
   }
@@ -151,20 +150,22 @@ export class InfoscreenComponent implements OnInit {
             this.lineCategories = this.chartUtils.getUniqueSeriesNames(jsonData, ['jahr']);
             this.lineData = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
               'Geburten', 'jahr', this.lineCategories, 'Groß Borstel', true);
-            this.lineTitle = 'Geburten pro Jahr zwischen 2012-2016';
+            this.lineTitle = this.locale === 'de-DE' ? 'Geburten pro Jahr zwischen 2012-2016' : 'Yearly birth rates 2012-2016';
             this.lineSubTitle = '';
           }
 
           this.columnCategories = this.chartUtils.getUniqueSeriesNames(jsonData, ['Stadtgebiet']);
           this.columnData = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
             'Anteil_der_unter_18_J_hrigen_in', 'jahr', ['2016'], 'Groß Borstel');
-          this.columnTitle = 'Anteil der Bevölkerung < 18 Jahren in % (2016)';
-          this.columnSubTitle = 'Die rote Linie zeigt den Hamburger Durchschnitt';
+          this.columnTitle = this.locale === 'de-DE' ? 'Anteil der Bevölkerung < 18 Jahren in % (2016)' :
+            'Percentage of population under 18 years (2016)';
+          this.columnSubTitle = this.locale === 'de-DE' ? 'Die rote Linie zeigt den Hamburger Durchschnitt' :
+            'The red line indicates the Hamburg average';
           this.columnPlotLine = 16.2;
 
           // No unnecessary reloads
           if (this.pieData == null) {
-            this.pieTitle = 'Gesamtbevölkerungsverteilung (2016)';
+            this.pieTitle = this.locale === 'de-DE' ? 'Gesamtbevölkerungsverteilung (2016)' : 'Population share among wards (2016)';
             this.pieSubTitle = '';
             this.pieData = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
               'Bev_lkerung', 'jahr', ['2016'], 'Groß Borstel', true);
@@ -172,8 +173,10 @@ export class InfoscreenComponent implements OnInit {
 
           this.columnData2 = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
             'Anteil_der_Bev_lkerung_mit_Migrations_hintergrund_in', 'jahr', ['2016'], 'Groß Borstel');
-          this.column2Title = 'Anteil der Bevölkerung mit Migrationshintergrund in % (2016)';
-          this.column2SubTitle = 'Die rote Linie zeigt den Hamburger Durchschnitt';
+          this.column2Title = this.locale === 'de-DE' ? 'Anteil der Bevölkerung mit Migrationshintergrund in % (2016)' :
+            'Percentage of migrant population (2016)';
+          this.column2SubTitle = this.locale === 'de-DE' ? 'Die rote Linie zeigt den Hamburger Durchschnitt' :
+            'The red line indicates the Hamburg average';
           this.column2PlotLine = 34.1;
         });
       },
@@ -192,14 +195,16 @@ export class InfoscreenComponent implements OnInit {
           this.columnCategories = this.chartUtils.getUniqueSeriesNames(jsonData, ['Stadtgebiet']);
           this.columnData = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
             'unter_6_perc', 'jahr', ['2016'], 'Groß Borstel');
-          this.columnTitle = 'Anteil Bevölkerung < 6 Jahren in % (2016)';
+          this.columnTitle = this.locale === 'de-DE' ? 'Anteil Bevölkerung < 6 Jahren in % (2016)' :
+          'Percentage of population under 6 years (2016)';
           this.columnSubTitle = '';
           this.columnPlotLine = 5.92;
 
           this.columnData2 = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
             'spaces_p_child', 'jahr', ['2016'], 'Groß Borstel');
-          this.column2Title = 'Kitaplätze pro Kind (2016)';
-          this.column2SubTitle = 'Berechnungsgrundlage sind Ø 3m² Fläche pro Kind';
+          this.column2Title = this.locale === 'de-DE' ? 'Kitaplätze pro Kind (2016)' : 'Daycare places per child (2016)';
+          this.column2SubTitle = this.locale === 'de-DE' ? 'Berechnungsgrundlage sind Ø 3m² Fläche pro Kind' :
+            'Assuming 3 m² of paedagogical area per child';
           this.column2PlotLine = 0.89;
         });
       },
@@ -218,13 +223,13 @@ export class InfoscreenComponent implements OnInit {
           this.columnCategories = this.chartUtils.getUniqueSeriesNames(jsonData, ['Stadtgebiet']);
           this.columnData = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
             'apotheken_p_10000', 'jahr', ['2016'], 'Groß Borstel');
-          this.columnTitle = 'Apotheken pro 10 Tsd. Einwohner';
+          this.columnTitle = this.locale === 'de-DE' ? 'Apotheken pro 10.000 Einwohner' : 'Pharmacies per 10,000 inhabitants';
           this.columnSubTitle = '';
           this.columnPlotLine = 2.15;
 
           this.columnData2 = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
             'supermaerkte_p_10000', 'jahr', ['2016'], 'Groß Borstel');
-          this.column2Title = 'Supermärkte pro 10 Tsd. Einwohner';
+          this.column2Title = this.locale === 'de-DE' ? 'Supermärkte pro 10.000 Einwohner' : 'Supermarkets per 10,000 inhabitants';
           this.column2SubTitle = '';
           this.column2PlotLine = 3.23;
         });
@@ -244,13 +249,13 @@ export class InfoscreenComponent implements OnInit {
           this.columnCategories = this.chartUtils.getUniqueSeriesNames(jsonData, ['Stadtgebiet']);
           this.columnData = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
             'pspace_p_p', 'jahr', ['2016'], 'Groß Borstel');
-          this.columnTitle = 'Öffentliche Grünfläche je EW in m²';
+          this.columnTitle = this.locale === 'de-DE' ? 'Öffentliche Grünfläche je EW in m²' : 'Public greenspace per person (m²)';
           this.columnSubTitle = '';
           this.columnPlotLine = 31.61;
 
           this.columnData2 = this.chartUtils.getSeriesData(jsonData, 'Stadtgebiet',
             'parks_playgrounds_p_p', 'jahr', ['2016'], 'Groß Borstel');
-          this.column2Title = 'Park-, Spielplatzfläche je EW in m²';
+          this.column2Title = this.locale === 'de-DE' ? 'Park-, Spielplatzfläche je EW in m²' : 'Parks and playgrounds per person (m²)';
           this.column2SubTitle = '';
           this.column2PlotLine = 15.67;
         });

@@ -4,9 +4,9 @@
     <!--Startscreen-->
     <div *ngIf="!isToolStarted"
          class="col-md-12 col-sm-12 start-headline">
-      <h1>Planungstool für soziale Infrastrukturen: Groß Borstel</h1>
+      <h1 i18n>Planning Tool for Social Infrastructures</h1>
       <br><br>
-      <h4>Bitte tippen Sie auf die Karte zum Starten der Anwendung.</h4>
+      <h4 i18n>Start the application by touching the map.</h4>
     </div>
 
     <!--Charts after start-->
@@ -15,46 +15,46 @@
       <div class="shadow-element holder-element">
         <div id="info">
           <div *ngIf="!hasSelectedFeature">
-            <h3>Tippen Sie auf ein Kartenelement für weitere Informationen ...</h3>
+            <h3 i18n>Tap on a map element for more information ...</h3>
           </div>
           <div *ngIf="kita">
             <h1>{{kita.name}}</h1>
             <table>
               <tr>
-                <td>Adresse:</td>
+                <td i18n>Address:</td>
                 <td>{{kita.address}}</td>
               </tr>
               <tr>
-                <td>Träger:</td>
+                <td i18n>Organisation:</td>
                 <td>{{kita.organisation}}</td>
               </tr>
               <tr>
-                <td>Spitzenverband:</td>
+                <td i18n>Association:</td>
                 <td>{{kita.association}}</td>
               </tr>
               <tr>
-                <td>Leistungen:</td>
+                <td i18n>Services:</td>
                 <td>{{kita.services}}</td>
               </tr>
               <tr>
-                <td>Pädagogische Fläche:</td>
+                <td i18n>Paedagogical area:</td>
                 <td>{{kita.paedagogicalArea}}{{kita.paedagogicalArea ? ' m²' : ''}}</td>
               </tr>
               <tr>
-                <td>Kapazität (Näherungswert):</td>
-                <td><strong>{{kita.capacity}} Plätze</strong></td>
+                <td i18n>Capacity (approx.):</td>
+                <td><strong>{{kita.capacity}} <ng-container i18n>children</ng-container></strong></td>
               </tr>
             </table>
           </div>
           <div *ngIf="statisticalArea">
-            <h1>Baublock {{statisticalArea.name}}</h1>
+            <h1><ng-container i18n>Building block</ng-container> {{statisticalArea.name}}</h1>
             <table>
               <tr>
-                <td>Einwohner:</td>
+                <td i18n>Inhabitants:</td>
                 <td>{{statisticalArea.population}}</td>
               </tr>
               <tr>
-                <td>Einwohner (0-6 Jahre):</td>
+                <td i18n>Infants under 6 years:</td>
                 <td>{{statisticalArea.population1to6}}</td>
               </tr>
             </table>
@@ -63,15 +63,15 @@
             <h1>{{supermarket.name}}</h1>
             <table>
               <tr>
-                <td>Betreiber:</td>
+                <td i18n>Operator:</td>
                 <td>{{supermarket.operator}}</td>
               </tr>
               <tr>
-                <td>Adresse:</td>
+                <td i18n>Address:</td>
                 <td>{{supermarket.address}}</td>
               </tr>
               <tr>
-                <td>Barrierefrei:</td>
+                <td i18n>Wheelchair accessible:</td>
                 <td>{{supermarket.wheelchair | yesNoUnknown}}</td>
               </tr>
             </table>
@@ -80,28 +80,28 @@
             <h1>{{pharmacy.name}}</h1>
             <table>
               <tr>
-                <td>Adresse:</td>
+                <td i18n>Address:</td>
                 <td>{{pharmacy.address}}</td>
               </tr>
               <tr>
-                <td>Barrierefrei:</td>
+                <td i18n>Wheelchair accessible:</td>
                 <td>{{pharmacy.wheelchair | yesNoUnknown}}</td>
               </tr>
             </table>
           </div>
           <div *ngIf="greenArea">
-            <h1>Grünfläche {{greenArea.name}}</h1>
+            <h1><ng-container i18n>Greenspace</ng-container> {{greenArea.name}}</h1>
             <table>
               <tr>
-                <td>Grünart:</td>
+                <td i18n>Type of green:</td>
                 <td>{{greenArea.greenType}}</td>
               </tr>
               <tr>
-                <td>Eigentum:</td>
+                <td i18n>Owner:</td>
                 <td>{{greenArea.owner}}</td>
               </tr>
               <tr>
-                <td>Fläche:</td>
+                <td i18n>Area:</td>
                 <td>{{greenArea.area}} m²</td>
               </tr>
             </table>
@@ -176,9 +176,8 @@
 
     <div *ngIf="isToolStarted"
          id="source-footer"
-         class="col-md-12 col-sm-12">
-        Quellen: Statistikamt Nord: Hamburger Stadtteil-Profile 2012-2016; Statistikamt Nord: Melderegister 31.12.2016, BASFI: Kindertagesstätten in Hamburg.
-    </div>
+         class="col-md-12 col-sm-12"
+         i18n>Sources: Statistikamt Nord: Hamburger Stadtteil-Profile 2012-2016; Statistikamt Nord: Melderegister 31.12.2016, BASFI: Kindertagesstätten in Hamburg.</div>
   </div>
 </div>
 

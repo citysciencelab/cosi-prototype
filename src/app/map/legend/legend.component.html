@@ -1,8 +1,8 @@
 <div *ngIf="layer" [hidden]="!visible" class="legend">
-  <span class="nowrap"><span class="heading">Legende</span> <a href="#" (click)="onClose()">schließen</a></span>
+  <span class="nowrap"><span class="heading" i18n>Legend</span> <a href="#" (click)="onClose()" i18n>close</a></span>
   <div>{{ layer.displayName }}:</div>
   <div *ngIf="layer.legendUrl"><img src="{{ layer.legendUrl }}" /></div>
   <div *ngIf="layer.legendHtml" [innerHTML]="layer.legendHtml | safeHtml"></div>
-  <div *ngIf="!layer.legendUrl && !layer.legendHtml">Keine Legende verfügbar</div>
+  <div *ngIf="!layer.legendUrl && !layer.legendHtml" i18n>Legend not available</div>
   <div *ngIf="layer.meta">{{ layer.meta }}</div>
 </div>

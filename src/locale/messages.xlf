@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="2558d18c7559448511d6a0e90dd37dc3db8d9a82" datatype="html">
+        <source>Reset map</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/touchscreen/touchscreen.component.ts</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f61103d380263ae5d8b30ac37067fac33de017b3" datatype="html">
+        <source>Planning Tool for Social Infrastructures</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/infoscreen/infoscreen.component.ts</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="880c98c06900ed583d7eded4dc1f4b31433b2267" datatype="html">
+        <source>Start the application by touching the map.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/infoscreen/infoscreen.component.ts</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="398d3cfae8dda89b5b828d422cf0574ee6c6e3ce" datatype="html">
+        <source>Tap on a map element for more information ...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/infoscreen/infoscreen.component.ts</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="77d1599df7c49bca99809fb3cce8e3856968d458" datatype="html">
+        <source>Address:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/infoscreen/infoscreen.component.ts</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/infoscreen/infoscreen.component.ts</context>
+          <context context-type="linenumber">70</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/infoscreen/infoscreen.component.ts</context>
+          <context context-type="linenumber">83</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="98566d74b2950e6749fb98ad5b42f333e46fe155" datatype="html">
+        <source>Organisation:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/infoscreen/infoscreen.component.ts</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3dc507c350d5eb1efd968ef3a6b73ec67e8b8cbc" datatype="html">
+        <source>Association:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/infoscreen/infoscreen.component.ts</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="b5806e1d10d093c411da07dfa6c4a6929201798d" datatype="html">
+        <source>Services:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/infoscreen/infoscreen.component.ts</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7299444e410f3a53168777e34e0cb7eef6bd7303" datatype="html">
+        <source>Paedagogical area:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/infoscreen/infoscreen.component.ts</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="309ea146e1dd8597e2ab7667f52dee85a932a1d7" datatype="html">
+        <source>Capacity (approx.):</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/infoscreen/infoscreen.component.ts</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="208884cc173354bc0c7d69a55b488299588fd5de" datatype="html">
+        <source>children</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/infoscreen/infoscreen.component.ts</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1230b3c68dd7cfd461f23d71d88177fe2b5c69ad" datatype="html">
+        <source>Building block</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/infoscreen/infoscreen.component.ts</context>
+          <context context-type="linenumber">50</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="022c106e62bf2672cabf056a90e15119f058d26d" datatype="html">
+        <source>Inhabitants:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/infoscreen/infoscreen.component.ts</context>
+          <context context-type="linenumber">53</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="e6ff130f583e343cdbec4f20361aed69ea9ee32f" datatype="html">
+        <source>Infants under 6 years:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/infoscreen/infoscreen.component.ts</context>
+          <context context-type="linenumber">57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="b515bcac4d55776a8a3d43bbc467beb76df4e53d" datatype="html">
+        <source>Operator:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/infoscreen/infoscreen.component.ts</context>
+          <context context-type="linenumber">66</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="c4025512057c6dedf2d82261f189ef235108a4c2" datatype="html">
+        <source>Wheelchair accessible:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/infoscreen/infoscreen.component.ts</context>
+          <context context-type="linenumber">74</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/infoscreen/infoscreen.component.ts</context>
+          <context context-type="linenumber">87</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="89f0cd380ed9c1013748a5e4282c12dea0d35288" datatype="html">
+        <source>Greenspace</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/infoscreen/infoscreen.component.ts</context>
+          <context context-type="linenumber">93</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1579ff3e595d421d0e4637bbd80924d566dfb2ef" datatype="html">
+        <source>Type of green:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/infoscreen/infoscreen.component.ts</context>
+          <context context-type="linenumber">96</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cb7edf414dc350377bbdc816fccdee7a7e6f6a79" datatype="html">
+        <source>Owner:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/infoscreen/infoscreen.component.ts</context>
+          <context context-type="linenumber">100</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="0693810fe4d35a2962ffeb981c699622e6442933" datatype="html">
+        <source>Area:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/infoscreen/infoscreen.component.ts</context>
+          <context context-type="linenumber">104</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9fce468bbbcd97c29bce3af3444ea5d165df5f30" datatype="html">
+        <source>Sources: Statistikamt Nord: Hamburger Stadtteil-Profile 2012-2016; Statistikamt Nord: Melderegister 31.12.2016, BASFI: Kindertagesstätten in Hamburg.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/infoscreen/infoscreen.component.ts</context>
+          <context context-type="linenumber">180</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5c5419db944ed6a96f9515a2ac0ee390ec8cf3b5" datatype="html">
+        <source>Legend</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/map/legend/legend.component.ts</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="e329f67417e3574eda9988c92b15c0e29df1dd1b" datatype="html">
+        <source>close</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/map/legend/legend.component.ts</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="d1f445838bfa844083f0c038c3afb36e5a8ea9c2" datatype="html">
+        <source>Legend not available</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/map/legend/legend.component.ts</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2eacc51cdc94e7aa0d8e32552fae6cc75e18a1bd" datatype="html">
+        <source>Show/hide layers</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/map/layer-control/layer-control.component.ts</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="a0d49259428e943a667fd8ce5502769b2c624cfc" datatype="html">
+        <source>expand</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/map/layer-control/layer-control.component.ts</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5667e7ce8b33b9c90e8a12e74c3d9d5841e784e8" datatype="html">
+        <source>collapse</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/map/layer-control/layer-control.component.ts</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
