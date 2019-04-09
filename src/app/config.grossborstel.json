@@ -147,7 +147,7 @@
       "name": "kitas",
       "displayName": "Daycare centres",
       "displayName_de-DE": "Kitas",
-      "topic": "kitas",
+      "category": "kitas",
       "type": "Vector",
       "sources": {
         "before": {
@@ -222,7 +222,7 @@
       "name": "kitasHeatmap",
       "displayName": "Daycare centres (heatmap)",
       "displayName_de-DE": "Kitas (Heatmap)",
-      "topic": "kitas",
+      "category": "kitas",
       "type": "Heatmap",
       "sources": {
         "before": {
@@ -245,7 +245,7 @@
       "name": "kitasGehzeit",
       "displayName": "Walking time to nearest daycare",
       "displayName_de-DE": "Gehzeit zur nächsten Kita",
-      "topic": "kitas",
+      "category": "kitas",
       "type": "WMS",
       "source": {
         "url": "https://geodienste.hamburg.de/MRH_WMS_REA_Soziales",
@@ -268,7 +268,7 @@
       "name": "stadtteileKitaplaetze",
       "displayName": "Daycare places per child in each ward",
       "displayName_de-DE": "Kitaplätze pro Kind (auf Stadtteilebene)",
-      "topic": "kitas",
+      "category": "kitas",
       "type": "Vector",
       "sources": {
         "before": {
@@ -307,7 +307,7 @@
       "name": "einwohner",
       "displayName": "Infants at age 0 - 6 years",
       "displayName_de-DE": "Einwohner im Alter 0 bis 6 Jahre",
-      "topic": "kitas",
+      "category": "kitas",
       "type": "Vector",
       "sources": {
         "before": {
@@ -380,7 +380,7 @@
       "name": "apotheken",
       "displayName": "Pharmacies",
       "displayName_de-DE": "Apotheken",
-      "topic": "nahversorgung",
+      "category": "nahversorgung",
       "type": "Vector",
       "source": {
         "url": "http://localhost:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:apotheken_all&outputFormat=application/json&srsname=EPSG:4326",
@@ -420,7 +420,7 @@
       "name": "supermaerkte",
       "displayName": "Supermarkets",
       "displayName_de-DE": "Supermärkte",
-      "topic": "nahversorgung",
+      "category": "nahversorgung",
       "type": "Vector",
       "source": {
         "url": "http://localhost:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:supermaerkte_all&outputFormat=application/json&srsname=EPSG:4326",
@@ -459,7 +459,7 @@
       "name": "apothekenGehzeit",
       "displayName": "Walking time to nearest pharmacy",
       "displayName_de-DE": "Gehzeit zur nächsten Apotheke",
-      "topic": "nahversorgung",
+      "category": "nahversorgung",
       "type": "WMS",
       "source": {
         "url": "https://geodienste.hamburg.de/MRH_WMS_REA_Gesundheit",
@@ -482,7 +482,7 @@
       "name": "supermaerkteGehzeit",
       "displayName": "Walking time to nearest supermarket",
       "displayName_de-DE": "Gehzeit zum nächsten Supermarkt",
-      "topic": "nahversorgung",
+      "category": "nahversorgung",
       "type": "WMS",
       "source": {
         "url": "https://geodienste.hamburg.de/MRH_WMS_REA_Einzelhandel",
@@ -505,7 +505,7 @@
       "name": "gruenflaechen",
       "displayName": "Green areas",
       "displayName_de-DE": "Grünflächen",
-      "topic": "gruenflaechen",
+      "category": "gruenflaechen",
       "type": "Vector",
       "source": {
         "url": "http://localhost:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:gruenflaechen&outputFormat=application/json&srsname=EPSG:4326",

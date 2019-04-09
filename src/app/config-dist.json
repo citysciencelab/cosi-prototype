@@ -1,8 +1,12 @@
 {
   "enableTuio": false,
+  "disableInfoScreen": false,
+  "noSideMenus" : false,
   "topics": [],
   "stages": [],
   "baseLayers": [],
   "topicLayers": [],
-  "stickyLayers": []
+  "mapCenter": [10, 53.55],
+  "mapZoom": 11,
+  "mapMaxZoom": 18
 }

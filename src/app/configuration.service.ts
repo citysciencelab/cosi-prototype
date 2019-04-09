@@ -11,7 +11,6 @@ export class ConfigurationService {
   stages: Stage[];
   baseLayers: MapLayer[];
   topicLayers: MapLayer[];
-  stickyLayers: MapLayer[];
   mapCenter: [number, number];
   mapZoom: number;
   mapMinZoom?: number;
@@ -28,7 +27,6 @@ export class ConfigurationService {
     this.stages = this.translate(this.stages, ['displayName']);
     this.baseLayers = this.translate(this.baseLayers, ['displayName', 'meta', 'legendHtml']);
     this.topicLayers = this.translate(this.topicLayers, ['displayName', 'meta', 'legendHtml']);
-    this.stickyLayers = this.translate(this.stickyLayers, ['displayName', 'meta', 'legendHtml']);
   }
 
   /*

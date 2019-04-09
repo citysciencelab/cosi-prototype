@@ -59,10 +59,10 @@ declare interface LayerStyle {
 declare interface MapLayer {
   name: string;
   displayName: string;
-  topic?: string;
   type: 'WMS' | 'OSM' | 'Tile' | 'Vector' | 'Heatmap';
-  source?: Source;
+  source: Source;
   sources?: { [stage: string]: Source };
+  category?: string;
   // Heatmap
   weightAttribute?: string;
   weightAttributeMax?: number;
@@ -74,17 +74,25 @@ declare interface MapLayer {
   zIndex?: number;
   visible: boolean;
   selectable?: boolean;
+  sticky?: boolean;
   legendHtml?: string;
   legendUrl?: string;
   meta?: string;
   style?: LayerStyle;
   selectedStyle?: LayerStyle;
+  extraStyle?: LayerStyle;
   scale?: { [key: string]: ol.Color };
   scaleAttribute?: string;
   // No config - assigned at runtime
-  olLayer?: { [stage: string]: ol.layer.Layer };
-  olDefaultStyle?: ol.StyleFunction;
-  olSelectedStyle?: ol.StyleFunction;
+  olLayers: {
+    [stage: string]: {
+      layer: ol.layer.Layer,
+      defaultStyleFn: ol.StyleFunction,
+      selectedStyleFn: ol.StyleFunction,
+      extraStyleFn: ol.StyleFunction,
+      selectInteraction: ol.interaction.Select
+    }
+  };
 }
 
 declare interface Config {

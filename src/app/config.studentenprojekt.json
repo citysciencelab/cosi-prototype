@@ -99,7 +99,7 @@
     {
       "name": "integrationskurse",
       "displayName": "Integrationskurse",
-      "topic" : "integration",
+      "category" : "integration",
       "type": "Vector",
       "source": {
         "url": "http://csl.local.hcuhh.de:8080/geoserver/Gefluechteteninfrastruktur_Wandsbek/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Gefluechteteninfrastruktur_Wandsbek:Vorhandene_Integrationskurse&outputFormat=application/json",
@@ -137,7 +137,7 @@
     {
       "name": "moeglicheflaechen",
       "displayName": "Flächen für mögliche Integrationsangebote",
-      "topic" : "integration",
+      "category" : "integration",
       "type": "Vector",
       "source": {
         "url": "http://csl.local.hcuhh.de:8080/geoserver/Gefluechteteninfrastruktur_Wandsbek/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Gefluechteteninfrastruktur_Wandsbek:Moegliche_Flaechen_fuer_Integrationsangebote&outputFormat=application/json",
@@ -175,7 +175,7 @@
     {
       "name": "leerstaende",
       "displayName": "Leerstände für mögliche Integrationsangebote",
-      "topic" : "integration",
+      "category" : "integration",
       "type": "Vector",
       "source": {
         "url": "http://csl.local.hcuhh.de:8080/geoserver/Gefluechteteninfrastruktur_Wandsbek/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Gefluechteteninfrastruktur_Wandsbek:Leerstaende_fuer_moegliche_Integrationsangebote&outputFormat=application/json",
@@ -213,7 +213,7 @@
     {
       "name": "mehrsprachigeaerzte",
       "displayName": "Mehrsprachige Ärzte",
-      "topic" : "integration",
+      "category" : "integration",
       "type": "Vector",
       "source": {
         "url": "http://csl.local.hcuhh.de:8080/geoserver/Gefluechteteninfrastruktur_Wandsbek/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Gefluechteteninfrastruktur_Wandsbek:Mehrsprachige_Aerzte&outputFormat=application/json",
@@ -251,7 +251,7 @@
     {
       "name": "kitas",
       "displayName": "Kitas",
-      "topic": "kitas",
+      "category": "kitas",
       "type": "Vector",
       "sources": {
         "before": {
@@ -324,7 +324,7 @@
     {
       "name": "kitasGehzeit",
       "displayName": "Gehzeit zur nächsten Kita",
-      "topic": "kitas",
+      "category": "kitas",
       "type": "WMS",
       "source": {
         "url": "https://geodienste.hamburg.de/MRH_WMS_REA_Soziales",
@@ -345,7 +345,7 @@
     {
       "name": "gruenflaechen",
       "displayName": "Grünflächen",
-      "topic": "freizeit",
+      "category": "freizeit",
       "type": "Vector",
       "source": {
         "url": "http://csl.local.hcuhh.de:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:gruenflaechen&outputFormat=application/json&srsname=EPSG:4326",
@@ -390,7 +390,7 @@
     {
       "name": "hhSchulen",
       "displayName": "Öffentliche Schulen",
-      "topic": "kitas",
+      "category": "kitas",
       "type": "WMS",
       "source": {
         "url": "https://geodienste.hamburg.de/HH_WMS_Schulen",
@@ -411,7 +411,7 @@
     {
       "name": "schulsporthallen",
       "displayName": "Schulsporthallen",
-      "topic": "freizeit",
+      "category": "freizeit",
       "type": "WMS",
       "source": {
         "url": "https://geodienste.hamburg.de/HH_WMS_Sporthallen",
@@ -432,7 +432,7 @@
     {
       "name": "sportstaetten",
       "displayName": "Sportstätten",
-      "topic": "freizeit",
+      "category": "freizeit",
       "type": "WMS",
       "source": {
         "url": "https://geodienste.hamburg.de/HH_WMS_Sportstaetten",
@@ -453,7 +453,7 @@
     {
       "name": "badegewaesser",
       "displayName": "Badegewässer",
-      "topic": "freizeit",
+      "category": "freizeit",
       "type": "WMS",
       "source": {
         "url": "https://geodienste.hamburg.de/HH_WMS_Badegewaesser",
@@ -474,7 +474,7 @@
     {
       "name": "verkehr",
       "displayName": "Öffentliche Verkehrsmittel",
-      "topic": "verkehr",
+      "category": "verkehr",
       "type": "WMS",
       "source": {
         "url": "http://geodienste.hamburg.de/wms_hvv",

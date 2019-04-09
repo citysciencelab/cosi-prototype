@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import * as ol from 'openlayers';
+import * as olcs from 'ol-cityscope';
 import { TuioClient } from 'tuio-client';
+
 import { environment } from '../../environments/environment';
 import { ConfigurationService } from '../configuration.service';
 import { LocalStorageService } from '../local-storage/local-storage.service';
 import { LocalStorageMessage } from '../local-storage/local-storage-message.model';
-import { MapService } from '../map/map.service';
 import { MapComponent } from '../map/map.component';
 import { Kita } from '../feature/kita.model';
 import { StatisticalArea } from '../feature/statistical-area.model';
@@ -34,7 +34,7 @@ type AnyFeature = Kita | StatisticalArea | Supermarket | Pharmacy | GreenArea;
   ]
 })
 export class TouchscreenComponent implements OnInit {
-  @ViewChild(MapComponent) map: MapComponent;
+  @ViewChild(MapComponent) mapComponent: MapComponent;
   topics: Topic[];
   selectedTopic: Topic;
   stages: Stage[];
@@ -46,15 +46,11 @@ export class TouchscreenComponent implements OnInit {
   isNoMenus = false;
 
   constructor(private config: ConfigurationService, private localStorageService: LocalStorageService, private tuioClient: TuioClient,
-    public mapService: MapService) {
+    public map: olcs.Map) {
     this.topics = this.config.topics;
     this.stages = this.config.stages;
     this.selectedStage = this.config.stages[0];
     this.isNoMenus = this.config.noSideMenus;
-
-    const baseLayers = this.config.baseLayers.concat(this.config.stickyLayers);
-    const topicLayers = this.config.topicLayers;
-    this.mapService.setSources(baseLayers, topicLayers);
   }
 
   ngOnInit() {
@@ -101,12 +97,6 @@ export class TouchscreenComponent implements OnInit {
     this.localStorageService.sendMessage(message);
   }
 
-  onUpdateObject(e: CustomEvent) {
-  }
-
-  onRemoveObject(e: CustomEvent) {
-  }
-
   onContextMenuClick() {
     return !environment.production;
   }
@@ -135,7 +125,7 @@ export class TouchscreenComponent implements OnInit {
     if (this.isNoMenus) {
       return this.config.topicLayers;
     } else {
-      return topic ? this.config.topicLayers.filter(layer => layer.topic === topic.name) : [];
+      return topic ? this.config.topicLayers.filter(layer => layer.category === topic.name) : [];
     }
   }
 
@@ -148,10 +138,11 @@ export class TouchscreenComponent implements OnInit {
    * Set layer visibility e.g. after interaction with side panels or layer switcher
    */
   updateMapLayers() {
-    this.layers = this.getTopicLayers(this.selectedTopic).concat(this.getBaseLayers());
-    this.map.showBaseLayers(this.mapService.baseLayers.filter(layer => layer.visible));
-    this.map.showLayers(this.layers.filter(layer => layer.visible), this.selectedTopic, this.selectedStage);
-    this.map.clearSelectedFeatures();
+    this.layers = this.getTopicLayers(this.selectedTopic).concat(this.getBaseLayers()).filter(layer => !layer.sticky);
+    const topic = this.selectedTopic ? this.selectedTopic.name : null; // null means show nothing at all
+    const stage = this.selectedStage ? this.selectedStage.name : undefined;
+    this.map.syncVisibleLayers(topic, stage);
+    this.mapComponent.clearSelectedFeatures();
   }
 
   toggleMenu() {

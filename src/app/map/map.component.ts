@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import * as ol from 'openlayers';
+import * as olcs from 'ol-cityscope';
+
 import { ConfigurationService } from '../configuration.service';
-import { MapService } from './map.service';
 import { LocalStorageService } from '../local-storage/local-storage.service';
 import { LocalStorageMessage } from '../local-storage/local-storage-message.model';
 
@@ -23,8 +23,8 @@ export class MapComponent implements OnInit {
   popUp: ol.Overlay;
   disableInfoScreen = false;
 
-  constructor(private config: ConfigurationService, private mapService: MapService, private localStorageService: LocalStorageService) {
-    this.center = ol.proj.fromLonLat(config.mapCenter);
+  constructor(private config: ConfigurationService, private map: olcs.Map, private localStorageService: LocalStorageService) {
+    this.center = config.mapCenter;
     this.zoom = config.mapZoom;
     this.minZoom = config.mapMinZoom;
     this.maxZoom = config.mapMaxZoom;
@@ -32,53 +32,59 @@ export class MapComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.mapService.setTarget('map');
-    this.mapService.setView(new ol.View({
-      center: this.center,
-      zoom: this.zoom - 3, // the zoom animation will correct the zoom level later
-      minZoom: this.minZoom,
-      maxZoom: this.maxZoom
-    }));
+    this.map.setTarget('map');
+    this.map.setView(
+      this.center,
+      this.zoom - 3, // the zoom animation will correct the zoom level later
+      this.minZoom,
+      this.maxZoom
+    );
     if (this.config.disableInfoScreen) {
       const element = document.getElementById('popup');
-      this.popUp = new ol.Overlay({
-        element: element,
-        stopEvent: false
-      });
-      this.mapService.setPopUp(this.popUp);
+      this.popUp = this.map.buildPopup(element);
+      this.map.setPopUp(this.popUp);
+      return;
     } else {
-      this.mapService.selectInteraction.on('select', e => this.select.emit(<ol.interaction.Select.Event>e));
+      // FIXME
+      // const selectableLayers: MapLayer[] = this.map.topicLayers.filter(layer => layer.selectable);
+      // for (const layer of selectableLayers) {
+      //   for (const olLayer of Object.values(layer.olLayers)) {
+      //     olLayer.selectInteraction.on('select', (e: ol.interaction.Select.Event) => {
+      //       this.select.emit(e);
+      //     });
+      //   }
+      // }
+      this.map.on('select', e => this.select.emit(<ol.interaction.Select.Event>e));
     }
 
-    this.mapService.on('singleclick', this.mapClickHandler);
+    // Just for the 'start-click'
+    this.map.on('singleclick', this.onMapClick.bind(this));
   }
+
   reset() {
-    this.mapService.getView().animate({ zoom: this.zoom }, { center: this.center });
-  }
-
-  showLayers(layers: MapLayer[], topic: Topic, stage: Stage) {
-    if (!this.config.noSideMenus) {
-      this.mapService.showLayers(layers.map(layer => layer.name), topic ? topic.name : '', stage ? stage.name : '');
-    } else {
-      this.mapService.showLayersNoTopic(layers.map(layer => layer.name));
-    }
-  }
-
-  showBaseLayers(layers: MapLayer[]) {
-    this.mapService.showBaseLayers(layers.map(layer => layer.name));
+    this.map.getView().animate({ zoom: this.zoom }, { center: this.center });
   }
 
   clearSelectedFeatures() {
-    this.mapService.selectInteraction.getFeatures().clear();
+    // FIXME
+    // const selectableLayers: MapLayer[] = this.map.topicLayers.filter(layer => layer.selectable);
+    // for (const layer of selectableLayers) {
+    //   for (const olLayer of Object.values(layer.olLayers)) {
+    //     olLayer.selectInteraction.getFeatures().clear();
+    //   }
+    // }
   }
 
   getLayerByFeature(feature: ol.Feature) {
-    return this.mapService.getLayerByFeature(feature);
+    return this.map.getLayerByFeature(feature);
   }
 
-  mapClickHandler = (evt) => {
+  onMapClick(evt: ol.MapBrowserEvent) {
     if (!this.isFirstClick) {
-      this.mapService.getView().animate({ zoom: this.zoom }, { center: this.center });
+      this.map.getView().animate(
+        { zoom: this.zoom },
+        { center: this.map.fromLonLat(this.center) }
+      );
 
       const message: LocalStorageMessage<{}> = {
         type: 'tool-interaction',
@@ -87,13 +93,13 @@ export class MapComponent implements OnInit {
       this.localStorageService.sendMessage(message);
       this.toolStart.emit('tool-start');
       this.isFirstClick = true;
-    } else if (this.popUp) {
+      return;
+    }
+    if (this.popUp) {
       const features = evt.map.getFeaturesAtPixel(evt.pixel);
       if (features) {
-        // const properties = evt.selected[0].getProperties();
         const coordinate = evt.coordinate;
         const element = document.getElementById('popup');
-        // element.innerText = 'schlmmm';
         element.innerHTML = this.getTextFromFeatureProperties(features[0]);
         this.popUp.setPosition(coordinate);
       } else {
@@ -110,7 +116,7 @@ export class MapComponent implements OnInit {
         viewKey = this.capitalize(key);
         const value = feature.getProperties()[key];
         if (typeof value === 'string') {
-            content = content + viewKey + ' : ' + value + '<br />';
+          content = content + viewKey + ' : ' + value + '<br />';
         }
       }
     }

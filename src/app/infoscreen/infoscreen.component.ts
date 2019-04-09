@@ -1,10 +1,9 @@
 import {Component, OnInit, NgZone, Inject, LOCALE_ID} from '@angular/core';
-import {ChartUtils} from 'angular-dashboard-components/components/utils/chart.utils';
-import {ThemeUtils} from 'angular-dashboard-components/components/utils/theme.utils';
+import {ChartUtils} from 'angular-dashboard-components/dist/utils/chart.utils';
+import {ThemeUtils} from 'angular-dashboard-components/dist/utils/theme.utils';
 import {HttpClient} from '@angular/common/http';
 import {LocalStorageMessage} from '../local-storage/local-storage-message.model';
 import {LocalStorageService} from '../local-storage/local-storage.service';
-import {Feature} from '../feature/feature.model';
 import {Kita} from '../feature/kita.model';
 import {StatisticalArea} from '../feature/statistical-area.model';
 import {Supermarket} from '../feature/supermarket.model';
