@@ -32,6 +32,26 @@
     }
   ],
   "baseLayers": [
+
+    {
+      "name": "grossborstel",
+      "displayName": "Groß Borstel",
+      "displayName_de-DE": "Groß Borstel",
+      "type": "Vector",
+      "source": {
+        "url": "http://localhost:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:grossborstel&outputFormat=application/json&srsname=EPSG:4326",
+        "format": "GeoJSON"
+      },
+      "zIndex": 100,
+      "visible": true,
+      "sticky": true,
+      "style": {
+        "stroke": {
+          "color": "dodgerblue",
+          "width": 5
+        }
+      }
+    },
     {
       "name": "sozialmonitoring",
       "displayName": "Social monitor of 2016",
@@ -547,26 +567,6 @@
         "anderweitige Nutzung": [106, 90, 205, 0.6]
       },
       "scaleAttribute": "gruenart"
-    }
-  ],
-  "stickyLayers": [
-    {
-      "name": "grossborstel",
-      "displayName": "Groß Borstel",
-      "displayName_de-DE": "Groß Borstel",
-      "type": "Vector",
-      "source": {
-        "url": "http://localhost:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:grossborstel&outputFormat=application/json&srsname=EPSG:4326",
-        "format": "GeoJSON"
-      },
-      "zIndex": 100,
-      "visible": true,
-      "style": {
-        "stroke": {
-          "color": "dodgerblue",
-          "width": 5
-        }
-      }
     }
   ],
   "mapCenter": [9.9880, 53.6126],
