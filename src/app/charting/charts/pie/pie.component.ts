@@ -3,7 +3,7 @@ import {Chart} from 'angular-highcharts';
 import {ChartUtils} from '../../utils/chart.utils';
 
 @Component({
-    selector: 'dash-pie',
+    selector: 'app-dash-pie',
     styles: [
         '.pieHolder {height: 100%}'
     ],
@@ -15,7 +15,7 @@ export class PieComponent implements OnChanges, OnInit {
     *   To assure good height adjustation, please give the parent containers a 'height: 100%'
     */
     // pieId = Math.random().toString(36).substring(2, 15);
-    @Input() pieId: string = '';
+    @Input() pieId = '';
 
     // Titles
     @Input() chartTitle = '';
@@ -49,7 +49,7 @@ export class PieComponent implements OnChanges, OnInit {
     }
 
     private getPieChart(series) {
-        let renderTo: any = document.getElementById(this.pieId);
+        const renderTo: any = document.getElementById(this.pieId);
         return new Chart({
             chart: {
                 plotBackgroundColor: undefined,
@@ -67,8 +67,7 @@ export class PieComponent implements OnChanges, OnInit {
                 },
             },
             title: {
-                text: this.chartTitle,
-                align: this.chartTitleAlign
+                text: this.chartTitle
             },
             subtitle: {
                 text: this.chartSubTitle
@@ -121,7 +120,7 @@ export class PieComponent implements OnChanges, OnInit {
 
     chartClick = (event) => {
         this.clickOutput.emit(event);
-    };
+    }
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes['series'] && !changes['series'].firstChange) {

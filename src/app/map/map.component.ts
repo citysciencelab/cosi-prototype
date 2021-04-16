@@ -23,7 +23,7 @@ export class MapComponent implements OnInit {
   popUp: ol.Overlay;
   disableInfoScreen = false;
 
-  constructor(private config: ConfigurationService, private map: olcs.Map, private localStorageService: LocalStorageService) {
+  constructor(private config: ConfigurationService, private map: olcs.CsMap, private localStorageService: LocalStorageService) {
     this.center = config.mapCenter;
     this.zoom = config.mapZoom;
     this.minZoom = config.mapMinZoom;

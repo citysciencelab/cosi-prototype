@@ -3,7 +3,7 @@ import {Chart} from 'angular-highcharts';
 import {ChartUtils} from '../../utils/chart.utils';
 
 @Component({
-    selector: 'dash-line',
+    selector: 'app-dash-line',
     styles: [
         '.lineHolder {height: 100%}'
     ],
@@ -16,7 +16,7 @@ export class LineComponent implements OnChanges, OnInit, AfterViewChecked {
     *   To assure good height adjustation, please give the parent containers a 'height: 100%'
     */
     // lineId = Math.random().toString(36).substring(2, 15);
-    @Input() lineId: string = '';
+    @Input() lineId = '';
 
     // Titles
     @Input() chartTitle = '';
@@ -63,8 +63,8 @@ export class LineComponent implements OnChanges, OnInit, AfterViewChecked {
 
     private getLineChart(series, categories) {
         series['colorByPoint'] = this.isColorByPoint;
-        let data = (series instanceof Array ? series : [series]);
-        let renderTo: any = document.getElementById(this.lineId);
+        const data = (series instanceof Array ? series : [series]);
+        const renderTo: any = document.getElementById(this.lineId);
 
         return new Chart({
             chart: {
@@ -83,8 +83,7 @@ export class LineComponent implements OnChanges, OnInit, AfterViewChecked {
                 },
             },
             title: {
-                text: this.chartTitle,
-                align: this.chartTitleAlign
+                text: this.chartTitle
             },
             subtitle: {
                 text: this.chartSubTitle
@@ -151,7 +150,7 @@ export class LineComponent implements OnChanges, OnInit, AfterViewChecked {
 
     chartClick = (event) => {
         this.clickOutput.emit(event);
-    };
+    }
 
 
     ngOnChanges(changes: SimpleChanges) {

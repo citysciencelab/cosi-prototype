@@ -4,7 +4,7 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TuioClient } from 'tuio-client';
-import { Map } from 'ol-cityscope';
+import { CsMap } from 'ol-cityscope';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -20,7 +20,6 @@ import { LocalStorageService } from './local-storage/local-storage.service';
 
 import { PieComponent } from './charting/charts/pie/pie.component';
 import { LineComponent } from './charting/charts/line/line.component';
-import { WordCloudComponent } from './charting/charts/word-cloud/word-cloud.component';
 import { ChartUtils } from './charting/utils/chart.utils';
 import { ThemeUtils } from './charting/utils/theme.utils';
 
@@ -46,7 +45,6 @@ import { ThemeUtils } from './charting/utils/theme.utils';
     LocalStorageService,
     LineComponent,
     PieComponent,
-    WordCloudComponent,
     ChartUtils,
     ThemeUtils,
     {
@@ -58,8 +56,8 @@ import { ThemeUtils } from './charting/utils/theme.utils';
       useFactory: () => new TuioClient({ enableCursorEvent: false })
     },
     {
-      provide: Map,
-      useFactory: (config: ConfigurationService) => new Map(config),
+      provide: CsMap,
+      useFactory: (config: ConfigurationService) => new CsMap(config),
       deps: [ConfigurationService]
     }
   ],

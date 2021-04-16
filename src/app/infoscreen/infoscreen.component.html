@@ -114,12 +114,12 @@
          class="col-md-6 col-sm-12">
       <div class="shadow-element holder-element">
         <div *ngIf="lineData">
-          <dash-line [chartTitle]="lineTitle"
+          <app-dash-line [chartTitle]="lineTitle"
                      [chartSubTitle]="lineSubTitle"
                      [series]="lineData"
                      [isExport]="false"
                      [chartType]="'line'"
-                     [xCategories]="lineCategories"></dash-line>
+                     [xCategories]="lineCategories"></app-dash-line>
         </div>
       </div>
     </div>
@@ -128,14 +128,14 @@
          class="col-md-6 col-sm-12">
       <div class="shadow-element holder-element">
         <div *ngIf="columnData">
-          <dash-line [chartTitle]="columnTitle"
+          <app-dash-line [chartTitle]="columnTitle"
                      [chartSubTitle]="columnSubTitle"
                      [legendEnabled]="false"
                      [series]="columnData"
                      [isExport]="false"
                      [chartType]="'column'"
                      [plotLineValue]="columnPlotLine"
-                     [xCategories]="columnCategories"></dash-line>
+                     [xCategories]="columnCategories"></app-dash-line>
         </div>
       </div>
     </div>
@@ -144,13 +144,13 @@
          class="col-md-3 col-sm-6">
       <div class="shadow-element holder-element">
         <div *ngIf="pieData">
-          <dash-pie [chartTitle]="pieTitle"
+          <app-dash-pie [chartTitle]="pieTitle"
                     [chartSubTitle]="pieSubTitle"
                     [dataLabelDistance]="0"
                     [isExport]="false"
                     [isPercentageLabel]="false"
                     [isNoDecimalPlace]="true"
-                    [series]="pieData"></dash-pie>
+                    [series]="pieData"></app-dash-pie>
         </div>
       </div>
     </div>
@@ -159,7 +159,7 @@
          class="col-md-3 col-sm-6">
       <div class="shadow-element holder-element">
         <div *ngIf="columnData2">
-          <dash-line style="height: 100%; width: 100%"
+          <app-dash-line style="height: 100%; width: 100%"
                      [lineId]="'line_chart_holder'"
                      [chartTitle]="column2Title"
                      [chartSubTitle]="column2SubTitle"
@@ -169,7 +169,7 @@
                      [chartType]="'bar'"
                      [isNoGridLines]="true"
                      [plotLineValue]="column2PlotLine"
-                     [xCategories]="columnCategories"></dash-line>
+                     [xCategories]="columnCategories"></app-dash-line>
         </div>
       </div>
     </div>

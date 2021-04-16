@@ -46,7 +46,7 @@ export class TouchscreenComponent implements OnInit {
   isNoMenus = false;
 
   constructor(private config: ConfigurationService, private localStorageService: LocalStorageService, private tuioClient: TuioClient,
-    public map: olcs.Map) {
+    public map: olcs.CsMap) {
     this.topics = this.config.topics;
     this.stages = this.config.stages;
     this.selectedStage = this.config.stages[0];
