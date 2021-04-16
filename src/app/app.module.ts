@@ -18,11 +18,11 @@ import { YesNoUnknownPipe } from './util/yes-no-unknown.pipe';
 import { ConfigurationService } from './configuration.service';
 import { LocalStorageService } from './local-storage/local-storage.service';
 
-import { PieComponent } from 'angular-dashboard-components/dist/charts/pie/pie.component';
-import { LineComponent } from 'angular-dashboard-components/dist/charts/line/line.component';
-import { WordCloudComponent } from 'angular-dashboard-components/dist/charts/word-cloud/word-cloud.component';
-import { ChartUtils } from 'angular-dashboard-components/dist/utils/chart.utils';
-import { ThemeUtils } from 'angular-dashboard-components/dist/utils/theme.utils';
+import { PieComponent } from './charting/charts/pie/pie.component';
+import { LineComponent } from './charting/charts/line/line.component';
+import { WordCloudComponent } from './charting/charts/word-cloud/word-cloud.component';
+import { ChartUtils } from './charting/utils/chart.utils';
+import { ThemeUtils } from './charting/utils/theme.utils';
 
 @NgModule({
   declarations: [

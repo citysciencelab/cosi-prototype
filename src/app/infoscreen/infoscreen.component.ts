@@ -1,6 +1,4 @@
 import {Component, OnInit, NgZone, Inject, LOCALE_ID} from '@angular/core';
-import {ChartUtils} from 'angular-dashboard-components/dist/utils/chart.utils';
-import {ThemeUtils} from 'angular-dashboard-components/dist/utils/theme.utils';
 import {HttpClient} from '@angular/common/http';
 import {LocalStorageMessage} from '../local-storage/local-storage-message.model';
 import {LocalStorageService} from '../local-storage/local-storage.service';
@@ -10,6 +8,8 @@ import {Supermarket} from '../feature/supermarket.model';
 import {Pharmacy} from '../feature/pharmacy.model';
 import {GreenArea} from '../feature/green-area.model';
 import * as Highcharts from 'highcharts';
+import {ChartUtils} from '../charting/utils/chart.utils';
+import {ThemeUtils} from '../charting/utils/theme.utils';
 
 type AnyFeature = Kita | StatisticalArea | Supermarket | Pharmacy | GreenArea;
 
@@ -28,8 +28,8 @@ export class InfoscreenComponent implements OnInit {
 
   private _urlDistrictProfilesData = 'assets/data/grobo-data.json';
   private _urlInfrastructureData = 'assets/data/infrastructure-data.json';
-  private _urlNurseryData= 'assets/data/nursery-data.json';
-  private _urlPublicSpaceData= 'assets/data/public-space-data.json';
+  private _urlNurseryData = 'assets/data/nursery-data.json';
+  private _urlPublicSpaceData = 'assets/data/public-space-data.json';
 
   public isToolStarted = false;
 
