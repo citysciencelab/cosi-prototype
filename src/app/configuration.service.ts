@@ -1,5 +1,5 @@
 import { Injectable, Inject, LOCALE_ID } from '@angular/core';
-import config from './config.json';
+import config from './config.grossborstel.json';
 import {MapLayer, Stage, Topic} from '../typings';
 
 @Injectable()

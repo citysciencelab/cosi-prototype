@@ -117,9 +117,9 @@
       "displayName_de-DE": "Stadtkarte Hamburg",
       "type": "WMS",
       "source": {
-        "url": "https://geodienste.hamburg.de/HH_WMS_Kombi_DISK_GB",
+        "url": "https://geodienste.hamburg.de/HH_WMS_Geobasiskarten_GB",
         "wmsParams": {
-          "LAYERS": "6,10,18,26,2,14,22,30",
+          "LAYERS": "M2500_graublau,M5000_graublau,M10000_graublau,M20000_graublau,M40000_graublau,M60000_graublau,M100000_graublau,M125000_graublau",
           "FORMAT": "image/png",
           "TILED": true,
           "WIDTH": 256,
@@ -137,9 +137,9 @@
       "displayName_de-DE": "Luftbilder DOP 20",
       "type": "WMS",
       "source": {
-        "url": "https://geodienste.hamburg.de/HH_WMS_DOP20",
+        "url": "https://geodienste.hamburg.de/HH_WMS_DOP",
         "wmsParams": {
-          "LAYERS": "1",
+          "LAYERS": "DOP",
           "FORMAT": "image/png",
           "TILED": true,
           "WIDTH": 256,
