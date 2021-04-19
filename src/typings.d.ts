@@ -1,3 +1,8 @@
+import { Layer } from 'ol/layer';
+import { StyleFunction } from 'ol/style/Style';
+import { Select } from 'ol/interaction';
+import { Color } from 'ol/color';
+
 /* SystemJS module definition */
 declare var module: NodeModule;
 interface NodeModule {
@@ -81,16 +86,16 @@ declare interface MapLayer {
   style?: LayerStyle;
   selectedStyle?: LayerStyle;
   extraStyle?: LayerStyle;
-  scale?: { [key: string]: ol.Color };
+  scale?: { [key: string]: Color };
   scaleAttribute?: string;
   // No config - assigned at runtime
   olLayers: {
     [stage: string]: {
-      layer: ol.layer.Layer,
-      defaultStyleFn: ol.StyleFunction,
-      selectedStyleFn: ol.StyleFunction,
-      extraStyleFn: ol.StyleFunction,
-      selectInteraction: ol.interaction.Select
+      layer: Layer,
+      defaultStyleFn: StyleFunction,
+      selectedStyleFn: StyleFunction,
+      extraStyleFn: StyleFunction,
+      selectInteraction: Select
     }
   };
 }

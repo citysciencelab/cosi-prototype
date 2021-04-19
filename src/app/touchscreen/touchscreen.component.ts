@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import * as olcs from 'ol-cityscope';
 import { TuioClient } from 'tuio-client';
+import Select from 'ol/interaction/Select.js';
 
 import { environment } from '../../environments/environment';
 import { ConfigurationService } from '../configuration.service';
@@ -13,6 +14,7 @@ import { Supermarket } from '../feature/supermarket.model';
 import { Pharmacy } from '../feature/pharmacy.model';
 import { GreenArea } from '../feature/green-area.model';
 import { trigger, state, style, animate, transition } from '@angular/animations';
+import {MapLayer, Stage, Topic} from '../../typings';
 
 type AnyFeature = Kita | StatisticalArea | Supermarket | Pharmacy | GreenArea;
 
@@ -80,10 +82,10 @@ export class TouchscreenComponent implements OnInit {
     return object.hasOwnProperty('gruenart');
   }
 
-  onSelect(e: ol.interaction.Select.Event) {
+  onSelect(e: Select) {
     let message: LocalStorageMessage<{}> = { type: 'deselect', data: null };
-    if (e.selected.length > 0) {
-      const properties = e.selected[0].getProperties();
+    if (e.getFeatures().getLength() > 0) {
+      const properties = e.getFeatures().getArray()[0].getProperties();
       message = {
         type: 'select',
         data: this.isKita(properties) ? new Kita(properties) :

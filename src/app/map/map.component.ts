@@ -1,4 +1,10 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import Overlay from 'ol/Overlay';
+import Feature from 'ol/Feature';
+import { Coordinate } from 'ol/coordinate';
+import Select from 'ol/interaction/Select.js';
+import MapBrowserEvent from 'ol/MapBrowserEvent';
+
 import * as olcs from 'ol-cityscope';
 
 import { ConfigurationService } from '../configuration.service';
@@ -11,19 +17,19 @@ import { LocalStorageMessage } from '../local-storage/local-storage-message.mode
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit {
-  @Output() select = new EventEmitter<ol.interaction.Select.Event>();
+  @Output() select = new EventEmitter<Select>();
   @Output() toolStart = new EventEmitter<string>();
   private isFirstClick = false;
 
   // Map config
-  center: ol.Coordinate;
+  center: Coordinate;
   zoom: number;
   minZoom: number;
   maxZoom: number;
-  popUp: ol.Overlay;
+  popUp: Overlay;
   disableInfoScreen = false;
 
-  constructor(private config: ConfigurationService, private map: olcs.CsMap, private localStorageService: LocalStorageService) {
+  constructor(private config: ConfigurationService, private csMap: olcs.CsMap, private localStorageService: LocalStorageService) {
     this.center = config.mapCenter;
     this.zoom = config.mapZoom;
     this.minZoom = config.mapMinZoom;
@@ -32,8 +38,8 @@ export class MapComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.map.setTarget('map');
-    this.map.setView(
+    this.csMap.setTarget('map');
+    this.csMap.setView(
       this.center,
       this.zoom - 3, // the zoom animation will correct the zoom level later
       this.minZoom,
@@ -41,8 +47,8 @@ export class MapComponent implements OnInit {
     );
     if (this.config.disableInfoScreen) {
       const element = document.getElementById('popup');
-      this.popUp = this.map.buildPopup(element);
-      this.map.setPopUp(this.popUp);
+      this.popUp = this.csMap.buildPopup(element);
+      this.csMap.setPopUp(this.popUp);
       return;
     } else {
       // FIXME
@@ -54,15 +60,15 @@ export class MapComponent implements OnInit {
       //     });
       //   }
       // }
-      this.map.on('select', e => this.select.emit(<ol.interaction.Select.Event>e));
+      this.csMap.map.on('select', e => this.select.emit(e as Select));
     }
 
     // Just for the 'start-click'
-    this.map.on('singleclick', this.onMapClick.bind(this));
+    this.csMap.on('singleclick', this.onMapClick.bind(this));
   }
 
   reset() {
-    this.map.getView().animate({ zoom: this.zoom }, { center: this.center });
+    this.csMap.getView().animate({ zoom: this.zoom }, { center: this.center });
   }
 
   clearSelectedFeatures() {
@@ -75,15 +81,15 @@ export class MapComponent implements OnInit {
     // }
   }
 
-  getLayerByFeature(feature: ol.Feature) {
-    return this.map.getLayerByFeature(feature);
-  }
+  // getLayerByFeature(feature: Feature) {
+  //  return this.map.getLayerByFeature(feature);
+  // }
 
-  onMapClick(evt: ol.MapBrowserEvent) {
+  onMapClick(evt: MapBrowserEvent) {
     if (!this.isFirstClick) {
-      this.map.getView().animate(
+      this.csMap.getView().animate(
         { zoom: this.zoom },
-        { center: this.map.fromLonLat(this.center) }
+        { center: this.csMap.fromLonLat(this.center) }
       );
 
       const message: LocalStorageMessage<{}> = {

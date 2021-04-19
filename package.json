@@ -23,9 +23,12 @@
     "@angular/platform-browser-dynamic": "^7.2.11",
     "@angular/router": "^7.2.11",
     "angular-highcharts": "^7.2.0",
+    "bootstrap": "^4.6.0",
     "core-js": "^3.0.0",
     "highcharts": "^7.0.3",
+    "jquery": "^3.6.0",
     "ol-cityscope": "git+ssh://git@github.com/citysciencelab/ol-cityscope.git",
+    "popper": "^1.0.1",
     "rxjs": "^6.4.0",
     "tuio-client": "git+ssh://git@github.com/citysciencelab/tuio-client.git",
     "zone.js": "^0.8.29"

@@ -18,10 +18,17 @@ import { YesNoUnknownPipe } from './util/yes-no-unknown.pipe';
 import { ConfigurationService } from './configuration.service';
 import { LocalStorageService } from './local-storage/local-storage.service';
 
-import { PieComponent } from './charting/charts/pie/pie.component';
+import {ChartModule, HIGHCHARTS_MODULES} from 'angular-highcharts';
+import * as more from 'highcharts/highcharts-more.src';
+import * as exporting from 'highcharts/modules/exporting.src';
 import { LineComponent } from './charting/charts/line/line.component';
 import { ChartUtils } from './charting/utils/chart.utils';
 import { ThemeUtils } from './charting/utils/theme.utils';
+import { PieComponent } from './charting/charts/pie/pie.component';
+
+export function highchartsModules() {
+  return [ more, exporting];
+}
 
 @NgModule({
   declarations: [
@@ -32,13 +39,16 @@ import { ThemeUtils } from './charting/utils/theme.utils';
     SafeHtmlPipe,
     YesNoUnknownPipe,
     LegendComponent,
-    LayerControlComponent
+    LayerControlComponent,
+    PieComponent,
+    LineComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ChartModule
   ],
   providers: [
     ConfigurationService,
@@ -59,6 +69,10 @@ import { ThemeUtils } from './charting/utils/theme.utils';
       provide: CsMap,
       useFactory: (config: ConfigurationService) => new CsMap(config),
       deps: [ConfigurationService]
+    },
+    {
+      provide: HIGHCHARTS_MODULES,
+      useFactory: highchartsModules
     }
   ],
   bootstrap: [AppComponent],

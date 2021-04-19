@@ -1,5 +1,6 @@
 import { Injectable, Inject, LOCALE_ID } from '@angular/core';
 import config from './config.json';
+import {MapLayer, Stage, Topic} from '../typings';
 
 @Injectable()
 export class ConfigurationService {

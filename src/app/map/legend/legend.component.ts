@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation, Input, Output, EventEmitter } from '@angular/core';
+import {MapLayer} from '../../../typings';
 
 @Component({
   selector: 'app-legend',
