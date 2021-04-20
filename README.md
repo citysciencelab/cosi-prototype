@@ -1,6 +1,7 @@
 # CoSI – Cockpit Soziale Infrastrukturen
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.3.
+![Alt Text](https://drive.google.com/uc?export=view&id=1ABGo_bBoE5uny4XcFliBhZcMwl8oUy8z)
+
 This protoype was developed in 2019 by the CityScienceLab as a proof of concept.
 It is a sophisticated web-GIS application or planning support system for urban planners.
 This prototype has been adapted and is now based on the Masterportal (Hamburg's Urban Data Platform Web-Gis) code.
@@ -13,6 +14,8 @@ International Journal of E-Planning Research (IJEPR): currently in review
 
 The tool is also mentioned in the Digital Strategy for Hamburg:
 https://www.hamburg.de/contentblob/14924946/e80007b350f1abdc455cfaea7e8cd76c/data/download-digitalstrategie-englisch.pdf
+
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.7.
 
 
 ## Installing
