@@ -1,6 +1,6 @@
 # CoSI – Cockpit for Social Infrastructure
 
-![Alt Text](https://drive.google.com/uc?export=view&id=1ABGo_bBoE5uny4XcFliBhZcMwl8oUy8z)
+![CoSI Video](https://drive.google.com/uc?export=view&id=1ABGo_bBoE5uny4XcFliBhZcMwl8oUy8z)
 
 The CoSI protoype was developed in 2019 by the CityScienceLab as a proof of concept.
 The prototype is a sophisticated web-GIS application currently evolving towards a planning support system for social infrastrcuture planners.
