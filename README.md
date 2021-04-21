@@ -5,6 +5,8 @@ The prototype is a sophisticated web-GIS application currently evolving towards 
 
 ![CoSI Video](https://drive.google.com/uc?export=view&id=1ABGo_bBoE5uny4XcFliBhZcMwl8oUy8z)
 
+[Clicke here](https://drive.google.com/file/d/id=1ABGo_bBoE5uny4XcFliBhZcMwl8oUy8z/view?usp=sharing) if the video doesn't load.
+
 The prototype has been adapted to work in the [Urban Data Platform](http://www.urbandataplatform.hamburg/) environment and is now based on the [Masterportal](https://bitbucket.org/geowerkstatt-hamburg/masterportal/src) (Hamburg's Urban Data Platform Web-Gis) code.
 The most recent version can be found here:
 https://github.com/citysciencelab/cosi
