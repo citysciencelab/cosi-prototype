@@ -1,13 +1,14 @@
 # CoSI – Cockpit for Social Infrastructure
 
-![CoSI Video](https://drive.google.com/uc?export=view&id=1ABGo_bBoE5uny4XcFliBhZcMwl8oUy8z)
-
 The CoSI protoype was developed in 2019 by the CityScienceLab as a proof of concept.
 The prototype is a sophisticated web-GIS application currently evolving towards a planning support system for social infrastrcuture planners.
+
+![CoSI Video](https://drive.google.com/uc?export=view&id=1ABGo_bBoE5uny4XcFliBhZcMwl8oUy8z)
+
 The prototype has been adapted to work in the [Urban Data Platform](http://www.urbandataplatform.hamburg/) environment and is now based on the [Masterportal](https://bitbucket.org/geowerkstatt-hamburg/masterportal/src) (Hamburg's Urban Data Platform Web-Gis) code.
 The most recent version can be found here:
 https://github.com/citysciencelab/cosi
- 
+
 CoSI Publications :
 https://www.researchgate.net/publication/344340813_Cockpit_Social_Infrastructure_-_Developing_a_planning_support_system_in_Hamburg
 International Journal of E-Planning Research (IJEPR): currently in review
