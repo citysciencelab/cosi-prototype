@@ -12,11 +12,12 @@ The most recent version can be found here:
 https://github.com/citysciencelab/cosi
 
 CoSI Publications :
-https://www.researchgate.net/publication/344340813_Cockpit_Social_Infrastructure_-_Developing_a_planning_support_system_in_Hamburg
-International Journal of E-Planning Research (IJEPR): currently in review
+eCAADe Conference Paper: [Cockpit Social Infrastructure - Developing a planning support system in Hamburg](https://www.researchgate.net/publication/344340813_Cockpit_Social_Infrastructure_-_Developing_a_planning_support_system_in_Hamburg)
 
-CoSI is also mentioned in the 'Digital Strategy for Hamburg':
-https://www.hamburg.de/contentblob/14924946/e80007b350f1abdc455cfaea7e8cd76c/data/download-digitalstrategie-englisch.pdf
+International Journal of E-Planning Research (IJEPR): [Cockpit Social Infrastructure: A Case for Planning Support Infrastructure](https://www.researchgate.net/publication/353346520_Cockpit_Social_Infrastructure_A_Case_for_Planning_Support_Infrastructure)
+
+CoSI is also mentioned in the [Digital Strategy for Hamburg](https://www.hamburg.de/contentblob/14924946/e80007b350f1abdc455cfaea7e8cd76c/data/download-digitalstrategie-englisch.pdf)
+
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.7.
 
