@@ -3,7 +3,7 @@
 The CoSI protoype was developed in 2019 by the CityScienceLab as a proof of concept.
 The prototype is a sophisticated web-GIS application currently evolving towards a planning support system for social infrastructure planners.
 
-https://user-images.githubusercontent.com/36763878/160370829-5471e7b6-6622-4b07-8125-236712c07d75.mp4
+https://user-images.githubusercontent.com/36763878/161036610-c4c7d726-6756-458f-8cae-3610140168b0.mp4
 
 [Clicke here](https://drive.google.com/file/d/id=1ABGo_bBoE5uny4XcFliBhZcMwl8oUy8z/view?usp=sharing) if the video doesn't load.
 
