@@ -3,9 +3,9 @@
 The CoSI protoype was developed in 2019 by the CityScienceLab as a proof of concept.
 The prototype is a sophisticated web-GIS application currently evolving towards a planning support system for social infrastructure planners.
 
-https://user-images.githubusercontent.com/36763878/161036610-c4c7d726-6756-458f-8cae-3610140168b0.mp4
+![CityScienceLab_CoSi-Simulation](https://user-images.githubusercontent.com/36763878/161695709-67e32835-44c9-41ad-b194-ff982b5df381.JPG)
 
-[Clicke here](https://drive.google.com/file/d/id=1ABGo_bBoE5uny4XcFliBhZcMwl8oUy8z/view?usp=sharing) if the video doesn't load.
+https://user-images.githubusercontent.com/36763878/161036610-c4c7d726-6756-458f-8cae-3610140168b0.mp4
 
 The prototype has been adapted to work in the [Urban Data Platform](http://www.urbandataplatform.hamburg/) environment and is now based on the [Masterportal](https://bitbucket.org/geowerkstatt-hamburg/masterportal/src) (Hamburg's Urban Data Platform Web-Gis) code.
 The most recent version can be found here:
